@@ -29,20 +29,20 @@ const config = {
       ({
         debug: false,
         pages: false,
-        docs: {
-          // meta options
-          routeBasePath: '/docs',
-          editCurrentVersion: false,
-          editLocalizedFiles: false,
-          numberPrefixParser: (filename) => ({ filename }),
-          breadcrumbs: false,
-          // path options
-          path: 'docs',
-          sidebarPath: require.resolve('./sidebars.js'),
-          // sidebar options
-          sidebarCollapsible: true,
-          sidebarCollapsed: false,          
-        },
+        // docs: {
+        //   // meta options
+        //   routeBasePath: '/docs',
+        //   editCurrentVersion: false,
+        //   editLocalizedFiles: false,
+        //   numberPrefixParser: (filename) => ({ filename }),
+        //   breadcrumbs: false,
+        //   // path options
+        //   path: 'docs',
+        //   sidebarPath: require.resolve('./sidebars.js'),
+        //   // sidebar options
+        //   sidebarCollapsible: true,
+        //   sidebarCollapsed: false,          
+        // },
         blog: {
           blogTitle: 'Blog',
           showReadingTime: true,
@@ -83,11 +83,6 @@ const config = {
           { 
             to: '/blog',
             label: 'Blog',
-            position: 'left'
-          },
-          { 
-            to: '/docs',
-            label: 'Docs',
             position: 'left'
           },
           {
