@@ -1,0 +1,7 @@
+{
+  "redirects": [{ "source": "/", "destination": "/blog" }],
+  "rewrites": [
+    { "source": "/blog", "destination": "/" },
+    { "source": "/blog/:match*", "destination": "/:match*" }
+  ]
+}

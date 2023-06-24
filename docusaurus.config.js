@@ -16,21 +16,38 @@ const config = {
   projectName: 'blog',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
+  onDuplicateRoutes: 'throw',
   i18n: {
     defaultLocale: 'ko',
     locales: ['ko'],
   },
+  titleDelimiter: ' | ',
   presets: [
     [
       'classic',
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         debug: false,
+        pages: false,
         docs: {
+          // meta options
+          routeBasePath: '/docs',
+          editCurrentVersion: false,
+          editLocalizedFiles: false,
+          numberPrefixParser: (filename) => ({ filename }),
+          breadcrumbs: false,
+          // path options
+          path: 'docs',
           sidebarPath: require.resolve('./sidebars.js'),
+          // sidebar options
+          sidebarCollapsible: true,
+          sidebarCollapsed: false,          
         },
         blog: {
+          blogTitle: 'Blog',
           showReadingTime: true,
+          blogSidebarCount: 'ALL',
+          routeBasePath: '/blog',
         },
         sitemap: {
           changefreq: EnumChangefreq['weekly'],
@@ -68,6 +85,11 @@ const config = {
             label: 'Blog',
             position: 'left'
           },
+          { 
+            to: '/docs',
+            label: 'Docs',
+            position: 'left'
+          },
           {
             type: 'search',
             position: 'right',
@@ -95,6 +117,25 @@ const config = {
         indexName: 'hexdrinker',
         contextualSearch: true,
       },
+      colorMode: {
+        defaultMode: 'dark',
+        disableSwitch: false,
+        respectPrefersColorScheme: true,
+      },
+      // metadata: [
+      //   { name: 'keywords', content: 'blog, javascript, react, frontend' },
+      //   { name: 'author', content: 'hexdrinker' },
+      //   { property: 'og:type', content: 'website' },
+      //   { property: 'og:description', content: 'website' },
+      //   { property: 'og:site_name', content: 'hexdrinker.com' },
+      //   { property: 'og:locale', content: 'ko_KR' },
+      //   { property: 'og:image', content: 'https://www.hexdrinker.com/img/meta/image.png' },
+      //   { property: 'og:image:secure_url', content: 'https://www.hexdrinker.com/img/meta/image.png' },
+      //   { property: 'og:image:type', content: 'image/jpeg' },
+      //   { property: 'og:image:width', content: '1200' },
+      //   { property: 'og:image:height', content: '630' },
+      //   { property: 'og:image:alt', content: 'Blog Thumbnail' },
+      // ],
     }),
 };
 
