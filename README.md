@@ -1,1 +1,1 @@
-[hexdrinker's devlog](https://hexdrinker.com)
+[hexdrinker's devlog](https://hexdrinker.dev)
