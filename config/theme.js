@@ -12,7 +12,8 @@ const navbar = {
   hideOnScroll: true,
   logo: {
     alt: 'Logo',
-    src: 'img/logo.svg',
+    src: '/img/logos/logo-light-mode.png',
+    srcDark: '/img/logos/logo-dark-mode.png',
     href: '/blog',
     target: '_self',
   },
@@ -59,7 +60,7 @@ const metadata = [
   { name: 'author', content: 'hexdrinker' },
   { property: 'og:type', content: 'website' },
   { property: 'og:description', content: 'website' },
-  { property: 'og:site_name', content: 'hexdrinker.dev' },
+  { property: 'og:site_name', content: 'https://hexdrinker.dev' },
   { property: 'og:locale', content: 'ko_KR' },
   { property: 'og:image', content: 'https://hexdrinker.dev/img/meta/image.png' },
   { property: 'og:image:secure_url', content: 'https://hexdrinker.dev/img/meta/image.png' },
