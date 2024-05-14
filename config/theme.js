@@ -1,11 +1,11 @@
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+const lightCodeTheme = require('prism-react-renderer/themes/github')
+const darkCodeTheme = require('prism-react-renderer/themes/dracula')
 
 const colorMode = {
   defaultMode: 'dark',
   disableSwitch: false,
   respectPrefersColorScheme: true,
-};
+}
 
 const navbar = {
   title: 'hexdrinker',
@@ -18,10 +18,10 @@ const navbar = {
     target: '_self',
   },
   items: [
-    { 
+    {
       to: '/blog',
       label: 'Blog',
-      position: 'left'
+      position: 'left',
     },
     {
       type: 'search',
@@ -49,9 +49,9 @@ const prism = {
 }
 
 const algolia = {
-  appId: 'AVKSPQPWRC',
-  apiKey: '2f83f89da477b2ee3120fc0568798bba',
-  indexName: 'hexdrinker',
+  appId: '8Y1BDL19T2',
+  apiKey: '4d6d54bdd34a1be5ff54b58a53596991',
+  indexName: 'blog',
   contextualSearch: true,
 }
 
@@ -62,12 +62,21 @@ const metadata = [
   { property: 'og:description', content: 'website' },
   { property: 'og:site_name', content: 'https://hexdrinker.dev' },
   { property: 'og:locale', content: 'ko_KR' },
-  { property: 'og:image', content: 'https://hexdrinker.dev/img/meta/image.png' },
-  { property: 'og:image:secure_url', content: 'https://hexdrinker.dev/img/meta/image.png' },
+  {
+    property: 'og:image',
+    content: 'https://hexdrinker.dev/img/meta/image.png',
+  },
+  {
+    property: 'og:image:secure_url',
+    content: 'https://hexdrinker.dev/img/meta/image.png',
+  },
   { property: 'og:image:type', content: 'image/jpeg' },
   { property: 'og:image:width', content: '1200' },
   { property: 'og:image:height', content: '630' },
   { property: 'og:image:alt', content: 'Blog Thumbnail' },
 ]
 
-module.exports = Object.assign({}, { colorMode, navbar, footer, prism, algolia, metadata });
+module.exports = Object.assign(
+  {},
+  { colorMode, navbar, footer, prism, algolia, metadata }
+)
