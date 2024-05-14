@@ -17,7 +17,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: '20.11.5'
+          node-version: '18'
       - name: Install AWS CLI
         run: pip3 install awscli --upgrade --user
       - name: Configure AWS Credentials
