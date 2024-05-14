@@ -31,10 +31,6 @@ const config = {
             to: '/blog',
             from: '/',
           },
-          {
-            to: '/blog',
-            from: '/index.html',
-          },
         ],
       },
     ],
