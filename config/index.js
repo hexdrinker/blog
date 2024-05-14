@@ -1,8 +1,8 @@
 // @ts-check
 
-const i18n = require('./i18n');
-const presets = require('./presets');
-const themeConfig = require('./theme');
+const i18n = require('./i18n')
+const presets = require('./presets')
+const themeConfig = require('./theme')
 
 /**
  * @type {import('@docusaurus/types').Config}
@@ -21,7 +21,24 @@ const config = {
   organizationName: 'https://github.com/hexdrinker',
   projectName: 'blog',
   themeConfig,
-  plugins: ['docusaurus-plugin-sass'],
+  plugins: [
+    'docusaurus-plugin-sass',
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        redirects: [
+          {
+            to: '/blog',
+            from: '/',
+          },
+          {
+            to: '/blog',
+            from: '/index.html',
+          },
+        ],
+      },
+    ],
+  ],
   themes: [],
   presets: [['classic', presets.classic]],
   staticDirectories: ['static'],
@@ -30,6 +47,6 @@ const config = {
   clientModules: [],
   titleDelimiter: ' | ',
   baseUrlIssueBanner: false,
-};
+}
 
-module.exports = config;
+module.exports = config
