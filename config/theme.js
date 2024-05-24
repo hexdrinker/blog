@@ -38,8 +38,8 @@ const navbar = {
 const footer = {
   style: 'dark',
   copyright: `
-    Powered By <a href="https://docusaurus.io/" target="_blank" >Docusaurus 2</a>, Hosted By <a href="https://vercel.com/" target="_blank">Vercel</a>
-    Copyright © ${new Date().getFullYear()}
+    Powered By <a href="https://docusaurus.io/" target="_blank" >Docusaurus 2</a>, Hosted By <a href="https://aws.amazon.com/" target="_blank">AWS</a><br />
+    Copyright © ${new Date().getFullYear()} <a href="https://github.com/hexdrinker" target="_blank">hexdrinker</a>, All rights reserved.
   `,
 }
 
