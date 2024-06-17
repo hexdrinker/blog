@@ -1,0 +1,13 @@
+---
+slug: path
+date: YYYY-MM-DDTHH:MM
+authors: hexdrinker
+title: title
+description: description
+keywords: ['example1', 'example2']
+tags:
+  - example1
+  - example2
+draft: true
+---
+<!--truncate-->
