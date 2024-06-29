@@ -14,19 +14,21 @@ const navbar = {
     alt: 'Logo',
     src: '/img/logos/logo-light-mode.png',
     srcDark: '/img/logos/logo-dark-mode.png',
-    href: '/blog',
+    href: '/',
     target: '_self',
   },
   items: [
     {
-      to: '/blog',
-      label: 'Blog',
-      position: 'left',
-    },
-    {
       type: 'search',
       position: 'right',
     },
+    {
+      to: '/resume',
+      label: 'Resume',
+      position: 'right',
+    },
+    { to: '/tags', label: 'Tags', position: 'left' },
+    { to: '/archive', label: 'Archive', position: 'left' },
     {
       href: 'https://github.com/hexdrinker',
       label: 'GitHub',

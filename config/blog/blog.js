@@ -3,13 +3,15 @@
  */
 const blog = {
   blogTitle: 'Blog',
+  routeBasePath: '/',
   showReadingTime: true,
-  readingTime: ({ content, defaultReadingTime }) => defaultReadingTime({ content, options: { wordsPerMinute: 300 } }),
+  readingTime: ({ content, defaultReadingTime }) =>
+    defaultReadingTime({ content, options: { wordsPerMinute: 300 } }),
   feedOptions: {
     type: 'all',
     copyright: '@ hexdrinker, All rights reserved',
   },
   blogSidebarCount: 'ALL',
-};
+}
 
-module.exports = blog;
+module.exports = blog

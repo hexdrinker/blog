@@ -28,7 +28,7 @@ const config = {
       {
         redirects: [
           {
-            to: '/blog',
+            to: '/',
             from: '/',
           },
         ],
