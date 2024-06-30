@@ -11,7 +11,7 @@ const classic = {
 
     // path options
     path: 'docs',
-    sidebarPath: './sidebars.ts',
+    sidebarPath: './config/sidebars.ts',
 
     // sidebar options
     sidebarCollapsible: true,
