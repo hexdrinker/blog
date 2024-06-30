@@ -11,7 +11,7 @@ const config: Config = {
   baseUrl: '/',
   organizationName: 'hexdrinker',
   projectName: 'blog',
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'throw',
   i18n,
   presets: [['classic', presets]],

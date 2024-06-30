@@ -44,19 +44,12 @@ const themeConfig: ThemeConfig = {
         to: '/blog',
         label: 'Posts',
       },
-      {
-        to: '/blog/tags',
-        label: 'Tags',
-      },
-      {
-        to: '/blog/archive',
-        label: 'Archive',
-      },
-      {
-        to: '/about',
-        label: 'About',
-      },
       // right
+      // {
+      //   to: '/resume',
+      //   label: 'Resume',
+      //   position: 'right',
+      // },
       {
         href: 'https://github.com/hexdrinker',
         className: 'header-github-link',
