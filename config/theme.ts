@@ -64,50 +64,51 @@ const themeConfig: ThemeConfig = {
         'aria-label': 'GitHub repository',
       },
     ],
+    hideOnScroll: true,
   },
   footer: {
     style: 'dark',
-    links: [
-      {
-        title: 'Docs',
-        items: [
-          {
-            label: 'Tutorial',
-            to: '/docs/intro',
-          },
-        ],
-      },
-      {
-        title: 'Community',
-        items: [
-          {
-            label: 'Stack Overflow',
-            href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-          },
-          {
-            label: 'Discord',
-            href: 'https://discordapp.com/invite/docusaurus',
-          },
-          {
-            label: 'Twitter',
-            href: 'https://twitter.com/docusaurus',
-          },
-        ],
-      },
-      {
-        title: 'More',
-        items: [
-          {
-            label: 'Blog',
-            to: '/blog',
-          },
-          {
-            label: 'GitHub',
-            href: 'https://github.com/facebook/docusaurus',
-          },
-        ],
-      },
-    ],
+    // links: [
+    //   {
+    //     title: 'Docs',
+    //     items: [
+    //       {
+    //         label: 'Tutorial',
+    //         to: '/docs/intro',
+    //       },
+    //     ],
+    //   },
+    //   {
+    //     title: 'Community',
+    //     items: [
+    //       {
+    //         label: 'Stack Overflow',
+    //         href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+    //       },
+    //       {
+    //         label: 'Discord',
+    //         href: 'https://discordapp.com/invite/docusaurus',
+    //       },
+    //       {
+    //         label: 'Twitter',
+    //         href: 'https://twitter.com/docusaurus',
+    //       },
+    //     ],
+    //   },
+    //   {
+    //     title: 'More',
+    //     items: [
+    //       {
+    //         label: 'Blog',
+    //         to: '/blog',
+    //       },
+    //       {
+    //         label: 'GitHub',
+    //         href: 'https://github.com/facebook/docusaurus',
+    //       },
+    //     ],
+    //   },
+    // ],
     copyright: `
       Powered By <a href="https://docusaurus.io/" target="_blank" >Docusaurus 2</a>, Hosted By <a href="https://aws.amazon.com/" target="_blank">AWS</a><br />
       Copyright © ${new Date().getFullYear()} <a href="https://github.com/hexdrinker" target="_blank">hexdrinker</a>, All rights reserved.
@@ -125,12 +126,12 @@ const themeConfig: ThemeConfig = {
     theme: prismThemes.github,
     darkTheme: prismThemes.dracula,
   },
-  algolia: {
-    appId: '8Y1BDL19T2',
-    apiKey: '4d6d54bdd34a1be5ff54b58a53596991',
-    indexName: 'blog',
-    contextualSearch: true,
-  },
+  // algolia: {
+  //   appId: '8Y1BDL19T2',
+  //   apiKey: '4d6d54bdd34a1be5ff54b58a53596991',
+  //   indexName: 'blog',
+  //   contextualSearch: true,
+  // },
   metadata: [
     { name: 'keywords', content: 'blog, typescript, react, frontend' },
     { name: 'author', content: 'hexdrinker' },
