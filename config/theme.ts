@@ -19,8 +19,23 @@ const themeConfig: ThemeConfig = {
     },
     items: [
       // left
-      // 추후 드롭다운으로 변경 예정
-      /*{
+      {
+        type: 'dropdown',
+        to: '/series',
+        label: 'Series',
+        position: 'left',
+        items: [
+          {
+            to: '/series',
+            label: 'Posts',
+          },
+          {
+            to: '/series/tags',
+            label: 'Tags',
+          },
+        ],
+      },
+      {
         type: 'dropdown',
         to: '/blog',
         label: 'Blog',
@@ -39,17 +54,13 @@ const themeConfig: ThemeConfig = {
             label: 'Archive',
           },
         ],
-      },*/
-      {
-        to: '/blog',
-        label: 'Posts',
       },
       // right
-      // {
-      //   to: '/resume',
-      //   label: 'Resume',
-      //   position: 'right',
-      // },
+      {
+        to: '/resume',
+        label: 'Resume',
+        position: 'right',
+      },
       {
         href: 'https://github.com/hexdrinker',
         className: 'header-github-link',

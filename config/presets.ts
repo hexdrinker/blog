@@ -3,7 +3,7 @@ import type * as Preset from '@docusaurus/preset-classic'
 const classic = {
   debug: false,
   docs: {
-    routeBasePath: 'docs',
+    routeBasePath: 'series',
     editCurrentVersion: false,
     editLocalizedFiles: false,
     numberPrefixParser: (filename) => ({ filename }),
