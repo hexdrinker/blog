@@ -19,22 +19,22 @@ const themeConfig: ThemeConfig = {
     },
     items: [
       // left
-      {
-        type: 'dropdown',
-        to: '/series',
-        label: 'Series',
-        position: 'left',
-        items: [
-          {
-            to: '/series',
-            label: 'Posts',
-          },
-          {
-            to: '/series/tags',
-            label: 'Tags',
-          },
-        ],
-      },
+      // {
+      //   type: 'dropdown',
+      //   to: '/series',
+      //   label: 'Series',
+      //   position: 'left',
+      //   items: [
+      //     {
+      //       to: '/series',
+      //       label: 'Posts',
+      //     },
+      //     {
+      //       to: '/series/tags',
+      //       label: 'Tags',
+      //     },
+      //   ],
+      // },
       {
         type: 'dropdown',
         to: '/blog',
@@ -139,6 +139,7 @@ const themeConfig: ThemeConfig = {
   metadata: [
     { name: 'keywords', content: 'blog, typescript, react, frontend' },
     { name: 'author', content: 'hexdrinker' },
+    { name: 'algolia-site-verification', content: '0921493C7D4F2B8E' },
     { property: 'og:type', content: 'website' },
     { property: 'og:description', content: 'website' },
     { property: 'og:site_name', content: 'https://hexdrinker.dev' },
