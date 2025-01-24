@@ -165,7 +165,6 @@ const themeConfig: ThemeConfig = {
   metadata: [
     { name: 'keywords', content: 'blog, typescript, react, frontend' },
     { name: 'author', content: 'hexdrinker' },
-    { name: 'algolia-site-verification', content: '0921493C7D4F2B8E' },
     { property: 'og:type', content: 'website' },
     { property: 'og:description', content: 'website' },
     { property: 'og:site_name', content: 'https://hexdrinker.dev' },
