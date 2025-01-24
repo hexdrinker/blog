@@ -135,7 +135,7 @@ const themeConfig: ThemeConfig = {
     appId: 'CVBKXKD5KS',
 
     // Public API key: it is safe to commit it
-    apiKey: 'cba9757b0c50181739a520e03956c0bd',
+    apiKey: '8ef2af91db4a22726e07c5389a5c7776',
 
     indexName: 'hexdrinker',
 
