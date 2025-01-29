@@ -130,11 +130,11 @@ const themeConfig: ThemeConfig = {
     theme: prismThemes.github,
     darkTheme: prismThemes.dracula,
   },
-  // algolia: {
-  //   appId: 'CVBKXKD5KS',
-  //   apiKey: '8ef2af91db4a22726e07c5389a5c7776',
-  //   indexName: 'hexdrinker',
-  // },
+  algolia: {
+    appId: 'Q0TVLBRC55',
+    apiKey: '2b895311d895b34b948c394b3cc8685f',
+    indexName: 'hexdrinker',
+  },
   metadata: [
     { name: 'keywords', content: 'blog, typescript, react, frontend' },
     { name: 'author', content: 'hexdrinker' },
