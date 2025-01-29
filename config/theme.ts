@@ -154,6 +154,7 @@ const themeConfig: ThemeConfig = {
     { property: 'og:image:width', content: '1200' },
     { property: 'og:image:height', content: '630' },
     { property: 'og:image:alt', content: 'Blog Thumbnail' },
+    { name: 'algolia-site-verification', content: '0921493C7D4F2B8E' },
   ],
 } satisfies Preset.ThemeConfig
 
