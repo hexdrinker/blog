@@ -132,7 +132,7 @@ const themeConfig: ThemeConfig = {
   },
   algolia: {
     appId: 'Q0TVLBRC55',
-    apiKey: '2b895311d895b34b948c394b3cc8685f',
+    apiKey: '559ce28bf8af165ebf855f234a3cf0a7',
     indexName: 'hexdrinker',
   },
   metadata: [
