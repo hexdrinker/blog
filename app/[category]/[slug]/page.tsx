@@ -16,7 +16,6 @@ import {
   TableOfContents,
   MobileTableOfContents,
 } from '@/components/blog/TableOfContents'
-import { ViewCounter } from '@/components/blog'
 
 interface Props {
   params: Promise<{ category: string; slug: string }>
@@ -88,8 +87,7 @@ export default async function PostPage({ params }: Props) {
                   locale: enUS,
                 })}
               </time>
-              <div className='flex items-center gap-3'>
-                <ViewCounter slug={slug} />
+              <div>
                 <span>{post.meta.readingTime}</span>
               </div>
             </div>

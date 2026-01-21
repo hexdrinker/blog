@@ -13,10 +13,7 @@
       "Bash(timeout 10 pnpm dev:*)",
       "Bash(ls:*)",
       "Bash(find:*)",
-      "Bash(pnpm remove:*)",
-      "Bash(dig:*)",
-      "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(pnpm remove:*)"
     ]
   }
 }
