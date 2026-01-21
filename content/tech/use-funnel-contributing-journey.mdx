@@ -2,15 +2,341 @@
 date: 2026-01-11T17:00
 authors: hexdrinker
 title: 토픈소스 use-funnel 기여 일대기
-description: 어쩌다 보니,,
+description: 어쩌다 보니 오픈소스에 기여하게 되어버린
 keywords: ['use-funnel', 'react-navigation', 'open-source-contribute']
 tags:
   - use-funnel
   - react-navigation
   - open-source-contribute
-thumbnail: https://images.hexdrinker.dev/tech/shadow-dom/zed.webp
+thumbnail: https://images.hexdrinker.dev/tech/use-funnel-contributing-journey/thumbnail.png
 ---
 
-10월 중에 신규 모바일 앱을 만들며 토스의 오픈소스 use-funnel을 도입했다.
+## use-funnel 선택의 배경
 
-AI에게 질의를 하기 위해서 
+지난해 10월, 회사에서 신규 서비스의 모바일 앱을 만들던 중 퍼널 구조의 화면을 만들어야하는 상황이 생겼다.
+
+AI에게 질의를 하기 위해서 선택 가능한 옵션과 자연어 텍스트 필드로 구성된 퍼널이 최소 2개에서 3개 정도 있었고 각 퍼널 간의 상태나 히스토리 관리를 편하게 하기 위한 고민이 있었다. 
+
+문제는 그런 질의 퍼널이 하나만 존재하는 게 아니라 여러 화면에서 필요했고 각 화면들이 다 다른 데이터 타입을 가지고 있었다.
+
+리소스가 많이 부족한 상황이었고 그것에 대한 고민을 길게 하고싶지 않아서 패키지에게 복잡한 세부사항들을 떠맡기고 퍼널 화면 자체의 구현에 집중하고 싶어서 use-funnel을 설치했다. 
+
+(사실 그냥 써보고 싶은 맘도 있었다! 별로면 걷어내면 되니까)
+
+## 미리 알고가는 react-navigation 동작 방식
+
+모바일 UX의 기본이 스택 전환이기 때문에 `react-navigation/native-stack` 을 기준으로 살펴보도록 하겠다.
+
+### navigate
+
+```typescript
+navigation.navigate("AScreen", params);
+```
+
+> AScreen 이미 스택에 있으면 그 인스턴스를 재사용한다, 그게 아니라면 이동한다.
+
+같은 route name이 이미 스택에 존재하면 기존 route를 활성화하거나 params를 merge/replace 하는 것과 같다.
+그래서 A -> B -> C 이런 식으로 화면을 이동했다면 C에서 A로 navigate 시에 B와 C가 pop되는 식으로 동작한다.
+
+### push
+
+```typescript
+navigation.push("AScreen", params);
+```
+
+> AScreen을 새 인스턴스로 스택 위에 하나 더 올린다.
+
+동일한 route name이어도 상관없고 항상 새로운 route key를 생성한다. 그래서 A -> B -> C 이런 식으로 화면을 이동했다면 C에서 A로 push 시에 C 위에 A가 하나 더 쌓인다.
+
+## 문제 상황의 발단
+
+프로젝트는 react-navigation 7 버전대를 쓰고 있었고 use-funnel/react-navigation-native는 0.0.15 버전이 설치되었다.
+
+use-funnel을 적용하여 퍼널을 개발하면서 테스트를 하다보니 이상한 점을 발견했다.
+
+<figure className='imageWrapper'>
+  <img
+    src='https://images.hexdrinker.dev/tech/use-funnel-contributing-journey/rn7-uf15.gif'
+    alt='rn7-fu15'
+    width='35%'
+  />
+  <figcaption>react-navigation 7 버전대와 use-funnel/react-navigation-native 0.0.15 버전</figcaption>
+</figure>
+
+퍼널은 스텝이 있기 때문에 필연적으로 이전 단계로 돌아갈 수 있어야한다. 그런데 이전 단계로 돌아가는 버튼을 눌렀을 때 퍼널의 이전 단계가 아닌 아예 퍼널 이전의 화면으로 돌아갔다.
+
+유저는 분명 이전 단계로 돌아가길 원했을텐데 이것은 치명적인 오류이자 상당히 좋지 않은 유저 경험이다. 그래서 문제가 무엇일까? 내가 작성한 코드엔 문제가 없다고 판단되어 패키지를 뜯어보기 시작했다.
+
+위 영상의 예시 코드는 아래와 같다. 실제 프로젝트 코드도 이와 크게 다르지 않다.
+
+```tsx
+const FunnelScreen = () => {
+  // 중략
+  return (
+    <funnel.Render
+      Step1={({ history }) => (
+        <Step1 onNext={() => history.push('Step2', {})} />
+      )}
+      Step2={({ history }) => (
+        <Step2
+          onNext={() => history.push('Step3', {})}
+          onPrev={() => history.back()}
+        />
+      )}
+      Step3={({ history }) => (
+        <Step3
+          onNext={() => history.push('Step4', {})}
+          onPrev={() => history.back()}
+        />
+      )}
+      Step4={({ history }) => (
+        <Step4
+          onComplete={() => {
+            Alert.alert('완료', '퍼널이 완료되었습니다!');
+          }}
+          onPrev={() => history.back()}
+        />
+      )}
+    />
+  )
+}
+```
+
+## use-funnel 패키지 파헤치기
+
+use-funnel/navigation-native 0.0.15 버전 기준으로 index.js 파일을 보면 push 함수는 아래와 같이 구현되어있다.
+
+```typescript
+push(state, option) {
+  const funnelState = {
+    step: state.step,
+    context: state.context,
+    index: currentIndex + 1,
+    histories: [...history ?? [], state],
+    isOverlay: option?.renderComponent?.overlay ?? false
+  };
+  if (funnelState.isOverlay) {
+    navigation.setParams({
+      ...route.params,
+      [navigationParamName]: createTransitionParam(funnelState)
+    });
+  } else {
+    navigation.navigate({
+      ...route,
+      key: `${navigationParamName}::${id}::${currentIndex + 1}`,
+      params: {
+        ...route.params,
+        [navigationParamName]: createTransitionParam(funnelState)
+      }
+    });
+  }
+}
+```
+
+내부적으로는 `navigate`를 이용하고 있음을 알 수 있다. 아직까지는 뭔가 크게 문제될만한 것은 없어보인다. 그렇다면 뒤로 갈 때 문제가 되니까 back 함수를 살펴보았다.
+
+back 함수는 `@use-funnel/core`의 `createUseFunnel` 함수에서 history 객체를 생성할 때 정의된다.
+
+```typescript
+return {
+  push: async (...args) => { ... },
+  replace: async (...args) => { ... },
+  go: router.go,
+  back: () => router.go(-1)  // 여기!
+};
+```
+
+```typescript
+go(delta) {
+  if (delta === -1) {
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    } else {
+      if (params && params.index > 0 && navigation.getState().index === 0 && params.isOverlay) {
+        const prevHistory = (params.histories ?? [])[params.index - 1];
+        const newState = {
+          step: prevHistory.step,
+          context: prevHistory.context,
+          index: params.index - 1,
+          histories: (params.histories ?? []).slice(0, params.index),
+          isOverlay: overlayStepMapRef.current[prevHistory.step]
+        };
+        navigation.setParams({
+          ...route.params,
+          [navigationParamName]: {
+            ...useFunnelState,
+            [id]: newState
+          }
+        });
+      }
+    }
+  } else {
+    const deltaIndex = currentIndex + delta;
+    const targetRoute = routes.find((target) => {
+      if (target.name === route.name) {
+        const params2 = target.params?.[navigationParamName]?.[id];
+        if (params2 != null) {
+          return params2.index === deltaIndex;
+        }
+      }
+      return false;
+    });
+    if (targetRoute != null) {
+      navigation.navigate(targetRoute);
+    }
+  }
+},
+```
+
+`go(-1)` 는 내부적으로 `navigation.goBack()`을 실행한다. 이는 pop 동작이기 때문에 history에서 해당 화면을 pop한다.
+
+그렇다면 여기서 추론할 수 있는 것은 Intro -> Funnel 순서대로 쌓였고 Funnel 내에서 push 하는 것들은 내부적으로는 navigate를 수행하니까 계속 같은 화면을 replace하는 것과 같다.
+
+그러므로 자연스럽게 history.back은 Funnel 화면을 스택에서 빼버리니까 Intro 화면으로 돌아가게 된다. 로직 상 이렇게 동작한다는건데 이렇게 만들리가 없다고 생각이 들어서 클로드한테 원인 분석을 요청했다.
+
+## react-navigation 7로 넘어오면서 생긴 변화가 문제였다!
+
+react-navigation 6에서 7로 넘어오면서 생긴 몇 가지 변화들이 있다. 그 중에서 지금 이슈에 유효하게 영향을 주는 [변화](https://reactnavigation.org/docs/upgrading-from-6.x/#the-navigate-method-no-longer-accepts-a-key-option)가 있었다.
+
+<figure className='imageWrapper'>
+  <img
+    src='https://images.hexdrinker.dev/tech/use-funnel-contributing-journey/react-navigation-7-navigate-changes.png'
+    alt='react-navigation-7-navigate-changes'
+    width='75%'
+  />
+  <figcaption>이미 제목부터가 심상치 않다. navigate 메소드가 더 이상 key option을 허용하지 않는대,,,</figcaption>
+</figure>
+
+
+use-funnel 에서는 대놓고 key props을 쓰고 있다. 아마 react-navigation 6 버전대를 최소한의 타겟으로 하겠지만 프로젝트 내에서 react-navigation 7 버전대를 쓰기 때문에 문제가 생긴 것으로 보인다.
+
+```typescript
+navigation.navigate({
+  ...route,
+  key: `${navigationParamName}::${id}::${currentIndex + 1}`, // 검거 완료 ㅋㅋ
+  params: {
+    ...route.params,
+    [navigationParamName]: createTransitionParam(funnelState)
+  }
+});
+```
+
+실제로 `@use-funnel/react-navigation-native` 의 package.json을 보면 
+
+```json
+"peerDependencies": {
+  "@react-navigation/native": ">=6",
+  "react": ">=16.8"
+},
+```
+
+위와 같이 peerDependencies를 갖고 있기 때문에 프로젝트에 설치된 버전을 공유한다. 그렇다면 해결책은 세 가지로 나뉜다.
+
+1. react-navigation 버전 다운그레이드
+2. use-funnel 개선
+3. use-funnel 버리기
+
+## 일단 패키지를 고쳐보자
+
+왜 이 변화를 몰랐을까? 생각해보니 애초에 react-navigation 6 버전대를 쓰다가 버전업을 진행한 것도 아니었고 7 버전을 쭉 쓰다가 use-funnel 도입으로 알게되었기 때문이다.
+
+(사실 버전업을 했다고 하더라도 몰랐을 거 같긴하다. ~~게임할 때도 패치노트 잘 안읽기 때문~~)
+
+일단 1번안은 탈락이다. 패키지 버전을 낮춘다는 것 자체가 리스크를 갖고 있고 서비스 개발 중인 상태라 속도를 내야하는데 이런 것으로 괜히 호환성 체크하고 동작 검증하는 것에 시간 쏟고 싶지 않았다.
+
+<figure className='imageWrapper'>
+  <img
+    src='https://images.hexdrinker.dev/tech/use-funnel-contributing-journey/selfless-state.png'
+    alt='무아의 경지'
+    width='50%'
+  />
+  <figcaption>이것이 무아의 경지,,?!</figcaption>
+</figure>
+
+남은 건 2, 3번 안인데 패키지의 코드를 고치는 것이 그렇게 어려워보이지 않겠다는 느낌이 왔는데 정신차려보니까 내가 use-funnel 내부 코드를 고치고 patck-package 통해서 패키지 커스터마이즈를 했더라!(?) 할 수 있을 거 같다는 희망과 의지가 만들어낸 엄청난 몰입,,이었을까나
+
+react-navigation 6에서는 use-funnel이 navigate 메소드를 통해서 스택 내에 화면이 없다면 push를 하고 있다면 새로운 route key를 통해 push 하는 식으로 어떻게든 스택에 화면을 밀어넣는 운용이 가능했겠지만 react-navigation 7 버전대에서는 key props가 없어졌기 때문에 다음 스탭으로 넘어가면 스택 내에 같은 화면이 계속 존재하므로 params만 업데이트하게 된다.
+
+그렇다면 결과적으로 스택에 퍼널의 스텝을 push 해야한다. push 함수인데 push를 쓰지않을 이유가 있나 생각이 들었다. 
+
+```typescript
+if (funnelState.isOverlay) {
+  // 중략
+} else {
+  const nextRouteKey = `${navigationParamName}::${id}::${currentIndex + 1}`;
+  const nextState: NativeFunnelState = {
+    ...funnelState,
+    routeKey: nextRouteKey,
+  };
+  const action = StackActions.push(route.name, {
+    ...route.params,
+    [navigationParamName]: createTransitionParam(nextState),
+  });
+  navigation.dispatch({
+    ...action,
+    target: navigation.getState().key,
+  });
+}
+```
+
+그냥 navigation.push를 쓸 수도 있겠지만 push 함수는 기본적으로 Stack Navigator에서만 사용 가능한 메소드이고 use-funnel은 useNavigation에서 가져온 navigation 객체를 사용하는데 이게 제네릭한 `NavigationProp` 타입을 갖고 있다.
+
+그래서 navigation.push는 타입 에러가 발생하게 되었고 Stack Navigator 전용 action 생성자인 `StackActions`와 모든 navigator에서 공통인 `dispatch`를 이용했다.
+
+그리고 react-navigation 8에서는 또 어떤 변화가 있을지 모르니 peerDependencies를 아래와 같이 변경했다.
+
+```typescript
+"peerDependencies": {
+  "@react-navigation/native": ">=6 <8",
+  ...
+}
+```
+
+그리고 결과적으로 잘 동작했다. 아니 근데 잠깐 멈춰봐! 중요한 것은 내가 react-navigation 6 버전과 use-funnel 0.0.15 버전에서 저 퍼널이 어떻게 동작하는지 모른다는 거였다. 그러니까 저 잘 동작한다는 말은 이전의 동작 방식과 **동일한 사용성을 제공해야한다**는 것이다.
+
+그래서 따로 프로젝트를 만들어서 react-navigation 6 버전대와 use-funnel 0.0.15 버전을 깔아서 동작을 확인해봤다.
+
+<figure className='imageWrapper'>
+  <img
+    src='https://images.hexdrinker.dev/tech/use-funnel-contributing-journey/rn6-uf15.gif'
+    alt='rn6-fu15'
+    width='35%'
+  />
+  <figcaption>react-navigation 6 버전대와 use-funnel/react-navigation-native 0.0.15 버전</figcaption>
+</figure>
+
+그리고 react-navigation 7 버전대와 custom use-funnel은 아래와 같이 동작한다.
+
+<figure className='imageWrapper'>
+  <img
+    src='https://images.hexdrinker.dev/tech/use-funnel-contributing-journey/rn7-uf16.gif'
+    alt='rn7-fu16'
+    width='35%'
+  />
+  <figcaption>react-navigation 7 버전대와 use-funnel/react-navigation-native 0.0.16(커스텀) 버전</figcaption>
+</figure>
+
+동일하게 동작한다...! 이 정도면 이제 PR을 작성해도 되지않을까. use-funnel 패키지를 포크 떠서 해당 변경점을 수정해서 [PR](https://github.com/toss/use-funnel/issues/167)을 올렸다.
+
+이런게 처음이라서 버전을 내가 알아서 올렸는데 얼마 지나지 않아 메인테이너 중 한명인 강민우님이 코멘트를 남겨주었다. 버전을 직접 올리면 안되나보다. changeset 이란 것을 처음 알았다,, 역시 어렵고 험한 오픈소스 생태계.
+
+<figure className='imageWrapper'>
+  <img
+    src='https://images.hexdrinker.dev/tech/use-funnel-contributing-journey/pr-comment.png'
+    alt='pr comment'
+    width='100%'
+  />
+  <figcaption>한국인 두 명이서 영어로 대화하는 진귀한 광경,,</figcaption>
+</figure>
+
+알고보니까 [Issue](https://github.com/toss/use-funnel/issues/167)에 이미 올라와서 등재된 내용이더라. 내가 운이 좋게도 먼저 PR을 올린 것 뿐이구나.. PR이 머지되었지만 생각해보니 navigate 메소드는 따로 없었는데 그것도 만들어서 추가할걸 그랬나? 싶은 아쉬움이 들었다. 근데 뭐 이미 PR은 머지되었고 이런 경험을 한 것으로도 충분히 만족스럽다.
+
+## 후기
+
+PR이 머지되자말자 재빠르게 링크드인에 [글](https://www.linkedin.com/posts/hexdrinker_fixreact-navigation-native-keep-funnel-activity-7379163506719461377-X20c)부터 올렸다 자랑할려고 ㅋㅋ
+
+생각해보면 블로그에 포스팅을 먼저 하고 링크드인에 포스트 링크라도 걸었으면 어땠을까 싶지만 그때 팔자 좋게 블로그 글을 쓸 여력이 없었기 때문에... 
+
+내 생애 최초의 오픈소스 기여인데 생각보다 그렇게 어렵지 않고 재밌었다. 그냥 호시탐탐(?) 오픈소스 기여 기회를 노리는 것도 좋지만 내가 직접 쓰면서 문제를 겪고 트러블 슈팅을 하는 과정에서 개선점을 제안한 것이라 내게는 더 의미가 깊다. 물론 클로드가 도와주긴 했지만...ㅎㅎ
+
+요즘은 AI가 많이 발달해서 코드 분석과 작성을 다 해주기도 하고,, 링크드인을 살펴보면 오픈소스 기여 모임이 있는데 그런 모임에도 참여해서 다른 사람들과 활동하며 오픈소스에 기여하는 것 또한 좀 더 재밌게 오픈소스에 다가갈 수 있는 기회라 생각한다. 나 또한 기회가 된다면 참여해서 열심히 뭔가를 해보고 싶다.
