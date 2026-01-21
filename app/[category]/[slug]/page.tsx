@@ -76,7 +76,7 @@ export default async function PostPage({ params }: Props) {
   return (
     <div className='max-w-6xl mx-auto px-4 py-12'>
       <div className='flex gap-8 justify-center xl:justify-start'>
-        <article className='flex-1 max-w-3xl'>
+        <article className='flex-1 max-w-3xl min-w-0'>
           <header className='mb-8'>
             <div className='flex items-center gap-2 text-sm text-muted-foreground mb-4'>
               <Link
