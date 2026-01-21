@@ -157,9 +157,39 @@
   }
 }
 
-/* Code highlighting (highlight.js) */
-.hljs {
-  background: transparent !important;
+/* Code highlighting (rehype-pretty-code + shiki) */
+[data-rehype-pretty-code-figure] pre {
+  overflow-x: auto;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background-color: #f6f8fa;
+}
+
+[data-rehype-pretty-code-figure] code {
+  display: grid;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+/* 라이트 모드: --shiki-light 색상 사용 */
+[data-rehype-pretty-code-figure] code span {
+  color: var(--shiki-light);
+}
+
+/* 다크 모드: --shiki-dark 색상 사용 */
+.dark [data-rehype-pretty-code-figure] pre {
+  background-color: #161b22;
+}
+
+.dark [data-rehype-pretty-code-figure] code span {
+  color: var(--shiki-dark);
+}
+
+/* 인라인 코드에서 백틱 제거 (Tailwind Typography 기본 스타일) */
+.prose :where(code):not(:where([class~='not-prose'], [class~='not-prose'] *))::before,
+.prose :where(code):not(:where([class~='not-prose'], [class~='not-prose'] *))::after {
+  content: none;
 }
 
 /* Prose (typography) styling */

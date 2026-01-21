@@ -7,7 +7,8 @@ import { enUS } from 'date-fns/locale'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import remarkGfm from 'remark-gfm'
 import rehypeSlug from 'rehype-slug'
-import rehypeHighlight from 'rehype-highlight'
+import rehypePrettyCode from 'rehype-pretty-code'
+import type { Options } from 'rehype-pretty-code'
 import { getAllPosts, getPostBySlug } from '@/lib/posts'
 import { getAuthor } from '@/lib/authors'
 import { mdxComponents } from '@/components/mdx'
@@ -17,6 +18,14 @@ import {
   MobileTableOfContents,
 } from '@/components/blog/TableOfContents'
 import { ViewCounter } from '@/components/blog'
+
+const prettyCodeOptions: Options = {
+  theme: {
+    dark: 'github-dark',
+    light: 'github-light',
+  },
+  keepBackground: false,
+}
 
 interface Props {
   params: Promise<{ category: string; slug: string }>
@@ -117,7 +126,7 @@ export default async function PostPage({ params }: Props) {
               options={{
                 mdxOptions: {
                   remarkPlugins: [remarkGfm],
-                  rehypePlugins: [rehypeSlug, rehypeHighlight],
+                  rehypePlugins: [rehypeSlug, [rehypePrettyCode, prettyCodeOptions]],
                 },
               }}
             />

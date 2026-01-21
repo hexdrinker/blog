@@ -101,19 +101,22 @@ export const mdxComponents: MDXComponents = {
     </blockquote>
   ),
   code: ({ children, className, ...props }) => {
-    if (!className) {
+    // rehype-pretty-code가 생성한 코드블럭인 경우 (data-language 속성 있음)
+    const isCodeBlock = 'data-language' in props
+    if (isCodeBlock) {
       return (
         <code
-          className='px-1.5 py-0.5 bg-muted rounded text-sm font-mono'
+          className={className}
           {...props}
         >
           {children}
         </code>
       )
     }
+    // 인라인 코드
     return (
       <code
-        className={className}
+        className='px-1.5 py-0.5 bg-muted rounded text-sm font-mono'
         {...props}
       >
         {children}
@@ -122,7 +125,7 @@ export const mdxComponents: MDXComponents = {
   },
   pre: ({ children, ...props }) => (
     <pre
-      className='my-4 p-4 bg-muted rounded-lg overflow-x-auto text-sm'
+      className='my-4 overflow-x-auto text-sm'
       {...props}
     >
       {children}
