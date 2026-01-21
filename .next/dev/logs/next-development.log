@@ -1,3 +1,0 @@
-[00:00:00.530] Server  LOG     ✓ Ready in 394ms
-[00:00:01.991] Browser WARN    Image with src "https://images.hexdrinker.dev/tech/shadow-dom/zed.webp" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
-[00:00:05.701] Browser WARN    Image with src "https://images.hexdrinker.dev/tech/shadow-dom/zed.webp" has "fill" but is missing "sizes" prop. Please add it to improve page performance. Read more: https://nextjs.org/docs/api-reference/next/image#sizes
