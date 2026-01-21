@@ -16,7 +16,7 @@ export function Footer() {
           </Link>
         </p>
         <p className='text-sm text-muted-foreground text-center'>
-          Hosted By AWS
+          Hosted By Vercel
         </p>
       </div>
     </footer>
