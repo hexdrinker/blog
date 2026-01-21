@@ -1,0 +1,6 @@
+1:"$Sreact.fragment"
+2:I[8331,["/_next/static/chunks/561d09b2dcace1dd.js","/_next/static/chunks/34f3c6f00b149678.js"],""]
+3:I[2718,["/_next/static/chunks/483a12865e0bba97.js","/_next/static/chunks/1d3be43a6dda29b7.js"],"OutletBoundary"]
+4:"$Sreact.suspense"
+0:{"buildId":"fIMFzVBp7PQWc8En8Qe49","rsc":["$","$1","c",{"children":[["$","div",null,{"className":"max-w-4xl mx-auto px-4 py-24 text-center","children":[["$","h1",null,{"className":"text-6xl font-bold text-muted-foreground mb-4","children":"404"}],["$","h2",null,{"className":"text-xl font-medium mb-2","children":"페이지를 찾을 수 없습니다"}],["$","p",null,{"className":"text-muted-foreground mb-8","children":"요청하신 페이지가 존재하지 않거나 이동되었을 수 있습니다."}],["$","$L2",null,{"href":"/","className":"inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":"16","height":"16","viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":"2","strokeLinecap":"round","strokeLinejoin":"round","children":[["$","path",null,{"d":"m12 19-7-7 7-7"}],["$","path",null,{"d":"M19 12H5"}]]}],"홈으로 돌아가기"]}]]}],null,["$","$L3",null,{"children":["$","$4",null,{"name":"Next.MetadataOutlet","children":"$@5"}]}]]}],"loading":null,"isPartial":false}
+5:null

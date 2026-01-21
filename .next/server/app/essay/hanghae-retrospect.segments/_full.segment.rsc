@@ -1,0 +1,600 @@
+1:"$Sreact.fragment"
+2:I[18359,["/_next/static/chunks/561d09b2dcace1dd.js","/_next/static/chunks/34f3c6f00b149678.js"],"ThemeProvider"]
+3:I[3374,["/_next/static/chunks/561d09b2dcace1dd.js","/_next/static/chunks/34f3c6f00b149678.js"],"Header"]
+4:I[92337,["/_next/static/chunks/483a12865e0bba97.js","/_next/static/chunks/1d3be43a6dda29b7.js"],"default"]
+5:I[64226,["/_next/static/chunks/483a12865e0bba97.js","/_next/static/chunks/1d3be43a6dda29b7.js"],"default"]
+6:I[8331,["/_next/static/chunks/561d09b2dcace1dd.js","/_next/static/chunks/34f3c6f00b149678.js","/_next/static/chunks/8ba36b395f30a90d.js","/_next/static/chunks/cc80ad68b16f74f3.js"],""]
+8:I[2718,["/_next/static/chunks/483a12865e0bba97.js","/_next/static/chunks/1d3be43a6dda29b7.js"],"OutletBoundary"]
+9:"$Sreact.suspense"
+b:I[2718,["/_next/static/chunks/483a12865e0bba97.js","/_next/static/chunks/1d3be43a6dda29b7.js"],"ViewportBoundary"]
+d:I[2718,["/_next/static/chunks/483a12865e0bba97.js","/_next/static/chunks/1d3be43a6dda29b7.js"],"MetadataBoundary"]
+f:I[54354,[],"default"]
+:HL["/_next/static/chunks/14abff9370a9a4a7.css","style"]
+:HL["/_next/static/media/797e433ab948586e-s.p.dbea232f.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/caa3a2e1cccd8315-s.p.853070df.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+0:{"P":null,"b":"fIMFzVBp7PQWc8En8Qe49","c":["","essay","hanghae-retrospect"],"q":"","i":false,"f":[[["",{"children":[["category","essay","d"],{"children":[["slug","hanghae-retrospect","d"],{"children":["__PAGE__",{}]}]}]},"$undefined","$undefined",true],[["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/chunks/14abff9370a9a4a7.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","script","script-0",{"src":"/_next/static/chunks/561d09b2dcace1dd.js","async":true,"nonce":"$undefined"}],["$","script","script-1",{"src":"/_next/static/chunks/34f3c6f00b149678.js","async":true,"nonce":"$undefined"}]],["$","html",null,{"lang":"ko","suppressHydrationWarning":true,"children":["$","body",null,{"className":"geist_a71539c9-module__T19VSG__variable geist_mono_8d43a2aa-module__8Li5zG__variable antialiased min-h-screen flex flex-col","children":["$","$L2",null,{"attribute":"class","defaultTheme":"dark","enableSystem":true,"disableTransitionOnChange":true,"children":[["$","$L3",null,{}],["$","main",null,{"className":"flex-1","children":["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[["$","div",null,{"className":"max-w-4xl mx-auto px-4 py-24 text-center","children":[["$","h1",null,{"className":"text-6xl font-bold text-muted-foreground mb-4","children":"404"}],["$","h2",null,{"className":"text-xl font-medium mb-2","children":"페이지를 찾을 수 없습니다"}],["$","p",null,{"className":"text-muted-foreground mb-8","children":"요청하신 페이지가 존재하지 않거나 이동되었을 수 있습니다."}],["$","$L6",null,{"href":"/","className":"inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors","children":[["$","svg",null,{"xmlns":"http://www.w3.org/2000/svg","width":"16","height":"16","viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":"2","strokeLinecap":"round","strokeLinejoin":"round","children":[["$","path",null,{"d":"m12 19-7-7 7-7"}],["$","path",null,{"d":"M19 12H5"}]]}],"홈으로 돌아가기"]}]]}],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}],["$","footer",null,{"className":"w-full mt-auto","children":["$","div",null,{"className":"max-w-4xl mx-auto px-4 py-8","children":[["$","p",null,{"className":"text-sm text-muted-foreground text-center","children":["© ",2026," ",["$","$L6",null,{"href":"https://github.com/hexdrinker","target":"_blank","rel":"noopener noreferrer","className":"hover:text-foreground transition-colors","children":"hexdrinker"}]]}],["$","p",null,{"className":"text-sm text-muted-foreground text-center","children":"Hosted By AWS"}]]}]}]]}]}]}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":[null,["$","$L4",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L5",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],{"children":[["$","$1","c",{"children":["$L7",[["$","script","script-0",{"src":"/_next/static/chunks/8ba36b395f30a90d.js","async":true,"nonce":"$undefined"}],["$","script","script-1",{"src":"/_next/static/chunks/cc80ad68b16f74f3.js","async":true,"nonce":"$undefined"}]],["$","$L8",null,{"children":["$","$9",null,{"name":"Next.MetadataOutlet","children":"$@a"}]}]]}],{},null,false,false]},null,false,false]},null,false,false]},null,false,false],["$","$1","h",{"children":[null,["$","$Lb",null,{"children":"$Lc"}],["$","div",null,{"hidden":true,"children":["$","$Ld",null,{"children":["$","$9",null,{"name":"Next.Metadata","children":"$Le"}]}]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],false]],"m":"$undefined","G":["$f",[]],"S":true}
+10:I[17733,["/_next/static/chunks/561d09b2dcace1dd.js","/_next/static/chunks/34f3c6f00b149678.js","/_next/static/chunks/8ba36b395f30a90d.js","/_next/static/chunks/cc80ad68b16f74f3.js"],"ViewCounter"]
+11:I[86902,["/_next/static/chunks/561d09b2dcace1dd.js","/_next/static/chunks/34f3c6f00b149678.js","/_next/static/chunks/8ba36b395f30a90d.js","/_next/static/chunks/cc80ad68b16f74f3.js"],"MobileTableOfContents"]
+12:T3035,
+
+
+10주 간의 항해가 끝났다.
+
+큰 (돈과) 각오로 시작했던 게 엊그제 같은데 뭔가 꿈을 꾼 거 같은 느낌이다.  
+힘들었지만 즐거운 시간이었고 그것들이 기억 저편으로 휘발되기 전에 서둘러 글을 남겨본다.
+
+## ⚓️ 정박하며
+
+### ◼️ 마무리
+
+<figure className='imageWrapper'>
+  <img
+    src='https://images.hexdrinker.dev/hanghae/certification.png'
+    alt='수료 인증서'
+    width='55%'
+  />
+  <figcaption>블랙 ~~벨트~~ !</figcaption>
+</figure>
+
+어쩌다보니 최고 등급인 블랙 뱃지를 받게 되었다. 내가 진짜 상위 1%의 실력자는 아니겠지만 10주간의 여정을 나름대로 최선을 다해 임했다는 증거라고 생각하고 싶다.
+
+발제 자료와 아티클을 읽고 정리하면서 최대한 많은 것들을 소화하려 했고 다른 사람들의 코드도 많이 살피며 내가 몰랐던 부분을 배워갈 때도 있었다.
+
+과제를 100% 제출했지만 그 내용들을 모두 다 완전히 소화했다고 생각하진 않는다. 복습을 통해서 배운 것들을 다시 한 번 곱씹어서 완전히 내 것으로 만드는 일만이 남았다.
+
+### 🫡 팀장
+
+그리고 또 어쩌다보니 2팀의 팀장 역할을 맡게 되었다. 살면서 리더라는 타이틀은 나와 거리가 멀다고 생각했는데 그 완장을 달고 10주를 책임감 있게 진행해야하는 입장이 되었다.
+
+팀 내외로 이뤄지는 소통을 도맡았고 팀원들에게 과제와 멘토링 노트 작성을 독려하기도 했다. 사소한 일이지만 누군가는 팀 분위기와 원만한 진행을 위해서 해야 하는 일이었고 학습 메이트 소현님의 도움을 받아서 팀원들을 최대한 잘 이끌려고 노력했다.
+
+내가 팀장으로서 잘 해냈는지 확신할 수는 없지만 팀원들이 큰 마찰 없이 함께 달릴 수 있었던 데에는 나의 몫이 조금이라도 있길 바래본다. 한편으로는 내가 팀원들을 조금이라도 더 잘 챙겨볼걸 아쉬움이 남는다. 이런 아쉬움들이 나를 또 발전시키겠지.
+
+> 돌아보면 나 혼자서 성장하는 게 아니라 함께 성장할 수 있는 환경을 만드는 법에 대해서도 고민을 하게 되는 시간이었다.
+
+<div className='flex'>
+  <figure className='imageWrapper'>
+    <img
+      src='https://images.hexdrinker.dev/hanghae/mentoring-note-push-2.jpeg'
+      alt='mentoring-note-push'
+      width='100%'
+    />
+    <figcaption>일단 나부터 모범을,,보였나?</figcaption>
+  </figure>
+  <figure className='imageWrapper'>
+    <img
+      src='https://images.hexdrinker.dev/hanghae/mentoring-note-push.jpeg'
+      alt='mentoring-note-push'
+      width='100%'
+    />
+  </figure>
+</div>
+
+<div className='flex'>
+  <figure className='imageWrapper'>
+    <img
+      src='https://images.hexdrinker.dev/hanghae/kakaotalk-hj.jpeg'
+      alt='kakaotalk'
+      width='100%'
+    />
+  </figure>
+  <figure className='imageWrapper'>
+    <img
+      src='https://images.hexdrinker.dev/hanghae/kakaotalk-tk.jpeg'
+      alt='kakaotalk'
+      width='100%'
+    />
+  </figure>
+</div>
+
+### 🧑🏻‍💻 Extension 개발
+
+항해 중 과제를 제출할 때마다 가장 불편했던 건 바로 PR 화면의 길이였다.
+
+과제마다 PR을 잘 쓰려 하다보니 점점 길어졌고, 미리보기 화면이 있지만 일일이 클릭해서 확인하는 게 너무 귀찮았다.
+
+> “그냥 이거, PR 쓰는 김에 미리보기가 옆에 같이 뜨면 안 되나…?”
+
+이런 고민이 출발점이었다. 그래서 PR을 미리보기 할 수 있는 [크롬 확장 프로그램](https://github.com/hexdrinker/git-pull-request-previewer)을 만들었다.
+
+<figure className='imageWrapper'>
+  <img
+    src='https://images.hexdrinker.dev/hanghae/extension.png'
+    alt='extension'
+    width='100%'
+  />
+</figure>
+
+크롬 익스텐션을 언젠가는 한 번은 만들어보고 싶었는데 이런 기회를 이용하지 않으면 앞으로도 미루다가 딱히 할 것 같지 않았다. 그래서 그냥 생각나는 김에 바로 만들었다. 역시 생각날 때 해야한다, 아니면 잘 안하게 된다.
+
+앞으로 좀 더 개선할테니 많은 관심 부탁드립니다 ^^❤️
+
+### 🎸 그 밖의 경험
+
+<figure className='imageWrapper'>
+  <img
+    src='https://images.hexdrinker.dev/hanghae/my-team.png'
+    alt='my-team'
+    width='60%'
+  />
+</figure>
+<figure className='imageWrapper'>
+  <img
+    src='https://images.hexdrinker.dev/hanghae/zep-ggu.png'
+    alt='zep-ggu'
+    width='80%'
+  />
+  <figcaption>ZEP 공간 꾸미기 대회 1등!</figcaption>
+</figure>
+
+## 👯 사람과 네트워킹
+
+내게 있어 항해의 진짜 재미는 **"사람"** 이었다.
+
+각기 다른 배경을 가진 사람들이지만 모두가 성장에 목 말라있었고 그 간절함이 서로를 자연스럽게 엮어주었다 생각한다.
+
+누군가는 회사에서 퇴사 후 도전했고,  
+누군가는 학교와 회사를 병행하며 끝까지 물고 늘어졌고,  
+누군가는 항상 조용히 묵묵히 과제를 수행하곤 했다.
+나 또한 직장을 다니면서 항해에 임했지만 나보다 더 바쁘고 힘든 사람들은 많았고 그 사람들을 보며 끝까지 해내겠다고 의지를 다잡았다.
+
+사람들과 보낸 시간은 단순한 협업 이상의 가치가 있었다.  
+같은 과제를 하더라도 다른 해석으로 질문을 주고 받으며 이해를 채워나갈 때도 있었고,  
+졸리고 의지가 꺾이더라도 끝까지 붙잡아주는 사람들과 함께 새벽까지 버텨냈고,  
+멘토링 노트와 이력서 피드백을 서스럼 없이 공유하며 서로를 도와줄 때도 있었다.
+
+테오 코치의 멘토링 중 그가 했던 말이 기억이 난다.
+
+> 서로 알려주고 나누는 공유 문화가 커뮤니티를 성장시키잖아요? 개발자는 그런 게 참 좋은 거 같아요.
+
+개발자란 직업을 갖고 살아온지 적지 않은 시간이 지났지만 이번 시간들을 통해 공유 문화의 가치에 대해 가장 크게 체감한 거 같다.
+
+물론 공부만 했는가? 그건 아니다. 사람들과 떠들기도 많이 떠들었고 과제를 제출한 금요일 밤엔 구스구스덕이나 갈틱폰 같은 게임을 하기도 했다.
+그 과정에서 가까워진 사람들과 등산도 가고 러닝도 가고(난 안감 ㅎ^^) 모각코도 하고 많은 추억을 남겼다.
+
+<figure className='imageWrapper'>
+  <img
+    src='https://images.hexdrinker.dev/hanghae/yongma-mountain.jpeg'
+    alt='yongma-mountain'
+    width='50%'
+  />
+  <figcaption>아차산만 가기로 했는데 용마산까지 가버린</figcaption>
+</figure>
+
+## 앞으로의 계획
+
+항해를 시작할 때 목표로 했던 것 중 하나가 항해가 끝나고 나서도 퇴근하자말자 눕지 않고 부지런하게 삶을 이어가는 것이었다.
+
+그리고 내가 일을 몇 년 하다보니 느낀건데 나는 여유롭게 쉬고 늘어지는 것보다 눈코뜰 새 없이 바쁘게 돌아가는 게 집중력이 더 좋더라. 뭐든 흐지부지 마무리하는 것 없이 모두 다 잘 끝내고픈 욕심이 있고 바쁘게 살며
+일 외의 삶도 좀 더 빡빡하게 채우며 열심히 살아보고 싶어졌다.
+
+### 🧠 스터디: 혼자보다 멀리 가기
+
+단기 집중형 스터디를 기획해서 운영할 예정이다.  
+단순히 공부만 하는 스터디가 아니라, ‘함께 성장하는 루틴’을 만드는 데 집중하고 싶다.
+
+- 4~6주 단위 페이즈 기반 집중 스터디 운영
+- 트랙별(이직/CS/실무/사이드프로젝트) 구조화
+- 미션 → 코드리뷰 → 회고 루틴으로 학습 내재화
+
+<figure className='imageWrapper'>
+  <img
+    src='https://images.hexdrinker.dev/hanghae/study.png'
+    alt='study'
+    width='50%'
+  />
+  <figcaption>
+    너무 많은 관심은 부담스럽다. 하지만,, 지금 아니면 언제 이런 관심을
+    받아볼려나
+  </figcaption>
+</figure>
+
+아 그리고 술 한 잔 가볍게 하면서 나누는 즐거운 개발 이야기 [데브톡톡](https://github.com/dev-tok-talk)도 천천히 진행할 생각이다. 이것 또한 많관부 💘..
+
+### 🥗 사이드 프로젝트: 불티
+
+회사 생활이 바빠지고 항해를 시작하면서 사이드 프로젝트 [불티](https://boolti.in)엔 거의 손을 대지 못했다. 함께 하는 친구들에게 양해를 구하고 활동을 쉬었는데 이젠 도망갈 수 없지않을까?
+
+그래도 일주일은 쉬고 싶었는데 우리 대장님이 안된대,,, 해야지,,, 해야지 할 수 있다.
+
+<figure className='imageWrapper'>
+  <img
+    src='https://images.hexdrinker.dev/hanghae/boolti....jpeg'
+    alt='boolti...'
+    width='50%'
+  />
+  <figcaption>힝구리퐁퐁</figcaption>
+</figure>
+
+### 👥 학습메이트 활동
+
+학습 메이트 신청을 했다. 이유는 별 거 없고 ~~6기 사람들도 나처럼 고통 받는 모습을 보고싶기 때문이다.~~ 멘토링이랑 발제도 더 듣고 싶고 네트워킹을 하면서 좀 더 재밌게 살고 싶어서...
+
+<figure className='imageWrapper'>
+  <img
+    src='https://images.hexdrinker.dev/hanghae/mate.png'
+    alt='mate'
+    width='80%'
+  />
+  <figcaption>"시켜줘,,, 항해 학습 메이트"</figcaption>
+</figure>
+
+### 🧑🏻‍🎨 DND 운영진 활동
+
+예전에 대학교 동기들과 함께 만들었던 [DND](https://dnd.ac/) 운영진 활동을 재개하려 한다.
+
+한 6년 전 쯤에 1~2기 운영진으로 활동하다가 당시 새 회사에 취업하면서 바빠져서 활동을 중지했었는데 이것도 항해를 계기로 다시 잘 이어갈 생각이다.
+
+항해에서 코치님들의 멘토링을 받으며 얻어가는 것들이 많았다. 원래도 멘토링에 관심이 많아서 학교 다닐 때 후배들을 가르치기도 했고 동아리에서 멘토 활동을 하기도 했는데 그 때마다 난 부족하다는 생각을 많이 들었고 그래서 누군가에게 지식이나 경험을 전달하는 것에 부담감을 느꼈다.
+
+그러나 항해에서의 경험을 통해서 난 그 동안 수직적 전달을 하려고 했지 수평적인 공유를 하려고 했는가? 나도 누군가의 성장을 돕고 나 또한 배울 수 있지 않을까? 란 생각이 들었다.
+
+아직은 보잘 것 없는 경험과 생각일지 모르지만 그 속에서 나의 고민과 선택, 시행착오들을 누군가에게 조금이라도 꺼내보여줄 수 있다면 그 자체로 의미있는 일이 아닐까 싶다.
+
+> 나 이 모든 걸 다 거두어갈 수 있을까?  
+> 예전의 나 같았으면 잘 모르겠다고 했을 거 같다.  
+> 근데 지금은 아니다, 그냥 한다.
+
+<figure className='imageWrapper'>
+  <img
+    src='https://images.hexdrinker.dev/hanghae/yeonaqueen.png'
+    alt='yeonaqueen'
+    width='80%'
+  />
+  <figcaption>걍 하는거지 뭐</figcaption>
+</figure>
+
+## 🚢 항해
+
+왜 항해일까? 언젠가인지는 모르겠지만 과제를 하다 그런 의문이 불현듯 머리를 스쳐지나간 적이 있었다. 수 많은 네이밍을 두고 왜 이 부트캠프 과정의 이름을 항해라 지었을까?
+
+육상에서의 생활에 비해 힘들고 고된 생활, 바다와 하늘이 만나는 수평선과 그 너머에 있는 무한한 잠재력을 표방하기 위함이 아닐까 싶은데,, 뭐 오피셜한 의미는 잘 모르겠지만 나는 그렇게 생각하고 항해를 진행했다.
+
+<div className='flex justify-center'>
+  <iframe
+    width='80%'
+    height='400'
+    src='https://www.youtube.com/embed/BNh_W4wwRzI'
+    frameBorder='0'
+    allowFullScreen
+  ></iframe>
+</div>
+<br />
+
+내가 좋아하는 유다빈 밴드의 항해라는 노래엔 이런 가사가 있다.
+
+> `"이제야 마주한 꿈의 대양 춤을 추듯이 흘러가보자"`
+
+아직 갈 길이 멀지만 항해를 마친 모두에게 작은 박수를 보내고 싶다.  
+그리고 모두의 여정 끝에 더 큰 바다가 기다리고 있길, 그 바다를 즐겁게 춤을 추듯이 나아가길 바란다.
+언젠가 또 같은 바다에서 만날 수 있길 바라며 글을 마친다.
+
+> 그리고 10주 간 열정적으로 멘토링을 해주신 5인의 코치님들, 불편함과 운영 피드백을 바로바로 해결해주셨던 매니저님들 모두 고생하셨습니다.
+7:["$","div",null,{"className":"max-w-6xl mx-auto px-4 py-12","children":["$","div",null,{"className":"flex gap-8 justify-center xl:justify-start","children":[["$","article",null,{"className":"flex-1 max-w-3xl","children":[["$","header",null,{"className":"mb-8","children":[["$","div",null,{"className":"flex items-center gap-2 text-sm text-muted-foreground mb-4","children":["$","$L6",null,{"href":"/essay","className":"hover:text-foreground transition-colors capitalize","children":"essay"}]}],["$","h1",null,{"className":"text-4xl font-bold tracking-tight mb-3","children":"정박하며"}],["$","div",null,{"className":"flex justify-between items-center gap-3 text-sm text-muted-foreground","children":[["$","time",null,{"dateTime":"2025-06-08T12:00","children":"Jun 08, 2025"}],["$","div",null,{"className":"flex items-center gap-3","children":[["$","$L10",null,{"slug":"hanghae-retrospect"}],["$","span",null,{"children":"15 min read"}]]}]]}]]}],["$","hr",null,{"className":"border-border mb-8"}],["$","$L11",null,{"content":"$12"}],"$L13","$L14","$L15"]}],"$L16"]}]}]
+17:I[72039,["/_next/static/chunks/561d09b2dcace1dd.js","/_next/static/chunks/34f3c6f00b149678.js","/_next/static/chunks/8ba36b395f30a90d.js","/_next/static/chunks/cc80ad68b16f74f3.js"],"Image"]
+19:I[86902,["/_next/static/chunks/561d09b2dcace1dd.js","/_next/static/chunks/34f3c6f00b149678.js","/_next/static/chunks/8ba36b395f30a90d.js","/_next/static/chunks/cc80ad68b16f74f3.js"],"TableOfContents"]
+13:["$","div",null,{"className":"relative w-full aspect-[3/2] mb-8 rounded-lg overflow-hidden","children":["$","$L17",null,{"src":"https://images.hexdrinker.dev/essay/hanghae-retrospect/thumbnail.png","alt":"정박하며","fill":true,"className":"object-cover","priority":true}]}]
+14:["$","div",null,{"className":"prose dark:prose-invert max-w-none","children":"$L18"}]
+15:["$","hr",null,{"className":"border-border my-12"}]
+1a:T3035,
+
+
+10주 간의 항해가 끝났다.
+
+큰 (돈과) 각오로 시작했던 게 엊그제 같은데 뭔가 꿈을 꾼 거 같은 느낌이다.  
+힘들었지만 즐거운 시간이었고 그것들이 기억 저편으로 휘발되기 전에 서둘러 글을 남겨본다.
+
+## ⚓️ 정박하며
+
+### ◼️ 마무리
+
+<figure className='imageWrapper'>
+  <img
+    src='https://images.hexdrinker.dev/hanghae/certification.png'
+    alt='수료 인증서'
+    width='55%'
+  />
+  <figcaption>블랙 ~~벨트~~ !</figcaption>
+</figure>
+
+어쩌다보니 최고 등급인 블랙 뱃지를 받게 되었다. 내가 진짜 상위 1%의 실력자는 아니겠지만 10주간의 여정을 나름대로 최선을 다해 임했다는 증거라고 생각하고 싶다.
+
+발제 자료와 아티클을 읽고 정리하면서 최대한 많은 것들을 소화하려 했고 다른 사람들의 코드도 많이 살피며 내가 몰랐던 부분을 배워갈 때도 있었다.
+
+과제를 100% 제출했지만 그 내용들을 모두 다 완전히 소화했다고 생각하진 않는다. 복습을 통해서 배운 것들을 다시 한 번 곱씹어서 완전히 내 것으로 만드는 일만이 남았다.
+
+### 🫡 팀장
+
+그리고 또 어쩌다보니 2팀의 팀장 역할을 맡게 되었다. 살면서 리더라는 타이틀은 나와 거리가 멀다고 생각했는데 그 완장을 달고 10주를 책임감 있게 진행해야하는 입장이 되었다.
+
+팀 내외로 이뤄지는 소통을 도맡았고 팀원들에게 과제와 멘토링 노트 작성을 독려하기도 했다. 사소한 일이지만 누군가는 팀 분위기와 원만한 진행을 위해서 해야 하는 일이었고 학습 메이트 소현님의 도움을 받아서 팀원들을 최대한 잘 이끌려고 노력했다.
+
+내가 팀장으로서 잘 해냈는지 확신할 수는 없지만 팀원들이 큰 마찰 없이 함께 달릴 수 있었던 데에는 나의 몫이 조금이라도 있길 바래본다. 한편으로는 내가 팀원들을 조금이라도 더 잘 챙겨볼걸 아쉬움이 남는다. 이런 아쉬움들이 나를 또 발전시키겠지.
+
+> 돌아보면 나 혼자서 성장하는 게 아니라 함께 성장할 수 있는 환경을 만드는 법에 대해서도 고민을 하게 되는 시간이었다.
+
+<div className='flex'>
+  <figure className='imageWrapper'>
+    <img
+      src='https://images.hexdrinker.dev/hanghae/mentoring-note-push-2.jpeg'
+      alt='mentoring-note-push'
+      width='100%'
+    />
+    <figcaption>일단 나부터 모범을,,보였나?</figcaption>
+  </figure>
+  <figure className='imageWrapper'>
+    <img
+      src='https://images.hexdrinker.dev/hanghae/mentoring-note-push.jpeg'
+      alt='mentoring-note-push'
+      width='100%'
+    />
+  </figure>
+</div>
+
+<div className='flex'>
+  <figure className='imageWrapper'>
+    <img
+      src='https://images.hexdrinker.dev/hanghae/kakaotalk-hj.jpeg'
+      alt='kakaotalk'
+      width='100%'
+    />
+  </figure>
+  <figure className='imageWrapper'>
+    <img
+      src='https://images.hexdrinker.dev/hanghae/kakaotalk-tk.jpeg'
+      alt='kakaotalk'
+      width='100%'
+    />
+  </figure>
+</div>
+
+### 🧑🏻‍💻 Extension 개발
+
+항해 중 과제를 제출할 때마다 가장 불편했던 건 바로 PR 화면의 길이였다.
+
+과제마다 PR을 잘 쓰려 하다보니 점점 길어졌고, 미리보기 화면이 있지만 일일이 클릭해서 확인하는 게 너무 귀찮았다.
+
+> “그냥 이거, PR 쓰는 김에 미리보기가 옆에 같이 뜨면 안 되나…?”
+
+이런 고민이 출발점이었다. 그래서 PR을 미리보기 할 수 있는 [크롬 확장 프로그램](https://github.com/hexdrinker/git-pull-request-previewer)을 만들었다.
+
+<figure className='imageWrapper'>
+  <img
+    src='https://images.hexdrinker.dev/hanghae/extension.png'
+    alt='extension'
+    width='100%'
+  />
+</figure>
+
+크롬 익스텐션을 언젠가는 한 번은 만들어보고 싶었는데 이런 기회를 이용하지 않으면 앞으로도 미루다가 딱히 할 것 같지 않았다. 그래서 그냥 생각나는 김에 바로 만들었다. 역시 생각날 때 해야한다, 아니면 잘 안하게 된다.
+
+앞으로 좀 더 개선할테니 많은 관심 부탁드립니다 ^^❤️
+
+### 🎸 그 밖의 경험
+
+<figure className='imageWrapper'>
+  <img
+    src='https://images.hexdrinker.dev/hanghae/my-team.png'
+    alt='my-team'
+    width='60%'
+  />
+</figure>
+<figure className='imageWrapper'>
+  <img
+    src='https://images.hexdrinker.dev/hanghae/zep-ggu.png'
+    alt='zep-ggu'
+    width='80%'
+  />
+  <figcaption>ZEP 공간 꾸미기 대회 1등!</figcaption>
+</figure>
+
+## 👯 사람과 네트워킹
+
+내게 있어 항해의 진짜 재미는 **"사람"** 이었다.
+
+각기 다른 배경을 가진 사람들이지만 모두가 성장에 목 말라있었고 그 간절함이 서로를 자연스럽게 엮어주었다 생각한다.
+
+누군가는 회사에서 퇴사 후 도전했고,  
+누군가는 학교와 회사를 병행하며 끝까지 물고 늘어졌고,  
+누군가는 항상 조용히 묵묵히 과제를 수행하곤 했다.
+나 또한 직장을 다니면서 항해에 임했지만 나보다 더 바쁘고 힘든 사람들은 많았고 그 사람들을 보며 끝까지 해내겠다고 의지를 다잡았다.
+
+사람들과 보낸 시간은 단순한 협업 이상의 가치가 있었다.  
+같은 과제를 하더라도 다른 해석으로 질문을 주고 받으며 이해를 채워나갈 때도 있었고,  
+졸리고 의지가 꺾이더라도 끝까지 붙잡아주는 사람들과 함께 새벽까지 버텨냈고,  
+멘토링 노트와 이력서 피드백을 서스럼 없이 공유하며 서로를 도와줄 때도 있었다.
+
+테오 코치의 멘토링 중 그가 했던 말이 기억이 난다.
+
+> 서로 알려주고 나누는 공유 문화가 커뮤니티를 성장시키잖아요? 개발자는 그런 게 참 좋은 거 같아요.
+
+개발자란 직업을 갖고 살아온지 적지 않은 시간이 지났지만 이번 시간들을 통해 공유 문화의 가치에 대해 가장 크게 체감한 거 같다.
+
+물론 공부만 했는가? 그건 아니다. 사람들과 떠들기도 많이 떠들었고 과제를 제출한 금요일 밤엔 구스구스덕이나 갈틱폰 같은 게임을 하기도 했다.
+그 과정에서 가까워진 사람들과 등산도 가고 러닝도 가고(난 안감 ㅎ^^) 모각코도 하고 많은 추억을 남겼다.
+
+<figure className='imageWrapper'>
+  <img
+    src='https://images.hexdrinker.dev/hanghae/yongma-mountain.jpeg'
+    alt='yongma-mountain'
+    width='50%'
+  />
+  <figcaption>아차산만 가기로 했는데 용마산까지 가버린</figcaption>
+</figure>
+
+## 앞으로의 계획
+
+항해를 시작할 때 목표로 했던 것 중 하나가 항해가 끝나고 나서도 퇴근하자말자 눕지 않고 부지런하게 삶을 이어가는 것이었다.
+
+그리고 내가 일을 몇 년 하다보니 느낀건데 나는 여유롭게 쉬고 늘어지는 것보다 눈코뜰 새 없이 바쁘게 돌아가는 게 집중력이 더 좋더라. 뭐든 흐지부지 마무리하는 것 없이 모두 다 잘 끝내고픈 욕심이 있고 바쁘게 살며
+일 외의 삶도 좀 더 빡빡하게 채우며 열심히 살아보고 싶어졌다.
+
+### 🧠 스터디: 혼자보다 멀리 가기
+
+단기 집중형 스터디를 기획해서 운영할 예정이다.  
+단순히 공부만 하는 스터디가 아니라, ‘함께 성장하는 루틴’을 만드는 데 집중하고 싶다.
+
+- 4~6주 단위 페이즈 기반 집중 스터디 운영
+- 트랙별(이직/CS/실무/사이드프로젝트) 구조화
+- 미션 → 코드리뷰 → 회고 루틴으로 학습 내재화
+
+<figure className='imageWrapper'>
+  <img
+    src='https://images.hexdrinker.dev/hanghae/study.png'
+    alt='study'
+    width='50%'
+  />
+  <figcaption>
+    너무 많은 관심은 부담스럽다. 하지만,, 지금 아니면 언제 이런 관심을
+    받아볼려나
+  </figcaption>
+</figure>
+
+아 그리고 술 한 잔 가볍게 하면서 나누는 즐거운 개발 이야기 [데브톡톡](https://github.com/dev-tok-talk)도 천천히 진행할 생각이다. 이것 또한 많관부 💘..
+
+### 🥗 사이드 프로젝트: 불티
+
+회사 생활이 바빠지고 항해를 시작하면서 사이드 프로젝트 [불티](https://boolti.in)엔 거의 손을 대지 못했다. 함께 하는 친구들에게 양해를 구하고 활동을 쉬었는데 이젠 도망갈 수 없지않을까?
+
+그래도 일주일은 쉬고 싶었는데 우리 대장님이 안된대,,, 해야지,,, 해야지 할 수 있다.
+
+<figure className='imageWrapper'>
+  <img
+    src='https://images.hexdrinker.dev/hanghae/boolti....jpeg'
+    alt='boolti...'
+    width='50%'
+  />
+  <figcaption>힝구리퐁퐁</figcaption>
+</figure>
+
+### 👥 학습메이트 활동
+
+학습 메이트 신청을 했다. 이유는 별 거 없고 ~~6기 사람들도 나처럼 고통 받는 모습을 보고싶기 때문이다.~~ 멘토링이랑 발제도 더 듣고 싶고 네트워킹을 하면서 좀 더 재밌게 살고 싶어서...
+
+<figure className='imageWrapper'>
+  <img
+    src='https://images.hexdrinker.dev/hanghae/mate.png'
+    alt='mate'
+    width='80%'
+  />
+  <figcaption>"시켜줘,,, 항해 학습 메이트"</figcaption>
+</figure>
+
+### 🧑🏻‍🎨 DND 운영진 활동
+
+예전에 대학교 동기들과 함께 만들었던 [DND](https://dnd.ac/) 운영진 활동을 재개하려 한다.
+
+한 6년 전 쯤에 1~2기 운영진으로 활동하다가 당시 새 회사에 취업하면서 바빠져서 활동을 중지했었는데 이것도 항해를 계기로 다시 잘 이어갈 생각이다.
+
+항해에서 코치님들의 멘토링을 받으며 얻어가는 것들이 많았다. 원래도 멘토링에 관심이 많아서 학교 다닐 때 후배들을 가르치기도 했고 동아리에서 멘토 활동을 하기도 했는데 그 때마다 난 부족하다는 생각을 많이 들었고 그래서 누군가에게 지식이나 경험을 전달하는 것에 부담감을 느꼈다.
+
+그러나 항해에서의 경험을 통해서 난 그 동안 수직적 전달을 하려고 했지 수평적인 공유를 하려고 했는가? 나도 누군가의 성장을 돕고 나 또한 배울 수 있지 않을까? 란 생각이 들었다.
+
+아직은 보잘 것 없는 경험과 생각일지 모르지만 그 속에서 나의 고민과 선택, 시행착오들을 누군가에게 조금이라도 꺼내보여줄 수 있다면 그 자체로 의미있는 일이 아닐까 싶다.
+
+> 나 이 모든 걸 다 거두어갈 수 있을까?  
+> 예전의 나 같았으면 잘 모르겠다고 했을 거 같다.  
+> 근데 지금은 아니다, 그냥 한다.
+
+<figure className='imageWrapper'>
+  <img
+    src='https://images.hexdrinker.dev/hanghae/yeonaqueen.png'
+    alt='yeonaqueen'
+    width='80%'
+  />
+  <figcaption>걍 하는거지 뭐</figcaption>
+</figure>
+
+## 🚢 항해
+
+왜 항해일까? 언젠가인지는 모르겠지만 과제를 하다 그런 의문이 불현듯 머리를 스쳐지나간 적이 있었다. 수 많은 네이밍을 두고 왜 이 부트캠프 과정의 이름을 항해라 지었을까?
+
+육상에서의 생활에 비해 힘들고 고된 생활, 바다와 하늘이 만나는 수평선과 그 너머에 있는 무한한 잠재력을 표방하기 위함이 아닐까 싶은데,, 뭐 오피셜한 의미는 잘 모르겠지만 나는 그렇게 생각하고 항해를 진행했다.
+
+<div className='flex justify-center'>
+  <iframe
+    width='80%'
+    height='400'
+    src='https://www.youtube.com/embed/BNh_W4wwRzI'
+    frameBorder='0'
+    allowFullScreen
+  ></iframe>
+</div>
+<br />
+
+내가 좋아하는 유다빈 밴드의 항해라는 노래엔 이런 가사가 있다.
+
+> `"이제야 마주한 꿈의 대양 춤을 추듯이 흘러가보자"`
+
+아직 갈 길이 멀지만 항해를 마친 모두에게 작은 박수를 보내고 싶다.  
+그리고 모두의 여정 끝에 더 큰 바다가 기다리고 있길, 그 바다를 즐겁게 춤을 추듯이 나아가길 바란다.
+언젠가 또 같은 바다에서 만날 수 있길 바라며 글을 마친다.
+
+> 그리고 10주 간 열정적으로 멘토링을 해주신 5인의 코치님들, 불편함과 운영 피드백을 바로바로 해결해주셨던 매니저님들 모두 고생하셨습니다.
+16:["$","aside",null,{"className":"hidden xl:block w-64 shrink-0 self-start sticky top-24","children":["$","$L19",null,{"content":"$1a"}]}]
+:HL["https://images.hexdrinker.dev/hanghae/certification.png","image"]
+:HL["https://images.hexdrinker.dev/hanghae/mentoring-note-push-2.jpeg","image"]
+:HL["https://images.hexdrinker.dev/hanghae/mentoring-note-push.jpeg","image"]
+:HL["https://images.hexdrinker.dev/hanghae/kakaotalk-hj.jpeg","image"]
+:HL["https://images.hexdrinker.dev/hanghae/kakaotalk-tk.jpeg","image"]
+18:[["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":"10주 간의 항해가 끝났다."}],"\n",["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":["큰 (돈과) 각오로 시작했던 게 엊그제 같은데 뭔가 꿈을 꾼 거 같은 느낌이다.",["$","br",null,{}],"\n","힘들었지만 즐거운 시간이었고 그것들이 기억 저편으로 휘발되기 전에 서둘러 글을 남겨본다."]}],"\n",["$","h2",null,{"className":"text-2xl font-semibold mt-8 mb-4 pb-2 border-b border-border","id":"️-정박하며","children":"⚓️ 정박하며"}],"\n",["$","h3",null,{"className":"text-xl font-medium mt-6 mb-3","id":"️-마무리","children":"◼️ 마무리"}],"\n",["$","figure",null,{"className":"imageWrapper","children":[["$","img",null,{"src":"https://images.hexdrinker.dev/hanghae/certification.png","alt":"수료 인증서","width":"55%"}],["$","figcaption",null,{"children":["블랙 ",["$","del",null,{"children":"벨트"}]," !"]}]]}],"\n",["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":"어쩌다보니 최고 등급인 블랙 뱃지를 받게 되었다. 내가 진짜 상위 1%의 실력자는 아니겠지만 10주간의 여정을 나름대로 최선을 다해 임했다는 증거라고 생각하고 싶다."}],"\n",["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":"발제 자료와 아티클을 읽고 정리하면서 최대한 많은 것들을 소화하려 했고 다른 사람들의 코드도 많이 살피며 내가 몰랐던 부분을 배워갈 때도 있었다."}],"\n",["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":"과제를 100% 제출했지만 그 내용들을 모두 다 완전히 소화했다고 생각하진 않는다. 복습을 통해서 배운 것들을 다시 한 번 곱씹어서 완전히 내 것으로 만드는 일만이 남았다."}],"\n",["$","h3",null,{"className":"text-xl font-medium mt-6 mb-3","id":"-팀장","children":"🫡 팀장"}],"\n",["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":"그리고 또 어쩌다보니 2팀의 팀장 역할을 맡게 되었다. 살면서 리더라는 타이틀은 나와 거리가 멀다고 생각했는데 그 완장을 달고 10주를 책임감 있게 진행해야하는 입장이 되었다."}],"\n",["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":"팀 내외로 이뤄지는 소통을 도맡았고 팀원들에게 과제와 멘토링 노트 작성을 독려하기도 했다. 사소한 일이지만 누군가는 팀 분위기와 원만한 진행을 위해서 해야 하는 일이었고 학습 메이트 소현님의 도움을 받아서 팀원들을 최대한 잘 이끌려고 노력했다."}],"\n",["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":"내가 팀장으로서 잘 해냈는지 확신할 수는 없지만 팀원들이 큰 마찰 없이 함께 달릴 수 있었던 데에는 나의 몫이 조금이라도 있길 바래본다. 한편으로는 내가 팀원들을 조금이라도 더 잘 챙겨볼걸 아쉬움이 남는다. 이런 아쉬움들이 나를 또 발전시키겠지."}],"\n",["$","blockquote",null,{"className":"my-4 border-l-2 border-border pl-4 text-muted-foreground","children":["\n",["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":"돌아보면 나 혼자서 성장하는 게 아니라 함께 성장할 수 있는 환경을 만드는 법에 대해서도 고민을 하게 되는 시간이었다."}],"\n"]}],"\n",["$","div",null,{"className":"flex","children":[["$","figure",null,{"className":"imageWrapper","children":[["$","img",null,{"src":"https://images.hexdrinker.dev/hanghae/mentoring-note-push-2.jpeg","alt":"mentoring-note-push","width":"100%"}],["$","figcaption",null,{"children":"일단 나부터 모범을,,보였나?"}]]}],["$","figure",null,{"className":"imageWrapper","children":["$","img",null,{"src":"https://images.hexdrinker.dev/hanghae/mentoring-note-push.jpeg","alt":"mentoring-note-push","width":"100%"}]}]]}],"\n",["$","div",null,{"className":"flex","children":[["$","figure",null,{"className":"imageWrapper","children":["$","img",null,{"src":"https://images.hexdrinker.dev/hanghae/kakaotalk-hj.jpeg","alt":"kakaotalk","width":"100%"}]}],["$","figure",null,{"className":"imageWrapper","children":["$","img",null,{"src":"https://images.hexdrinker.dev/hanghae/kakaotalk-tk.jpeg","alt":"kakaotalk","width":"100%"}]}]]}],"\n",["$","h3",null,{"className":"text-xl font-medium mt-6 mb-3","id":"-extension-개발","children":"🧑🏻‍💻 Extension 개발"}],"\n",["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":"항해 중 과제를 제출할 때마다 가장 불편했던 건 바로 PR 화면의 길이였다."}],"\n",["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":"과제마다 PR을 잘 쓰려 하다보니 점점 길어졌고, 미리보기 화면이 있지만 일일이 클릭해서 확인하는 게 너무 귀찮았다."}],"\n",["$","blockquote",null,{"className":"my-4 border-l-2 border-border pl-4 text-muted-foreground","children":["\n",["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":"“그냥 이거, PR 쓰는 김에 미리보기가 옆에 같이 뜨면 안 되나…?”"}],"\n"]}],"\n",["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":["이런 고민이 출발점이었다. 그래서 PR을 미리보기 할 수 있는 ",["$","a",null,{"href":"https://github.com/hexdrinker/git-pull-request-previewer","target":"_blank","rel":"noopener noreferrer","className":"text-foreground underline underline-offset-4 hover:text-foreground/80","children":"크롬 확장 프로그램"}],"을 만들었다."]}],"\n","$L1b","\n","$L1c","\n","$L1d","\n","$L1e","\n","$L1f","\n","$L20","\n","$L21","\n","$L22","\n","$L23","\n","$L24","\n","$L25","\n","$L26","\n","$L27","\n","$L28","\n","$L29","\n","$L2a","\n","$L2b","\n","$L2c","\n","$L2d","\n","$L2e","\n","$L2f","\n","$L30","\n","$L31","\n","$L32","\n","$L33","\n","$L34","\n","$L35","\n","$L36","\n","$L37","\n","$L38","\n","$L39","\n","$L3a","\n","$L3b","\n","$L3c","\n","$L3d","\n","$L3e","\n","$L3f","\n","$L40","\n","$L41","\n","$L42","\n","$L43","\n","$L44","\n","$L45","\n","$L46","\n","$L47","\n","$L48","\n","$L49","\n","$L4a"]
+:HL["https://images.hexdrinker.dev/hanghae/extension.png","image"]
+:HL["https://images.hexdrinker.dev/hanghae/my-team.png","image"]
+:HL["https://images.hexdrinker.dev/hanghae/zep-ggu.png","image"]
+:HL["https://images.hexdrinker.dev/hanghae/yongma-mountain.jpeg","image"]
+:HL["https://images.hexdrinker.dev/hanghae/study.png","image"]
+:HL["https://images.hexdrinker.dev/hanghae/boolti....jpeg","image"]
+:HL["https://images.hexdrinker.dev/hanghae/mate.png","image"]
+:HL["https://images.hexdrinker.dev/hanghae/yeonaqueen.png","image"]
+1b:["$","figure",null,{"className":"imageWrapper","children":["$","img",null,{"src":"https://images.hexdrinker.dev/hanghae/extension.png","alt":"extension","width":"100%"}]}]
+1c:["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":"크롬 익스텐션을 언젠가는 한 번은 만들어보고 싶었는데 이런 기회를 이용하지 않으면 앞으로도 미루다가 딱히 할 것 같지 않았다. 그래서 그냥 생각나는 김에 바로 만들었다. 역시 생각날 때 해야한다, 아니면 잘 안하게 된다."}]
+1d:["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":"앞으로 좀 더 개선할테니 많은 관심 부탁드립니다 ^^❤️"}]
+1e:["$","h3",null,{"className":"text-xl font-medium mt-6 mb-3","id":"-그-밖의-경험","children":"🎸 그 밖의 경험"}]
+1f:["$","figure",null,{"className":"imageWrapper","children":["$","img",null,{"src":"https://images.hexdrinker.dev/hanghae/my-team.png","alt":"my-team","width":"60%"}]}]
+20:["$","figure",null,{"className":"imageWrapper","children":[["$","img",null,{"src":"https://images.hexdrinker.dev/hanghae/zep-ggu.png","alt":"zep-ggu","width":"80%"}],["$","figcaption",null,{"children":"ZEP 공간 꾸미기 대회 1등!"}]]}]
+21:["$","h2",null,{"className":"text-2xl font-semibold mt-8 mb-4 pb-2 border-b border-border","id":"-사람과-네트워킹","children":"👯 사람과 네트워킹"}]
+22:["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":["내게 있어 항해의 진짜 재미는 ",["$","strong",null,{"children":"\"사람\""}]," 이었다."]}]
+23:["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":"각기 다른 배경을 가진 사람들이지만 모두가 성장에 목 말라있었고 그 간절함이 서로를 자연스럽게 엮어주었다 생각한다."}]
+24:["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":["누군가는 회사에서 퇴사 후 도전했고,",["$","br",null,{}],"\n","누군가는 학교와 회사를 병행하며 끝까지 물고 늘어졌고,",["$","br",null,{}],"\n","누군가는 항상 조용히 묵묵히 과제를 수행하곤 했다.\n나 또한 직장을 다니면서 항해에 임했지만 나보다 더 바쁘고 힘든 사람들은 많았고 그 사람들을 보며 끝까지 해내겠다고 의지를 다잡았다."]}]
+25:["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":["사람들과 보낸 시간은 단순한 협업 이상의 가치가 있었다.",["$","br",null,{}],"\n","같은 과제를 하더라도 다른 해석으로 질문을 주고 받으며 이해를 채워나갈 때도 있었고,",["$","br",null,{}],"\n","졸리고 의지가 꺾이더라도 끝까지 붙잡아주는 사람들과 함께 새벽까지 버텨냈고,",["$","br",null,{}],"\n","멘토링 노트와 이력서 피드백을 서스럼 없이 공유하며 서로를 도와줄 때도 있었다."]}]
+26:["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":"테오 코치의 멘토링 중 그가 했던 말이 기억이 난다."}]
+27:["$","blockquote",null,{"className":"my-4 border-l-2 border-border pl-4 text-muted-foreground","children":["\n",["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":"서로 알려주고 나누는 공유 문화가 커뮤니티를 성장시키잖아요? 개발자는 그런 게 참 좋은 거 같아요."}],"\n"]}]
+28:["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":"개발자란 직업을 갖고 살아온지 적지 않은 시간이 지났지만 이번 시간들을 통해 공유 문화의 가치에 대해 가장 크게 체감한 거 같다."}]
+29:["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":"물론 공부만 했는가? 그건 아니다. 사람들과 떠들기도 많이 떠들었고 과제를 제출한 금요일 밤엔 구스구스덕이나 갈틱폰 같은 게임을 하기도 했다.\n그 과정에서 가까워진 사람들과 등산도 가고 러닝도 가고(난 안감 ㅎ^^) 모각코도 하고 많은 추억을 남겼다."}]
+2a:["$","figure",null,{"className":"imageWrapper","children":[["$","img",null,{"src":"https://images.hexdrinker.dev/hanghae/yongma-mountain.jpeg","alt":"yongma-mountain","width":"50%"}],["$","figcaption",null,{"children":"아차산만 가기로 했는데 용마산까지 가버린"}]]}]
+2b:["$","h2",null,{"className":"text-2xl font-semibold mt-8 mb-4 pb-2 border-b border-border","id":"앞으로의-계획","children":"앞으로의 계획"}]
+2c:["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":"항해를 시작할 때 목표로 했던 것 중 하나가 항해가 끝나고 나서도 퇴근하자말자 눕지 않고 부지런하게 삶을 이어가는 것이었다."}]
+2d:["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":"그리고 내가 일을 몇 년 하다보니 느낀건데 나는 여유롭게 쉬고 늘어지는 것보다 눈코뜰 새 없이 바쁘게 돌아가는 게 집중력이 더 좋더라. 뭐든 흐지부지 마무리하는 것 없이 모두 다 잘 끝내고픈 욕심이 있고 바쁘게 살며\n일 외의 삶도 좀 더 빡빡하게 채우며 열심히 살아보고 싶어졌다."}]
+2e:["$","h3",null,{"className":"text-xl font-medium mt-6 mb-3","id":"-스터디-혼자보다-멀리-가기","children":"🧠 스터디: 혼자보다 멀리 가기"}]
+2f:["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":["단기 집중형 스터디를 기획해서 운영할 예정이다.",["$","br",null,{}],"\n","단순히 공부만 하는 스터디가 아니라, ‘함께 성장하는 루틴’을 만드는 데 집중하고 싶다."]}]
+30:["$","ul",null,{"className":"my-4 ml-6 list-disc space-y-2","children":["\n",["$","li",null,{"className":"leading-7","children":"4~6주 단위 페이즈 기반 집중 스터디 운영"}],"\n",["$","li",null,{"className":"leading-7","children":"트랙별(이직/CS/실무/사이드프로젝트) 구조화"}],"\n",["$","li",null,{"className":"leading-7","children":"미션 → 코드리뷰 → 회고 루틴으로 학습 내재화"}],"\n"]}]
+31:["$","figure",null,{"className":"imageWrapper","children":[["$","img",null,{"src":"https://images.hexdrinker.dev/hanghae/study.png","alt":"study","width":"50%"}],["$","figcaption",null,{"children":["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":"너무 많은 관심은 부담스럽다. 하지만,, 지금 아니면 언제 이런 관심을\n받아볼려나"}]}]]}]
+32:["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":["아 그리고 술 한 잔 가볍게 하면서 나누는 즐거운 개발 이야기 ",["$","a",null,{"href":"https://github.com/dev-tok-talk","target":"_blank","rel":"noopener noreferrer","className":"text-foreground underline underline-offset-4 hover:text-foreground/80","children":"데브톡톡"}],"도 천천히 진행할 생각이다. 이것 또한 많관부 💘.."]}]
+33:["$","h3",null,{"className":"text-xl font-medium mt-6 mb-3","id":"-사이드-프로젝트-불티","children":"🥗 사이드 프로젝트: 불티"}]
+34:["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":["회사 생활이 바빠지고 항해를 시작하면서 사이드 프로젝트 ",["$","a",null,{"href":"https://boolti.in","target":"_blank","rel":"noopener noreferrer","className":"text-foreground underline underline-offset-4 hover:text-foreground/80","children":"불티"}],"엔 거의 손을 대지 못했다. 함께 하는 친구들에게 양해를 구하고 활동을 쉬었는데 이젠 도망갈 수 없지않을까?"]}]
+35:["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":"그래도 일주일은 쉬고 싶었는데 우리 대장님이 안된대,,, 해야지,,, 해야지 할 수 있다."}]
+36:["$","figure",null,{"className":"imageWrapper","children":[["$","img",null,{"src":"https://images.hexdrinker.dev/hanghae/boolti....jpeg","alt":"boolti...","width":"50%"}],["$","figcaption",null,{"children":"힝구리퐁퐁"}]]}]
+37:["$","h3",null,{"className":"text-xl font-medium mt-6 mb-3","id":"-학습메이트-활동","children":"👥 학습메이트 활동"}]
+38:["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":["학습 메이트 신청을 했다. 이유는 별 거 없고 ",["$","del",null,{"children":"6기 사람들도 나처럼 고통 받는 모습을 보고싶기 때문이다."}]," 멘토링이랑 발제도 더 듣고 싶고 네트워킹을 하면서 좀 더 재밌게 살고 싶어서..."]}]
+39:["$","figure",null,{"className":"imageWrapper","children":[["$","img",null,{"src":"https://images.hexdrinker.dev/hanghae/mate.png","alt":"mate","width":"80%"}],["$","figcaption",null,{"children":"\"시켜줘,,, 항해 학습 메이트\""}]]}]
+3a:["$","h3",null,{"className":"text-xl font-medium mt-6 mb-3","id":"-dnd-운영진-활동","children":"🧑🏻‍🎨 DND 운영진 활동"}]
+3b:["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":["예전에 대학교 동기들과 함께 만들었던 ",["$","a",null,{"href":"https://dnd.ac/","target":"_blank","rel":"noopener noreferrer","className":"text-foreground underline underline-offset-4 hover:text-foreground/80","children":"DND"}]," 운영진 활동을 재개하려 한다."]}]
+3c:["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":"한 6년 전 쯤에 1~2기 운영진으로 활동하다가 당시 새 회사에 취업하면서 바빠져서 활동을 중지했었는데 이것도 항해를 계기로 다시 잘 이어갈 생각이다."}]
+3d:["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":"항해에서 코치님들의 멘토링을 받으며 얻어가는 것들이 많았다. 원래도 멘토링에 관심이 많아서 학교 다닐 때 후배들을 가르치기도 했고 동아리에서 멘토 활동을 하기도 했는데 그 때마다 난 부족하다는 생각을 많이 들었고 그래서 누군가에게 지식이나 경험을 전달하는 것에 부담감을 느꼈다."}]
+3e:["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":"그러나 항해에서의 경험을 통해서 난 그 동안 수직적 전달을 하려고 했지 수평적인 공유를 하려고 했는가? 나도 누군가의 성장을 돕고 나 또한 배울 수 있지 않을까? 란 생각이 들었다."}]
+3f:["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":"아직은 보잘 것 없는 경험과 생각일지 모르지만 그 속에서 나의 고민과 선택, 시행착오들을 누군가에게 조금이라도 꺼내보여줄 수 있다면 그 자체로 의미있는 일이 아닐까 싶다."}]
+40:["$","blockquote",null,{"className":"my-4 border-l-2 border-border pl-4 text-muted-foreground","children":["\n",["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":["나 이 모든 걸 다 거두어갈 수 있을까?",["$","br",null,{}],"\n","예전의 나 같았으면 잘 모르겠다고 했을 거 같다.",["$","br",null,{}],"\n","근데 지금은 아니다, 그냥 한다."]}],"\n"]}]
+41:["$","figure",null,{"className":"imageWrapper","children":[["$","img",null,{"src":"https://images.hexdrinker.dev/hanghae/yeonaqueen.png","alt":"yeonaqueen","width":"80%"}],["$","figcaption",null,{"children":"걍 하는거지 뭐"}]]}]
+42:["$","h2",null,{"className":"text-2xl font-semibold mt-8 mb-4 pb-2 border-b border-border","id":"-항해","children":"🚢 항해"}]
+43:["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":"왜 항해일까? 언젠가인지는 모르겠지만 과제를 하다 그런 의문이 불현듯 머리를 스쳐지나간 적이 있었다. 수 많은 네이밍을 두고 왜 이 부트캠프 과정의 이름을 항해라 지었을까?"}]
+44:["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":"육상에서의 생활에 비해 힘들고 고된 생활, 바다와 하늘이 만나는 수평선과 그 너머에 있는 무한한 잠재력을 표방하기 위함이 아닐까 싶은데,, 뭐 오피셜한 의미는 잘 모르겠지만 나는 그렇게 생각하고 항해를 진행했다."}]
+45:["$","div",null,{"className":"flex justify-center","children":["$","iframe",null,{"width":"80%","height":"400","src":"https://www.youtube.com/embed/BNh_W4wwRzI","frameBorder":"0","allowFullScreen":true}]}]
+46:["$","br",null,{}]
+47:["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":"내가 좋아하는 유다빈 밴드의 항해라는 노래엔 이런 가사가 있다."}]
+48:["$","blockquote",null,{"className":"my-4 border-l-2 border-border pl-4 text-muted-foreground","children":["\n",["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":["$","code",null,{"className":"px-1.5 py-0.5 bg-muted rounded text-sm font-mono","children":"\"이제야 마주한 꿈의 대양 춤을 추듯이 흘러가보자\""}]}],"\n"]}]
+49:["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":["아직 갈 길이 멀지만 항해를 마친 모두에게 작은 박수를 보내고 싶다.",["$","br",null,{}],"\n","그리고 모두의 여정 끝에 더 큰 바다가 기다리고 있길, 그 바다를 즐겁게 춤을 추듯이 나아가길 바란다.\n언젠가 또 같은 바다에서 만날 수 있길 바라며 글을 마친다."]}]
+4a:["$","blockquote",null,{"className":"my-4 border-l-2 border-border pl-4 text-muted-foreground","children":["\n",["$","p",null,{"className":"my-4 leading-7 text-foreground/90","children":"그리고 10주 간 열정적으로 멘토링을 해주신 5인의 코치님들, 불편함과 운영 피드백을 바로바로 해결해주셨던 매니저님들 모두 고생하셨습니다."}],"\n"]}]
+c:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+4b:I[14638,["/_next/static/chunks/483a12865e0bba97.js","/_next/static/chunks/1d3be43a6dda29b7.js"],"IconMark"]
+a:null
+e:[["$","title","0",{"children":"정박하며 | hexdrinker's devlog"}],["$","meta","1",{"name":"description","content":"끝은 새로운 시작이겠지"}],["$","link","2",{"rel":"author","href":"https://github.com/hexdrinker"}],["$","meta","3",{"name":"author","content":"hexdrinker"}],["$","meta","4",{"name":"keywords","content":"항해,항해 플러스,회고"}],["$","meta","5",{"property":"og:title","content":"정박하며"}],["$","meta","6",{"property":"og:description","content":"끝은 새로운 시작이겠지"}],["$","meta","7",{"property":"og:type","content":"article"}],["$","meta","8",{"property":"article:published_time","content":"2025-06-08T12:00"}],["$","meta","9",{"property":"article:author","content":"hexdrinker"}],["$","meta","10",{"property":"article:tag","content":"항해"}],["$","meta","11",{"property":"article:tag","content":"항해 플러스"}],["$","meta","12",{"property":"article:tag","content":"회고"}],["$","meta","13",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","14",{"name":"twitter:title","content":"정박하며"}],["$","meta","15",{"name":"twitter:description","content":"끝은 새로운 시작이겠지"}],["$","link","16",{"rel":"icon","href":"/favicon.ico?favicon.d225b73b.ico","sizes":"144x144","type":"image/x-icon"}],["$","link","17",{"rel":"icon","href":"/img/favicon.ico"}],["$","$L4b","18",{}]]

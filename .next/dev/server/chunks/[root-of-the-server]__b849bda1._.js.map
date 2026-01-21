@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 52, "column": 0}, "map": {"version":3,"sources":["file:///Users/hexdrinker/github/blog/app/api/views/%5Bslug%5D/route.ts"],"sourcesContent":["import { kv } from '@vercel/kv'\nimport { NextRequest, NextResponse } from 'next/server'\n\nexport async function GET(\n  request: NextRequest,\n  { params }: { params: Promise<{ slug: string }> }\n) {\n  const { slug } = await params\n\n  const views = (await kv.get<number>(`views:${slug}`)) ?? 0\n\n  return NextResponse.json({ views })\n}\n\nexport async function POST(\n  request: NextRequest,\n  { params }: { params: Promise<{ slug: string }> }\n) {\n  const { slug } = await params\n\n  const views = await kv.incr(`views:${slug}`)\n\n  return NextResponse.json({ views })\n}\n"],"names":[],"mappings":";;;;;;AAAA;AACA;;;AAEO,eAAe,IACpB,OAAoB,EACpB,EAAE,MAAM,EAAyC;IAEjD,MAAM,EAAE,IAAI,EAAE,GAAG,MAAM;IAEvB,MAAM,QAAQ,AAAC,MAAM,kNAAE,CAAC,GAAG,CAAS,CAAC,MAAM,EAAE,MAAM,KAAM;IAEzD,OAAO,iTAAY,CAAC,IAAI,CAAC;QAAE;IAAM;AACnC;AAEO,eAAe,KACpB,OAAoB,EACpB,EAAE,MAAM,EAAyC;IAEjD,MAAM,EAAE,IAAI,EAAE,GAAG,MAAM;IAEvB,MAAM,QAAQ,MAAM,kNAAE,CAAC,IAAI,CAAC,CAAC,MAAM,EAAE,MAAM;IAE3C,OAAO,iTAAY,CAAC,IAAI,CAAC;QAAE;IAAM;AACnC"}}]
+}

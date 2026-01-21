@@ -1,0 +1,249 @@
+---
+date: 2025-05-11T21:00
+authors: hexdrinker
+title: Shadow DOM은 대하여
+description: 그림자단과 그림자돔은 무슨 관계일까
+keywords: ['Shadow DOM', 'Web Component']
+tags:
+  - Shadow DOM
+  - Web Component
+thumbnail: https://images.hexdrinker.dev/tech/shadow-dom/zed.webp
+---
+
+<!--truncate-->
+
+이번에 Pull Request Previewer 크롬 익스텐션을 개발하면서 최초로 iframe을 사용했다. 일단 내가 iframe을 제대로 써본 적이 없어서 그냥 써보고 싶었다. parent와 postMessage API를 통해 데이터를 주고 받는 통신 방식으로 인한 취약점이나 복잡함들이 불편하게 느껴져서 경험이 좋지 않았다.
+
+일단 다른건 차치하더라도 패널 위치나 사이즈 조정하는데도 메시지를 보내야해서 답이 없다고 느꼈다. 그래서 Shadow DOM으로의 전환을 결심했고 Shadow DOM에 대해서 좀 공부하게 되었다. Shadow DOM에 대해서 처음 들어본 것도 아니고 개념은 어느 정도 알고 있었지만 알아본 것에 대해서 정리를 하고자 기록을 남겨본다.
+
+## 👨🏻‍🏫 역사와 유래
+
+Shadow DOM은 Google Chrome 팀이 2011년 무렵에 제안한 Web Components 기술 중 일부로 시작되었고 이후 W3C와 WHATWG에서 표준화를 진행했다.
+
+| 연도      | 이벤트                                                        |
+| --------- | ------------------------------------------------------------- |
+| 2011      | Google에서 Web Components 개념 제안                           |
+| 2013      | Chrome에 최초로 Shadow DOM v0 구현                            |
+| 2016      | v1 발표, Safari, Firefox, Edge 등 주요 브라우저에서 채택 시작 |
+| 2018 이후 | 대부분 브라우저가 v1 지원, v0은 폐기 수순                     |
+
+Web Components의 아버지 Dimitri Glazkov의 [What the Heck is Shadow DOM?](https://glazkov.com/2011/01/14/what-the-heck-is-shadow-dom/) 이란 제목의 블로그 글에 따르면 Shadow DOM의 등장 배경은 아래와 같다
+
+> 기존에 웹 플랫폼에서는 코드 간의 격리를 위해 사용할 수 있는 유일한 내장 메커니즘은 iframe이었는데 이는 무겁고 제한적이었다. 대부분의 브라우저는 DOM의 **복잡한 세부 구현**을 숨기기 위해 강력한 기술을 사용하고 있었고 이것이 Shadow DOM이다.
+
+예를 들어 브라우저는 `<input id="foo" type="range">` 이걸 단순히 태그 하나로 보여주지만 실제로는 내부에 여러 요소가 숨어있다. 저 태그를 렌더링할 때 아래와 같이 복잡한 구조로 만든다.
+
+```
+#shadow-root
+  <div class="track">
+    <div class="thumb"></div>
+  </div>
+```
+
+이것이 위 인용구에서 말하는 **복잡한 세부 구현**이다. `<input id="foo" type="range" />` 는 내부적으로 슬라이더와 핸들 등 여러 요소가 있고 이런 구조는 브라우저마다 다르고 개발자 입장에서는 알 수 없고 건드릴 수도 없다. 즉, 브라우저가 처리하는 내부 구현을 Shadow DOM이란 기술로 감싸서 격리하고 숨긴 것이다.
+
+구글은 브라우저 내에서만 쓰던 캡슐화 기법을 일반 개발자들도 쓸 수 있도록 API 형태로 공개하자고 제안했고 이것이 Web Components 사양의 일부로 나온 Shadow DOM이다.
+
+<figure className='imageWrapper'>
+  <img
+    src='https://images.hexdrinker.dev/tech/shadow-dom/insane.png'
+    alt='owner-of-shadow'
+    width='80%'
+  />
+  <figcaption>도대체 얼마나 미친놈이에요? ㅋㅋㅋㅋ</figcaption>
+</figure>
+
+자 이제 Shadow DOM에 대해서 좀 더 알아보자.
+
+## ⚡️ Shadow DOM이란?
+
+Shadow DOM은 DOM 트리 내에 또 다른 숨겨진 DOM 트리를 생성하는 기술로, DOM 캡슐화를 통해 외부와 격리되어 자체적인 스타일과 구조를 가진 독립적인 컴포넌트를 만들 수 있다. 구글이 제안한 웹 컴포넌트의 핵심 기술 중 하나이다.
+
+```html
+<!-- 일반적인 HTML 구조 -->
+<div>
+  <p>Hello</p>
+</div>
+
+<!-- Shadow DOM이 붙은 HTML 구조 -->
+<my-component>
+  #shadow-root
+  <p>Hello from shadow!</p>
+</my-component>
+```
+
+### 🤔 왜 Shadow DOM이 필요할까?
+
+1. 스타일 캡슐화  
+   외부의 스타일이 Shadow DOM 컴포넌트에 영향을 미치지 않고 내부 스타일도 외부를 오염시키지 않는다
+
+2. DOM 구조 은닉화  
+   내부 DOM이 숨겨져 있어서 외부 스크립트나 스타일로 접근/변형이 어렵다
+
+3. 컴포넌트 기반 UI 개발  
+   React, Vue 같은 프레임워크를 쓰지 않아도 브라우저 단에서 컴포넌트를 만들 수 있다
+
+### 🤖 핵심 API
+
+1. `attachShadow({ mode })`
+
+Shadow root를 생성하고 연결하는 API이며 딱 한 번만 호출이 가능하다.
+
+```js
+const openRoot = element.attachShadow({ mode: 'open' })
+console.log(element.shadowRoot) // 접근 가능
+
+const closedRoot = element.attachShadow({ mode: 'closed' })
+console.log(element.shadowRoot) // null (외부 접근 불가)
+```
+
+- `open` : 디버깅이나 커스터마이징할 때 사용
+- `closed` : 접근을 원천 차단하여 보안을 강화하고 캡슐화할 때 사용
+
+2. `shadowRoot`
+
+이미 Shadow DOM이 attach된 경우, 해당 root를 참조하는 프로퍼티이다.
+
+```js
+const shadowRoot = myComponent.shadowRoot // open 모드일 때만 접근 가능
+```
+
+3. `<slot>`
+
+Shadow DOM 내부에서 호스트(부모)의 children을 삽입할 위치를 정의할 때 쓰인다.
+
+```html
+<template id="my-template">
+  <style>
+    span {
+      color: red;
+    }
+  </style>
+  <span><slot></slot></span>
+</template>
+
+<!-- 사용 예 -->
+<my-element>Hello!</my-element>
+```
+
+4. `::part`, `:slotted()`
+
+캡슐화된 스타일을 외부에서 제어할 수 있도록 허용하는 셀렉터들이다.
+
+```html
+<!-- Shadow DOM 내부 -->
+<button part="my-button">확인</button>
+```
+
+```css
+/* 외부 스타일 */
+my-element::part(my-button) {
+  background: blue;
+}
+```
+
+```css
+/* 외부에서 들어온 슬롯 콘텐츠 스타일링 */
+::slotted(h1) {
+  font-weight: bold;
+}
+```
+
+5. `composed`
+
+Shadow DOM 내부에서 발생한 이벤트는 기본적으로 외부로 나가지 않는다. 하지만 아래와 같이 설정한다면 외부에서도 전달받을 수 있다.
+
+```js
+this.dispatchEvent(
+  new CustomEvent('hello', {
+    composed: true,
+    bubbles: true,
+  }),
+)
+```
+
+### 🔧 예제
+
+```js
+// Shadow DOM을 이용한 웹 컴포넌트 예시
+class MyComponent extends HTMLElement {
+  constructor() {
+    super()
+    const shadow = this.attachShadow({ mode: 'open' })
+    shadow.innerHTML = `
+      <style>
+        p { color: tomato; font-weight: bold; }
+      </style>
+      <p>Hello Shadow DOM</p>
+    `
+  }
+}
+customElements.define('my-component', MyComponent)
+```
+
+- `attachShadow({ mode: 'open' })` : shadow root를 생성 (open이면 JS로 접근 가능)
+- `shadow.innerHTML = ...` : shadow DOM 내부에 구조와 스타일 삽입
+- `customElements.define()` : 커스텀 엘리먼트 등록
+
+### 🧐 언제 Shadow DOM을 써야할까?
+
+| 상황                                           | 사용 여부                                          |
+| ---------------------------------------------- | -------------------------------------------------- |
+| 공통 UI 컴포넌트를 만들 때 (ex. Button, Modal) | ✅ 적극 추천                                       |
+| 외부 스타일로 인해 CSS 충돌이 생길 때          | ✅ 매우 유용                                       |
+| 접근성(ARIA 등)을 커스터마이징하고 싶을 때     | ✅ 고려 대상                                       |
+| SEO가 중요한 페이지 콘텐츠에 쓸 때             | ❌ 주의 필요                                       |
+| React, Vue를 쓰고 있다면?                      | 🔶 굳이 필요는 없음, 프레임워크가 이미 캡슐화 제공 |
+
+### ⚠️ Shadow DOM의 단점 및 주의점
+
+1. SEO 친화적이지 않음  
+   Googlebot은 일부 shadow DOM을 인식하지만, 전통적인 크롤러는 무시할 수 있다
+
+2. 접근성 고려 필요  
+   ARIA 속성이나 role 등이 잘 전달되도록 해야한다
+
+3. 복잡한 디버깅  
+   일반 DOM과 구조가 다르므로 devtools에서 익숙해질 필요가 있다
+
+4. 스타일 커스터마이징 어려움  
+   내부 스타일은 외부에서 override하기 어렵다 → CSS 변수나 ::part 선택자 필요
+
+### 🌈 커스텀 스타일 허용
+
+Shadow DOM 내부 스타일을 외부에서 일부만 바꾸고 싶을 때는 위와 같이 ::part와 CSS 변수를 이용하면 된다.
+
+```html
+<!-- shadow 내부 -->
+<template>
+  <style>
+    ::part(button) {
+      background: var(--btn-bg, skyblue);
+    }
+  </style>
+  <button part="button">Click Me</button>
+</template>
+```
+
+- `part="button"`으로 외부에 스타일링이 가능한 타겟을 노출
+- 외부 스타일에서 `my-component::part(button)` 형태로 스타일 지정 가능
+
+### ✅ 정리
+
+- Shadow DOM은 웹 컴포넌트 기반 UI에서 핵심 기술
+- 스타일과 구조를 외부로부터 보호함으로서 캡슐화 가능
+- SEO, 접근성, 커스터마이징은 보완 가능한 단점
+- 프레임워크/라이브러리를 쓰지 않는 웹앱을 만들거나 라이브러리를 만들 때 유용
+
+> Shadow DOM은 프레임워크나 라이브러리 없이도 DOM 구조와 스타일을 캡슐화하여 재사용 가능한 컴포넌트를 만들 수 있게 해주는, 웹 컴포넌트의 핵심 기술이다.
+
+## 📚 레퍼런스
+
+v1에 대한 공식 스펙은 [W3C Shadow DOM v1 문서](https://www.w3.org/TR/shadow-dom/)로 확인할 수 있다. 근데 W3C는 스펙을 버전 별로 관리하니까 Living Standard를 알고 싶다면
+[WHATWG의 DOM 표준 문서](https://dom.spec.whatwg.org/#shadow-trees)를 확인하는 것이 좋다.
+
+- https://www.w3.org/TR/shadow-dom/
+- https://dom.spec.whatwg.org/#shadow-trees
+- https://glazkov.com/2011/01/14/what-the-heck-is-shadow-dom/
+- https://ko.javascript.info/shadow-dom
+- chat gpt
