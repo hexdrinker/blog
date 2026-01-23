@@ -121,6 +121,12 @@ export function Header() {
           </div>
 
           <Link
+            href='/series'
+            className='text-sm text-muted-foreground hover:text-foreground transition-colors'
+          >
+            Series
+          </Link>
+          <Link
             href='/about'
             className='text-sm text-muted-foreground hover:text-foreground transition-colors'
           >
@@ -194,6 +200,17 @@ export function Header() {
               <div className='border-t border-border my-4' />
 
               <div className='space-y-1'>
+                <Link
+                  href='/series'
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`block px-2 py-2 text-sm rounded-md transition-colors ${
+                    pathname === '/series'
+                      ? 'bg-accent text-foreground'
+                      : 'text-muted-foreground hover:text-foreground hover:bg-accent'
+                  }`}
+                >
+                  Series
+                </Link>
                 <Link
                   href='/about'
                   onClick={() => setIsMobileMenuOpen(false)}
