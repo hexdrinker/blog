@@ -58,6 +58,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       publishedTime: post.meta.date,
       authors: [post.meta.authors],
       tags: post.meta.tags,
+      ...(post.meta.thumbnail && {
+        images: [
+          {
+            url: post.meta.thumbnail,
+            width: 1200,
+            height: 630,
+            alt: post.meta.title,
+          },
+        ],
+      }),
+    },
+    twitter: {
+      card: post.meta.thumbnail ? 'summary_large_image' : 'summary',
+      title: post.meta.title,
+      description: post.meta.description,
+      ...(post.meta.thumbnail && {
+        images: [post.meta.thumbnail],
+      }),
     },
   }
 }
