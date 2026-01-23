@@ -3,6 +3,9 @@ import path from 'path'
 import yaml from 'yaml'
 import type { Authors, Author } from '@/types/post'
 
+// 블로그 저자 (단일 저자 블로그)
+export const BLOG_AUTHOR = 'hexdrinker'
+
 const AUTHORS_FILE = path.join(process.cwd(), 'content/authors.yml')
 
 export function getAuthors(): Authors {

@@ -2,14 +2,14 @@ export interface PostMeta {
   title: string
   description: string
   date: string
-  authors: string
   tags: string[]
-  keywords?: string[]
   slug: string
   category: string
   readingTime: string
   draft?: boolean
   thumbnail?: string
+  series?: string
+  seriesOrder?: number
 }
 
 export interface Post {
@@ -31,4 +31,13 @@ export type Authors = Record<string, Author>
 export interface Tag {
   name: string
   count: number
+}
+
+export interface Series {
+  title: string
+  description?: string
+  slug: string
+  thumbnail?: string | null
+  postCount: number
+  latestDate: string
 }

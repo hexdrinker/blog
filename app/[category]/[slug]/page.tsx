@@ -10,7 +10,7 @@ import rehypeSlug from 'rehype-slug'
 import rehypePrettyCode from 'rehype-pretty-code'
 import type { Options } from 'rehype-pretty-code'
 import { getAllPosts, getPostBySlug } from '@/lib/posts'
-import { getAuthor } from '@/lib/authors'
+import { BLOG_AUTHOR } from '@/lib/authors'
 import { mdxComponents } from '@/components/mdx'
 import { Utterance } from '@/components/comments'
 import {
@@ -50,13 +50,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: post.meta.title,
     description: post.meta.description,
-    keywords: post.meta.keywords,
     openGraph: {
       title: post.meta.title,
       description: post.meta.description,
       type: 'article',
       publishedTime: post.meta.date,
-      authors: [post.meta.authors],
+      authors: [BLOG_AUTHOR],
       tags: post.meta.tags,
       ...(post.meta.thumbnail && {
         images: [
@@ -88,7 +87,6 @@ export default async function PostPage({ params }: Props) {
     notFound()
   }
 
-  const author = getAuthor(post.meta.authors)
   const contentWithoutTruncate = post.content.replace(/<!--truncate-->/g, '')
 
   return (
