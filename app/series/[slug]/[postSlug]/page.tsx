@@ -9,7 +9,12 @@ import remarkGfm from 'remark-gfm'
 import rehypeSlug from 'rehype-slug'
 import rehypePrettyCode from 'rehype-pretty-code'
 import type { Options } from 'rehype-pretty-code'
-import { getSeriesPostBySlug, getPostsBySeries, getAllSeries } from '@/lib/posts'
+import {
+  getSeriesPostBySlug,
+  getPostsBySeries,
+  getAllSeries,
+} from '@/lib/posts'
+import { getSeriesBySlug } from '@/lib/series'
 import { BLOG_AUTHOR } from '@/lib/authors'
 import { mdxComponents } from '@/components/mdx'
 import {
@@ -89,6 +94,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function SeriesPostPage({ params }: Props) {
   const { slug, postSlug } = await params
+
   const post = getSeriesPostBySlug(slug, postSlug)
 
   if (!post) {
@@ -98,6 +104,7 @@ export default async function SeriesPostPage({ params }: Props) {
   const contentWithoutTruncate = post.content.replace(/<!--truncate-->/g, '')
   const seriesPosts = getPostsBySeries(slug)
   const currentIndex = seriesPosts.findIndex((p) => p.meta.slug === postSlug)
+  const seriesInfo = getSeriesBySlug(slug)
 
   return (
     <div className='max-w-6xl mx-auto px-4 py-12'>
@@ -116,7 +123,7 @@ export default async function SeriesPostPage({ params }: Props) {
                 href={`/series/${slug}`}
                 className='hover:text-foreground transition-colors'
               >
-                {slug}
+                {seriesInfo?.title ?? slug}
               </Link>
             </div>
 
@@ -159,7 +166,10 @@ export default async function SeriesPostPage({ params }: Props) {
               options={{
                 mdxOptions: {
                   remarkPlugins: [remarkGfm],
-                  rehypePlugins: [rehypeSlug, [rehypePrettyCode, prettyCodeOptions]],
+                  rehypePlugins: [
+                    rehypeSlug,
+                    [rehypePrettyCode, prettyCodeOptions],
+                  ],
                 },
               }}
             />

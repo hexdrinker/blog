@@ -10,8 +10,6 @@ export const metadata: Metadata = {
 
 export default function SeriesPage() {
   const seriesList = getAllSeriesWithMeta()
-
-  console.log(seriesList)
   return (
     <div className='max-w-4xl mx-auto px-4 py-12'>
       <header className='mb-8'>
