@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { getAllPosts } from '@/lib/posts'
+import { getMainPagePosts } from '@/lib/posts'
 import { PostList } from '@/components/blog'
 
 const POSTS_PER_PAGE = 16
@@ -12,7 +12,7 @@ export default async function HomePage({ searchParams }: Props) {
   const { page } = await searchParams
   const currentPage = Math.max(1, parseInt(page || '1', 10))
 
-  const allPosts = getAllPosts()
+  const allPosts = getMainPagePosts()
   const totalPosts = allPosts.length
   const totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE)
 

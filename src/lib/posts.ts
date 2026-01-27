@@ -38,6 +38,17 @@ export function getAllPosts(): Post[] {
     )
 }
 
+// 메인 페이지용: 시리즈 포스트를 제외한 일반 포스트만 반환
+export function getMainPagePosts(): Post[] {
+  return allPosts
+    .filter((post) => !post.draft && post.category !== 'series')
+    .map(transformPost)
+    .sort(
+      (a, b) =>
+        new Date(b.meta.date).getTime() - new Date(a.meta.date).getTime()
+    )
+}
+
 export function getPostBySlug(category: string, slug: string): Post | null {
   const post = allPosts.find(
     (p) => p.category === category && p.slug === slug && !p.draft

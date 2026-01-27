@@ -63,7 +63,7 @@ export function Header() {
           className='flex items-center'
         >
           <Image
-            src='/img/logos/hexdrinker-256.png'
+            src='/img/logos/hexdrinker-629.jpeg'
             alt='hexdrinker'
             width={32}
             height={32}
