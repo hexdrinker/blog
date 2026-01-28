@@ -52,14 +52,12 @@ navigation.push("AScreen", params);
 
 use-funnel을 적용하여 퍼널을 개발하면서 테스트를 하다보니 이상한 점을 발견했다.
 
-<figure className='imageWrapper'>
-  <img
-    src='https://images.hexdrinker.dev/tech/use-funnel-contributing-journey/rn7-uf15.gif'
-    alt='rn7-fu15'
-    width='35%'
-  />
-  <figcaption>react-navigation 7 버전대와 use-funnel/react-navigation-native 0.0.15 버전</figcaption>
-</figure>
+<Img
+  src='https://images.hexdrinker.dev/tech/use-funnel-contributing-journey/rn7-uf15.gif'
+  alt='rn7-fu15'
+  caption='react-navigation 7 버전대와 use-funnel/react-navigation-native 0.0.15 버전'
+  width='35%'
+/>
 
 퍼널은 스텝이 있기 때문에 필연적으로 이전 단계로 돌아갈 수 있어야한다. 그런데 이전 단계로 돌아가는 버튼을 눌렀을 때 퍼널의 이전 단계가 아닌 아예 퍼널 이전의 화면으로 돌아갔다.
 
@@ -196,14 +194,12 @@ go(delta) {
 
 react-navigation 6에서 7로 넘어오면서 생긴 몇 가지 변화들이 있다. 그 중에서 지금 이슈에 유효하게 영향을 주는 [변화](https://reactnavigation.org/docs/upgrading-from-6.x/#the-navigate-method-no-longer-accepts-a-key-option)가 있었다.
 
-<figure className='imageWrapper'>
-  <img
-    src='https://images.hexdrinker.dev/tech/use-funnel-contributing-journey/react-navigation-7-navigate-changes.png'
-    alt='react-navigation-7-navigate-changes'
-    width='75%'
-  />
-  <figcaption>이미 제목부터가 심상치 않다. navigate 메소드가 더 이상 key option을 허용하지 않는대,,,</figcaption>
-</figure>
+<Img
+  src='https://images.hexdrinker.dev/tech/use-funnel-contributing-journey/react-navigation-7-navigate-changes.png'
+  alt='react-navigation-7-navigate-changes'
+  caption='이미 제목부터가 심상치 않다. navigate 메소드가 더 이상 key option을 허용하지 않는대,,,'
+  width='75%'
+/>
 
 
 use-funnel 에서는 대놓고 key props을 쓰고 있다. 아마 react-navigation 6 버전대를 최소한의 타겟으로 하겠지만 프로젝트 내에서 react-navigation 7 버전대를 쓰기 때문에 문제가 생긴 것으로 보인다.
@@ -242,14 +238,12 @@ navigation.navigate({
 
 일단 1번안은 탈락이다. 패키지 버전을 낮춘다는 것 자체가 리스크를 갖고 있고 서비스 개발 중인 상태라 속도를 내야하는데 이런 것으로 괜히 호환성 체크하고 동작 검증하는 것에 시간 쏟고 싶지 않았다.
 
-<figure className='imageWrapper'>
-  <img
-    src='https://images.hexdrinker.dev/tech/use-funnel-contributing-journey/selfless-state.png'
-    alt='무아의 경지'
-    width='50%'
-  />
-  <figcaption>이것이 무아의 경지,,?!</figcaption>
-</figure>
+<Img
+  src='https://images.hexdrinker.dev/tech/use-funnel-contributing-journey/selfless-state.png'
+  alt='무아의 경지'
+  caption='이것이 무아의 경지,,?!'
+  width='50%'
+/>
 
 남은 건 2, 3번 안인데 패키지의 코드를 고치는 것이 그렇게 어려워보이지 않겠다는 느낌이 왔는데 정신차려보니까 내가 use-funnel 내부 코드를 고치고 patck-package 통해서 패키지 커스터마이즈를 했더라!(?) 할 수 있을 거 같다는 희망과 의지가 만들어낸 엄청난 몰입,,이었을까나
 
@@ -294,38 +288,31 @@ if (funnelState.isOverlay) {
 
 그래서 따로 프로젝트를 만들어서 react-navigation 6 버전대와 use-funnel 0.0.15 버전을 깔아서 동작을 확인해봤다.
 
-<figure className='imageWrapper'>
-  <img
-    src='https://images.hexdrinker.dev/tech/use-funnel-contributing-journey/rn6-uf15.gif'
-    alt='rn6-fu15'
-    width='35%'
-  />
-  <figcaption>react-navigation 6 버전대와 use-funnel/react-navigation-native 0.0.15 버전</figcaption>
-</figure>
+<Img
+  src='https://images.hexdrinker.dev/tech/use-funnel-contributing-journey/rn6-uf15.gif'
+  alt='rn6-fu15'
+  caption='react-navigation 6 버전대와 use-funnel/react-navigation-native 0.0.15 버전'
+  width='35%'
+/>
 
 그리고 react-navigation 7 버전대와 custom use-funnel은 아래와 같이 동작한다.
 
-<figure className='imageWrapper'>
-  <img
-    src='https://images.hexdrinker.dev/tech/use-funnel-contributing-journey/rn7-uf16.gif'
-    alt='rn7-fu16'
-    width='35%'
-  />
-  <figcaption>react-navigation 7 버전대와 use-funnel/react-navigation-native 0.0.16(커스텀) 버전</figcaption>
-</figure>
+<Img
+  src='https://images.hexdrinker.dev/tech/use-funnel-contributing-journey/rn7-uf16.gif'
+  alt='rn7-fu16'
+  caption='react-navigation 7 버전대와 use-funnel/react-navigation-native 0.0.16(커스텀) 버전'
+  width='35%'
+/>
 
 동일하게 동작한다...! 이 정도면 이제 PR을 작성해도 되지않을까. use-funnel 패키지를 포크 떠서 해당 변경점을 수정해서 [PR](https://github.com/toss/use-funnel/issues/167)을 올렸다.
 
 이런게 처음이라서 버전을 내가 알아서 올렸는데 얼마 지나지 않아 메인테이너 중 한명인 강민우님이 코멘트를 남겨주었다. 버전을 직접 올리면 안되나보다. changeset 이란 것을 처음 알았다,, 역시 어렵고 험한 오픈소스 생태계.
 
-<figure className='imageWrapper'>
-  <img
-    src='https://images.hexdrinker.dev/tech/use-funnel-contributing-journey/pr-comment.png'
-    alt='pr comment'
-    width='100%'
-  />
-  <figcaption>한국인 두 명이서 영어로 대화하는 진귀한 광경,,</figcaption>
-</figure>
+<Img
+  src='https://images.hexdrinker.dev/tech/use-funnel-contributing-journey/pr-comment.png'
+  alt='pr comment'
+  caption='한국인 두 명이서 영어로 대화하는 진귀한 광경,,'
+/>
 
 알고보니까 [Issue](https://github.com/toss/use-funnel/issues/167)에 이미 올라와서 등재된 내용이더라. 내가 운이 좋게도 먼저 PR을 올린 것 뿐이구나.. PR이 머지되었지만 생각해보니 navigate 메소드는 따로 없었는데 그것도 만들어서 추가할걸 그랬나? 싶은 아쉬움이 들었다. 근데 뭐 이미 PR은 머지되었고 이런 경험을 한 것으로도 충분히 만족스럽다.
 

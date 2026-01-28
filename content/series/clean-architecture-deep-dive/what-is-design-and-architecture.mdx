@@ -46,37 +46,31 @@ tags:
 
 ## 1.2 사례 연구
 
-<figure className='imageWrapper'>
-  <img
-    src='https://images.hexdrinker.dev/series/clean-architecture-deep-dive/what-is-design-and-architecture/growth-of-the-engineering-staff.webp'
-    alt='엔지니어링 직원 수 증가 추이'
-    width='65%'
-  />
-  <figcaption>엔지니어링 직원 수 증가 추이</figcaption>
-</figure>
+<Img
+  src='https://images.hexdrinker.dev/series/clean-architecture-deep-dive/what-is-design-and-architecture/growth-of-the-engineering-staff.webp'
+  alt='엔지니어링 직원 수 증가 추이'
+  caption='엔지니어링 직원 수 증가 추이'
+  width='65%'
+/>
 
 위 그래프로 유추할 수 있는 것은 직원 수가 폭등하며 회사가 엄청 성장하고 있음(또는 그렇게 보임)을 알 수 있다.
 
-<figure className='imageWrapper'>
-  <img
-    src='https://images.hexdrinker.dev/series/clean-architecture-deep-dive/what-is-design-and-architecture/productivity-over-the-same-period-of-time.webp'
-    alt='제품의 크기'
-    width='65%'
-  />
-  <figcaption>같은 기간 동안의 제품의 크기</figcaption>
-</figure>
+<Img
+  src='https://images.hexdrinker.dev/series/clean-architecture-deep-dive/what-is-design-and-architecture/productivity-over-the-same-period-of-time.webp'
+  alt='제품의 크기'
+  caption='같은 기간 동안의 제품의 크기'
+  width='65%'
+/>
 
 같은 기간 동안의 제품의 크기이다. 5년차부터는 사실 상 성장이 멈췄다.
 엔지니어링 스태프의 수는 폭등하고 있지만 제품의 성장은 이와 반비례하고 있음을 알 수 있다.
 
-<figure className='imageWrapper'>
-  <img
-    src='https://images.hexdrinker.dev/series/clean-architecture-deep-dive/what-is-design-and-architecture/cost-per-line-of-code-over-time.webp'
-    alt='코드 라인당 비용'
-    width='65%'
-  />
-  <figcaption>코드 라인당 비용</figcaption>
-</figure>
+<Img
+  src='https://images.hexdrinker.dev/series/clean-architecture-deep-dive/what-is-design-and-architecture/cost-per-line-of-code-over-time.webp'
+  alt='코드 라인당 비용'
+  caption='코드 라인당 비용'
+  width='65%'
+/>
 
 앞선 두 그래프로 예상할 수 있듯이 개발자 수가 늘어남에 따라서 코드 라인당 비용 또한 급증했다.
 이 추세가 계속 가다간 회사의 성장이 꺾이거나 레이오프를 해야할 수도 있겠다.
@@ -87,14 +81,12 @@ tags:
 
 시스템을 급하게 만들거나, 결과물의 총량을 개발자의 수로만 결정하거나 구조를 깔끔하게 만드려는 생각을 하지 않는다면 이와 가이 파국으로 치닫는 그래프를 볼 수 있다.
 
-<figure className='imageWrapper'>
-  <img
-    src='https://images.hexdrinker.dev/series/clean-architecture-deep-dive/what-is-design-and-architecture/productivity-by-release.webp'
-    alt='회사의 생산성'
-    width='65%'
-  />
-  <figcaption>회사의 생산성</figcaption>
-</figure>
+<Img
+  src='https://images.hexdrinker.dev/series/clean-architecture-deep-dive/what-is-design-and-architecture/productivity-by-release.webp'
+  alt='회사의 생산성'
+  caption='회사의 생산성'
+  width='65%'
+/>
 
 위 그래프는 개발자 관점에서의 비용 곡선이다. 생산성이 100%에서 시작했지만 세 번째 배포에서 급락하더니 네 번째부터는 바닥을 기고 있다.
 
@@ -113,14 +105,12 @@ tags:
 
 ### 1.2.2 경영자의 시각
 
-<figure className='imageWrapper'>
-  <img
-    src='https://images.hexdrinker.dev/series/clean-architecture-deep-dive/what-is-design-and-architecture/monthly-development-payroll-by-release.webp'
-    alt='출시별 인건비'
-    width='65%'
-  />
-  <figcaption>출시별 인건비</figcaption>
-</figure>
+<Img
+  src='https://images.hexdrinker.dev/series/clean-architecture-deep-dive/what-is-design-and-architecture/monthly-development-payroll-by-release.webp'
+  alt='출시별 인건비'
+  caption='출시별 인건비'
+  width='65%'
+/>
 
 경영자 입장에서 본다면 말도 안되는 일이 벌어졌다고 생각할 수도 있다. 인건비가 무려
 
@@ -153,14 +143,12 @@ tags:
 
 이 또한 자신의 능력을 과신하는 것이다. 하지만 엉망으로 만들면 깔끔하게 유지할 때보다 항상 더 느리다.
 
-<figure className='imageWrapper'>
-  <img
-    src='https://images.hexdrinker.dev/series/clean-architecture-deep-dive/what-is-design-and-architecture/roman-numerals-kata.png'
-    alt=''
-    width='65%'
-  />
-  <figcaption>TDD 실험</figcaption>
-</figure>
+<Img
+  src='https://images.hexdrinker.dev/series/clean-architecture-deep-dive/what-is-design-and-architecture/roman-numerals-kata.png'
+  alt='TDD 실험'
+  caption='TDD 실험'
+  width='65%'
+/>
 
 위 그래프는 제이슨 고먼(Jason Gorman)의 실험 결과이다. 단순한 프로그램의 개발 속도를 측정한 것인데 사전에 정의된 인수 테스트를 통과하면 완료된 것으로 보았다.
 
