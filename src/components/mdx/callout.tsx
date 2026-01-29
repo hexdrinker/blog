@@ -7,7 +7,10 @@ interface CalloutProps {
   children: ReactNode
 }
 
-const calloutStyles: Record<CalloutType, { icon: string; border: string; bg: string }> = {
+const calloutStyles: Record<
+  CalloutType,
+  { icon: string; border: string; bg: string }
+> = {
   comment: {
     icon: '💬',
     border: 'border-blue-500/50',
@@ -39,7 +42,7 @@ export function Callout({ type = 'note', children }: CalloutProps) {
     >
       <div className='flex gap-3'>
         <span className='text-lg flex-shrink-0'>{style.icon}</span>
-        <div className='text-foreground/90 [&>p]:my-0 [&>p:first-child]:mt-0 [&>p:last-child]:mb-0'>
+        <div className='min-w-0 flex-1 text-foreground/90 [&>p]:my-0 [&>p:first-child]:mt-0 [&>p:last-child]:mb-0 [&_pre]:overflow-x-auto [&_[data-rehype-pretty-code-figure]]:overflow-x-auto'>
           {children}
         </div>
       </div>
