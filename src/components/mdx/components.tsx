@@ -74,7 +74,7 @@ export const mdxComponents: MDXComponents = {
   },
   ul: ({ children, ...props }) => (
     <ul
-      className='my-4 ml-6 list-disc space-y-2'
+      className='my-4 ml-4 pl-3 list-disc space-y-2'
       {...props}
     >
       {children}
@@ -82,7 +82,7 @@ export const mdxComponents: MDXComponents = {
   ),
   ol: ({ children, ...props }) => (
     <ol
-      className='my-4 ml-6 list-decimal space-y-2'
+      className='my-4 ml-4 pl-3 list-decimal space-y-2'
       {...props}
     >
       {children}
