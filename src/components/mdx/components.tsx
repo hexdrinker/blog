@@ -3,10 +3,12 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Callout } from './callout'
 import { Img } from './img'
+import { ImageList } from './image-list'
 
 export const mdxComponents: MDXComponents = {
   Callout,
   Img,
+  ImageList,
   h1: ({ children, ...props }) => (
     <h1
       className='text-3xl font-semibold mt-8 mb-4'
