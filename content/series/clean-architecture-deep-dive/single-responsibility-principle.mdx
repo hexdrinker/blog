@@ -1,0 +1,388 @@
+---
+title: 'SRP: 단일 책임 원칙'
+description: 그건 제 책임이 아닌 거 같은데요 
+date: 2026-02-06
+seriesOrder: 7
+tags:
+  - clean-architecture
+  - design-principles
+  - single-responsibility-principle
+---
+
+SOLID 원칙 중에서 그 의미가 가장 잘 전달되지 못한 원칙은 단일 책임 원칙이다. 아마도 현저히 부적절한 이름 때문이기도 할 것이다. 
+이걸 처음 듣는 프로그래머라면 하나의 모듈은 하나의 일(하나의 책임)만 해야한다고 생각하기 쉽다.
+
+함수는 반드시 하나의, 단 하나의 일만 해야 한다는 원칙은 따로 있다. 이것은 커다란 함수를 작은 함수들로 리팩토링하는 저수준에서 사용된다.
+
+역사적으로 SRP는 아래와 같이 설명된다.
+
+> 단일 모듈은 변경의 이유가 하나, 오직 하나 뿐이어야 한다.
+
+소프트웨어 시스템은 사용자와 이해관계자를 만족시키기 위해 변경된다. 사용자와 이해관계자가 '변경의 이유'인 것이다. 하지만 '사용자'와 '이해관계자'란 단어는 여기에 적합하지 않은데,
+시스템이 동일한 방식으로 변경되기를 원하는 이가 둘 이상일 수도 있기 때문이다.
+
+여기서 해당 변경을 요청하는 한 명 이상의 사람들을 가르켜 집단이라 하고 이 집단을 **액터(Actor)** 라 부르겠다. 그래서 SRP의 최종 버전은 아래와 같다.
+
+> **하나의 모듈은 하나의, 오직 하나의 액터에 대해서만 책임져야 한다**.
+
+그럼 '모듈'은 무엇일까? 가장 단순한 정의는 소스 파일이다. 좀 더 복잡하게 말하자면 **함수와 데이터 구조로 구성된 응집된 집합**이라 할 수 있다.
+
+'응집된(cohesive)'이란 단어가 SRP를 암시한다. **단일 액터를 책임지는 코드를 함께 묶어주는 힘이 응집성(Cohesion)** 이다.
+
+이 원칙을 이해하는 좋은 방법은 원칙을 위반하는 징후들과 살펴보는 것이 좋은 방법이다.
+
+<Callout type='comment'>
+  암만 봐도 잘못 지어진 이름 같다. 누가 봐도 오해할만한 이름이다. 새롭게 이름을 지으면 어떨까? 싱글,,, 모르겠다.
+  <br />
+  근데 잘못 지어진 이름으로 인해 오히려 공부할 때 진의를 파악하게 되며 기억에 오래 남는 것 같다.
+</Callout>
+
+### 징후 1: 우발적 중복
+
+<Img
+  src='employee-class.png'
+  alt='Employee 클래스'
+  width='70%'
+  caption='Employee 클래스'
+/>
+
+위 클래스는 세 가지 메소드 `calculatePay()`, `reportHours()`, `save()`를 가진다. 아주 당연하게도 SRP를 위반하는데, 이 세 가지 메소드가 서로 아주 다른 세 명의 액터를 책임지기 때문이다.
+
+- `calculatePay()`는 회계팀에서 기능을 정의하며, CFO 보고를 위해 쓰인다.
+- `reportHours()`는 인사팀에서 기능을 정의하며, COO 보고를 위해 쓰인다.
+- `save()`는 DBA가 기능을 정의하며, CTO 보고를 위해 쓰인다.
+
+단일 `Employee` 클래스에 이미 세 액터가 결합이 되었다. 이 결합으로 인해 각 액터의 결정 조치가 다른 팀에서 의존하는 것에 영향을 줄 수 있다.
+
+우리는 이와 같은 경험들이 꽤나 있을 것이다. 이 문제는 서로 다른 액터가 의존하는 코드를 너무 가까이에 배치했기 때문에 발생한다. SRP는 **서로 다른 액터가 의존하는 코드를 서로 분리하라**고 말한다.
+
+### 징후 2: 병합
+
+한 모듈에 다양하고 많은 메소드를 포함하면 병합이 자주 발생할 것임은 자명한 일이다. 특히 이 메소드들이 다른 액터를 책임진다면 그 가능성은 더 높아진다.
+
+예를 들어 목적 조직으로 일을 한다고 가정했을 때, 각 팀에서 위 클래스를 동시에 변경할 가능성을 배제할 수 없다. 서로 다른 두 팀에서 온 개발자들의 변경사항은 충돌하게 될 가능성이 높다. 
+
+이 문제를 벗어나는 방법은 **서로 다른 액터를 지원하는 코드를 서로 분리하는 것**이다.
+
+### 해결책
+
+해결책은 다양한데, 그 모두가 메소드를 각기 다른 클래스로 이동시키는 방식이다.
+
+가장 확실한 해결책은 데이터와 메소드를 분리하는 방식일 것이다. 아무런 메소드가 없는 간단한 데이터 구조인 `EmployeeData` 클래스를 만들고, 나머지 세 클래스가 공유하도록 한다. 각 클래스는 자신의 메소드에 필요한 소스코드만을 포함한다.
+
+<Img
+  src='solution-1.png'
+  alt='EmployeeData 클래스 만들어서 세 클래스들이 공유'
+  width='70%'
+  caption='세 클래스는 서로의 존재를 알지 못한다.'
+/>
+
+<Callout type='comment'>
+  `EmployeeData`는 행위 없이 상태와 사실만을 갖고 있다. 그리고 나머지 세 클래스는 `EmployeeData` 클래스를 사용하는 구조이다.
+
+  ```java
+  class EmployeeData { /* ... */ }
+  class PayCalculator {
+    calculatePay(employee: EmployeeData) { /* ... */ }
+  }
+
+  EmployeeData employee = new EmployeeData();
+  PayCalculator payCalculator = new PayCalculator();
+  payCalculator.calculatePay(employee);
+  ```
+</Callout>
+
+이 해결책은 단점이 있다. 세 가지 클래스를 인스턴스화하고 추적해야 한다는 것이다. 이 난관에서 빠져나오기 위해 흔히 쓰는 기법으로 **파사드(Facade) 패턴**이 있다.
+
+<Img
+  src='solution-2.png'
+  alt='파사드 패턴'
+  width='80%'
+  caption='파사드 패턴'
+/>
+
+`EmployeeFacade`에 코드는 거의 없다. 이 클래스는 세 클래스의 객체를 생성하고, 요청된 메소드를 가지는 객체로 위임하는 일을 책임진다.
+이해가 어렵다면 아래 코드로 예시를 보자.
+
+```java
+  class EmployeeData { /* ... */ }
+
+  class PayCalculator { /* ... */ }
+  class HourReporter { /* ... */ }
+  class EmployeeSaver { /* ... */ }
+
+  class EmployeeFacade {
+    constructor(
+      private pay = new PayCalculator(),
+      private reporter = new HourReporter(),
+      private saver = new EmployeeSaver(),
+    ) { /* ... */ }
+
+    calculatePay(data: EmployeeData) {
+      return this.pay.calculatePay(data)
+    }
+
+    /* ... */
+  }
+```
+
+<Callout type='comment'>
+  그렇다면 여기서 몇 가지 의문이 든다.
+  1. `EmployeeFacade`는 SRP를 위반하지 않는가?
+  2. `EmployeeFacade`를 인스턴스화해서 그냥 쓰면 되는가?
+
+  Q. `EmployeeFacade`는 SRP를 위반하지 않는가?
+
+  `EmployeeFacade`가 하는 일은 본질적으로 하나다. 여러 하위 컴포넌트를 조합해서 외부에 단순한 API를 제공한다. 내부에서 계산, 리포트, 저장 로직을 직접 갖지 않고 누구에게 시킬지 정하고 전달하는 것 뿐이다.
+  <br />
+  그래서 파사드의 변경도 "**외부에서 쓰기 쉬운 단일 인터페이스를 유지/조정해야 해서**"라는 이유로 보통 하나로 묶는다. 
+  파사드가 SRP를 망치는 경우는 슬금슬금 커져서 파사드가 전달이 아닌 로직을 가지면서부터이다.
+  <br />
+  Q. `EmployeeFacade`를 인스턴스화해서 그냥 쓰면 되는가?
+
+  외부에서는 `EmployeeFacade`만 생성해서 쓰면 된다. 다만 이 방식은 또 두 가지로 나뉠 수 있다.
+  
+  1. 파사드 내부에서 직접 세 클래스의 인스턴스 생성
+  
+  ```java
+  class EmployeeFacade {
+    private pay = new PayCalculator()
+    private reporter = new HourReporter()
+    private saver = new EmployeeSaver()
+
+    calculatePay(data: EmployeeData) {
+      return this.pay.calculatePay(data);
+    }
+
+    /* ... */
+  }
+
+  EmployeeFacade employeeFacade = new EmployeeFacade();
+  EmployeeData employeeData = new EmployeeData();
+
+  employeeFacade.calculatePay(employeeData);
+  ```
+
+  외부에서는 PayCalculator 같은 것은 전혀 몰라도 된다.
+
+  2. 파사드 외부에서 세 클래스 인스턴스 생성하여 주입
+
+  파사드를 소개하며 든 클래스를 생각하면 된다!
+
+  ```java
+  class EmployeeData { /* ... */ }
+
+  class PayCalculator { /* ... */ }
+  class HourReporter { /* ... */ }
+  class EmployeeSaver { /* ... */ }
+
+  class EmployeeFacade {
+    constructor(
+      private pay = new PayCalculator(),
+      private report = new HourReporter(),
+      private saver = new EmployeeSaver(),
+    ) { /* ... */ }
+
+    calculatePay(data: EmployeeData) {
+      return this.pay.calculatePay(data)
+    }
+
+    /* ... */
+  }
+
+  EmployeeFacade employeeFacade = new EmployeeFacade(
+    new PayCalculator(),
+    new HourReporter(),
+    new EmployeeSaver(),
+  ); // 의존성 주입
+  EmployeeData employeeData = new EmployeeData();
+  employeeFacade.calculatePay(employeeData);  
+  ```
+</Callout>
+
+그러나 어떤 개발자는 가장 중요한 비즈니스 룰을 데이터와 가깝게 배치하는 방식을 선호할 수도 있다. 그럼 위와 같은 구조처럼 `EmployeeData` 클래스에서 데이터를 갖고 있고 나머지 세 클래스에서 행위를 갖고 있는 것이 좀 이상하다 느낄 수 있다.
+
+이 경우에는 가장 중요한 메소드는 기존의 `Employee` 클래스에 유지하되, `Employee` 클래스를 덜 중요한 나머지 메소드들에 대한 파사드로 사용할 수도 있다.
+
+<Img
+  src='solution-3.png'
+  alt='파사드 패턴'
+  width='70%'
+  caption='중요한 메소드는 Employee 클래스에 유지하되, 덜 중요한 나머지 메소드들에 대한 파사드로도 이용한다.'
+/>
+
+```java
+class Employee {
+  private EmployeeData data;
+  private HourReporter reporter;
+  private EmployeeSaver saver;
+  
+  // 핵심 비즈니스 룰
+  public int calculatePay() {
+    return data.getHours() * data.getRate();
+  }
+
+  // 덜 중요한 책임 위임 (Facade 역할)
+  public String reportHours() {
+    return reporter.reportHours(data);
+  }
+
+  public void save() {
+    saver.saveEmployee(data);
+  }
+}
+```
+
+여러 메소드(`reportHours()`, `saveEmployee()`)가 하나의 가족을 이루고, 메소드의 가족을 포함하는 각 클래스(`HourReporter`, `EmployeeSaver`)는 하나의 유효범위가 된다. 이 유효범위 밖에서는 이 가족에게 감춰진 식구(private 멤버)가 있는지 알 수 없다.
+
+## 결론
+
+단일 책임 원칙은 메소드와 클래스 수준의 원칙이다. 하지만 이보다 상위의 두 수준에서도 다른 형태로 다시 등장한다. 컴포넌트 수준에서는 공통 폐쇄 원칙(Common Closure Principle)이 된다. 아키텍처 수준에서는 경계(Architectural Boundary)의 생성을 책임지는 변경의 축이 된다.
+
+이렇듯 다양한 레이어에서 각각의 단일한 무언가가 여러 책임을 들고 있는 것(여러 액터에 의해 변경되는 것)은 좋지 않다는 것을 알 수 있다.
+
+## 리액트에서의 예시
+
+### 데이터와 메소드 분리
+
+```ts
+// employeeData.ts
+export type EmployeeData = {
+  id: string;
+  name: string;
+  hours: number;
+  rate: number;
+}
+```
+
+행위가 없고 상태만 있는 데이터이다.
+
+```ts
+// payCalculator.ts
+import type { EmployeeData } from "./employeeData";
+
+export function calculatePay(data: EmployeeData): number {
+  return data.hours * data.rate;
+}
+```
+
+```ts
+// hourReporter.ts
+import type { EmployeeData } from "./employeeData"
+
+export function reportHours(data: EmployeeData): string {
+  return `${data.name} worked ${data.hours} hours.`
+}
+```
+
+```ts
+// employeeSaver.ts
+import type { EmployeeData } from "./employeeData"
+
+export type SaveEmployee = (data: EmployeeData) => Promise<void>
+
+// 예시: 저장 구현을 “바깥”으로부터 주입 가능하게 만든 기본 팩토리
+export function createEmployeeSaver(options: {
+  saveEmployee: SaveEmployee
+}) {
+  return {
+    saveEmployee: (data: EmployeeData) => options.saveEmployee(data),
+  }
+}
+
+export const localStorageSaver = createEmployeeSaver({
+  saveEmployee: async (data) => {
+    localStorage.setItem(`employee:${data.id}`, JSON.stringify(data))
+  },
+})
+```
+
+```tsx
+// EmployeePanel.tsx
+import { useMemo } from "react"
+import type { EmployeeData } from "./employeeData"
+import { calculatePay } from "./payCalculator"
+import { reportHours } from "./hourReporter"
+
+export function EmployeePanel() {
+  const employeeData = useEmployeeData(); // api 호출 통해서 employeeData 가져오기
+  const pay = useMemo(() => calculatePay(employeeData), [employeeData]);
+
+  return (
+    /* ... */
+  )
+}
+```
+
+- `EmployeeData`는 상태만 갖는다.
+- `calculatePay`, `reportHours`, `saveEmployee`는 각각 자기 책임만 갖는다. 그래서 단일 액터의 요구사항에 의해서만 변경된다.
+- 세 모듈은 서로 참조하지 않는다.
+- UI 컴포넌트에서 조립한다.(각각의 파일을 참조해서 메소드를 가져와야하는 단점이 있음)
+
+### 파사드의 적용
+
+`employeeData.ts`, `payCalculator.ts`, `hourReporter.ts`, `employeeSaver.ts`는 그대로 유지된다.
+
+```ts
+// employeeFacade.ts
+import type { EmployeeData } from "./employeeData"
+import { calculatePay } from "./payCalculator"
+import { reportHours } from "./hourReporter"
+import type { SaveEmployee } from "./employeeSaver"
+
+export type EmployeeFacade = {
+  calculatePay: (data: EmployeeData) => number
+  reportHours: (data: EmployeeData) => string
+  save: (data: EmployeeData) => Promise<void>
+}
+
+export function createEmployeeFacade(options: {
+  saveEmployee: SaveEmployee
+}): EmployeeFacade {
+  return {
+    calculatePay
+    reportHours,
+    save: async (data) => {
+      await options.saveEmployee(data)
+    }
+  }
+}
+```
+
+```ts
+// useEmployeeFacade.ts
+import { useMemo } from "react"
+import { createEmployeeFacade } from "./employeeFacade"
+import { localStorageSaver } from "./employeeSaver"
+
+export function useEmployeeFacade() {
+  return useMemo(
+    () => createEmployeeFacade({
+      saveEmployee: localStorageSaver.saveEmployee,
+      }),
+    []
+  )
+}
+```
+
+```tsx
+// EmployeePanel.tsx
+import React, { useMemo, useState } from "react"
+import type { EmployeeData } from "./employeeData"
+import { useEmployeeFacade } from "./useEmployeeFacade"
+
+export function EmployeePanel() {
+  const facade = useEmployeeFacade();
+  const employeeData = useEmployeeData();
+
+  const pay = useMemo(() => facade.calculatePay(employeeData), [facade, employeeData]);
+
+  return (
+    /* ... */
+  )
+}
+```
+
+때에 따라서 `employeeFacade.ts`와 `useEmployeeFacade.ts`를 합칠 수도 있겠다.
+
+파사드를 이용한다면 UI 컴포넌트든 다른 컴포넌트든 사용처에서 파사드를 하나의 인터페이스로 두어 그것을 통해 행위를 다룰 수 있다.
