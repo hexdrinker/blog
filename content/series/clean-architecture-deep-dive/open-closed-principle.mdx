@@ -1,0 +1,102 @@
+---
+title: 'OCP: 개방-폐쇄 원칙'
+description: 오늘 우리 가게 닫았어요 하지만 열려있어요(?)
+date: 2026-02-06
+seriesOrder: 8
+tags:
+  - clean-architecture
+  - design-principles
+  - open-closed-principle
+---
+
+개방-폐쇄 원칙이란 용어는 1988년에 버트란트 마이어(Bertrand Meyer)가 만들었는데, 다음과 같다.
+
+> 소프트웨어 개체(artifact)는 확장에는 열려 있어야 하고, 변경에는 닫혀 있어야 한다.
+
+소프트웨어 아키텍처를 공부하는 **가장 근본적인 이유**가 바로 이 때문이다. 소프트웨어 설계의 초심자들의 대다수들은 OCP를 클래스와 모듈을 설계할 때 도움이 되는 원칙이라고 알고 있다.
+
+하지만 아키텍처 컴포넌트 수준에서 OCP를 고려할 때 훨씬 중요한 의미를 가진다.
+
+## 사고 실험
+
+재무제표를 웹 페이지로 보여주는 시스템이 있다고 생각해보자. 웹 페이지에 표시되는 데이터는 스크롤이 가능하며, 음수는 빨간색으로 출력한다.
+
+이제 이해관계자가 동일한 정보를 보고서 형태로 변환해서 흑백 프린터로 출력해 달라고 요청했다고 해보자. 보고서는 페이지 번호가 있고 페이지 마다의 머리글, 바닥글도 필요할 거고 음수는 괄호로 감싸는 등 적절한 변환이 필요하다.
+당연히 
+
+새로운 코드의 작성이 필요해진다. 그럼 얼마나 많이 수정해야할까?
+
+앞서 SRP에서 배운 것처럼 서로 다른 목적으로 변경되는 요소를 적절하게 분리하고, 이들 요소 사이의 의존성을 체계화하여 코드 변경량을 최소화할 수 있다.
+
+<Img
+  src='apply-srp.png'
+  alt='SRP 적용하기'
+  caption='SRP 적용하기'
+  width='80%'
+/>
+
+단일 책임 원칙을 적용하면 데이터 흐름을 위와 같은 형태로 만들 수 있다. 여기서 중요한 것은 보고서 생성이 두 개의 책임으로 분리된다는 사실이다.
+
+이처럼 책임을 분리했다면, 두 책임 중 하나에서 변경이 발생하더라도 다른 하나는 변경되지 않도록 의존성도 조직화해야 한다.
+
+<Img
+  src='organized-structure.png'
+  alt='조직화된 구조'
+  caption='처리 과정을 클래스 단위로 분할하고, 클래스는 컴포넌트 단위로 분리한다.'
+  width='90%'
+/>
+
+이렇게 조직화된 구조는 `Controller`, `Interactor`, `Database`, `Presenter`와 `View`를 담당하는 네 가지 컴포넌트로 나눌 수 있다.
+
+이 다이어그램에서 주목할 점은 모든 의존성이 소스 코드 의존성을 나타낸다는 것이다. `FinancialDataMapper`는 `FinancialDataGateway`를 구현하기 위해서 알고 있지만, 반대로 `FinancialDataGateway`는 `FinancialDataMapper`를 알고 있지 못하다.
+
+그리고 주목할 점이 하나 더 있다면 모든 컴포넌트 관계는 단방향으로 이루어진다는 점이다. 이들 화살표는 변경으로부터 보호하려는 컴포넌트를 향하도록 그려진다.
+
+<Img
+  src='component-relation.png'
+  alt='컴포넌트 관계도'
+  caption='컴포넌트 관계는 단방향으로만 이루어진다.'
+  width='80%'
+/>
+
+`Controller`는 `Presenter`를 모르고, `Presenter`는 `View`를 모른다. 특정 컴포넌트에서 발생한 변경으로부터 보호하기 위해서는 변경이 일어난 컴포넌트를 알고 있으면 안된다. 즉, 의존성이 반대로 되어야한다.
+
+`Presenter`에서 발생한 변경으로부터 `Controller`를 보호하고자 하며, `View`에서 생긴 변경으로부터 `Presenter`를 보호하고자 한다. `Interactor`는 다른 모든 것에서 생긴 변경으로부터 보호하고자 한다.
+
+`Interactor`는 OCP를 가장 잘 준수할 수 있는 곳에 위치한다. 왜일까? 바로 애플리케이션에서 가장 높은 수준의 정책을 포함하기 때문이다. 
+
+보호의 계층구조가 '수준(level)'이라는 개념을 바탕으로 어떻게 생성되는지 주목하자. 이것이 아키텍처 수준에서 OCP가 동작하는 방식이다. 기능이 어떻게, 왜, 언제 발생하는지에 따라서 기능을 분리하고, 분리한 기능을 컴포넌트의 계층구조로 조직화한다.
+
+## 방향성 제어
+
+`FinancialDataGateway` 인터페이스는 `FinancialReportGenerator`와 `FinancialDataMapper` 사이에 위치하는데, 이는 의존성을 역전시키기 위해서다.
+
+`FinancialDataGateway` 인터페이스가 없었다면, `Interactor`가 `Database`에 바로 의존하게 된다. 마찬가지로 `FinancialReportPresenter` 인터페이스 2개와 `View` 인터페이스도 같은 목적을 지닌다.
+
+<ImageList
+  images={[
+    { src: 'organized-structure.png', alt: '조직화된 구조' },
+    { src: 'organized-structure-without-interface.png', alt: '인터페이스가 없는 구조' },
+  ]}
+  caption='인터페이스가 없는 경우와 비교'
+/>
+
+## 정보 은닉
+
+`FinancialReportRequester` 인터페이스는 방향성 제어와는 다른 목적을 가진다. 이 인터페이스는 `FinancialReportController`가 `Interactor` 내부에 대해서 너무 많이 알지 못하도록 막기 위해서 존재한다.
+
+만약 이 인터페이스가 없었다면 `Controller`는 `FinancialEntities`에 대해 추이 종속성(transitive dependency)를 가지게 된다.
+
+<Callout type='note'>
+  추이 종속성은 데이터베이스 관계에서 A -> B이고 B -> C일 때 A -> C라는 종속 관계가 성립하는 것을 의미한다.
+</Callout>
+
+추이 종속성은 저수준 구성요소가 고수준 정책의 세부 구현에까지 결합되도록 만든다. 그 결과, 저수준 구성요소는 자신이 직접 사용하지 않는 고수준 도메인 요소에 불필요하게 의존하게 된다.
+
+`Controller`에서 발생한 변경으로부터 `Interactor`를 보호하는 것이 최우선이지만, 반대로 `Interactor`의 변경으로부터 `Controller`도 보호되어야 한다. 그래서 인터페이스를 두어 `Interactor` 내부를 은닉하는 것이다.
+
+## 결론
+
+OCP는 시스템의 아키텍처를 떠받치는 원동력 중 하나다. OCP의 목표는 **시스템을 확장하기 쉬운 동시에 변경으로 인해 시스템이 너무 많이 영향을 받지 않도록 하는 것**에 있다.
+
+이러한 목표를 달성하기 위해서는 시스템을 **적절한 컴포넌트 단위로 분리**하고, **저수준에서 발생한 변경이 고수준에 영향을 주지 않도록 보호할 수 있는 형태의 의존성 계층구조**를 만들어야 한다.

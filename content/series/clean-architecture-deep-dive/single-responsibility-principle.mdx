@@ -86,6 +86,7 @@ SOLID 원칙 중에서 그 의미가 가장 잘 전달되지 못한 원칙은 �
     calculatePay(employee: EmployeeData) { /* ... */ }
   }
 
+  // 사용처
   EmployeeData employee = new EmployeeData();
   PayCalculator payCalculator = new PayCalculator();
   payCalculator.calculatePay(employee);
@@ -146,9 +147,9 @@ SOLID 원칙 중에서 그 의미가 가장 잘 전달되지 못한 원칙은 �
   
   ```java
   class EmployeeFacade {
-    private pay = new PayCalculator()
-    private reporter = new HourReporter()
-    private saver = new EmployeeSaver()
+    private pay = new PayCalculator();
+    private reporter = new HourReporter();
+    private saver = new EmployeeSaver();
 
     calculatePay(data: EmployeeData) {
       return this.pay.calculatePay(data);
@@ -157,6 +158,7 @@ SOLID 원칙 중에서 그 의미가 가장 잘 전달되지 못한 원칙은 �
     /* ... */
   }
 
+  // 사용처
   EmployeeFacade employeeFacade = new EmployeeFacade();
   EmployeeData employeeData = new EmployeeData();
 
@@ -190,6 +192,7 @@ SOLID 원칙 중에서 그 의미가 가장 잘 전달되지 못한 원칙은 �
     /* ... */
   }
 
+  // 사용처
   EmployeeFacade employeeFacade = new EmployeeFacade(
     new PayCalculator(),
     new HourReporter(),
@@ -286,13 +289,16 @@ export function createEmployeeSaver(options: {
   saveEmployee: SaveEmployee
 }) {
   return {
-    saveEmployee: (data: EmployeeData) => options.saveEmployee(data),
+    saveEmployee: (data: EmployeeData) => 
+      options.saveEmployee(data),
   }
 }
 
 export const localStorageSaver = createEmployeeSaver({
   saveEmployee: async (data) => {
-    localStorage.setItem(`employee:${data.id}`, JSON.stringify(data))
+    localStorage.setItem(
+      `employee:${data.id}`, JSON.stringify(data)
+    )
   },
 })
 ```
@@ -306,7 +312,10 @@ import { reportHours } from "./hourReporter"
 
 export function EmployeePanel() {
   const employeeData = useEmployeeData(); // api 호출 통해서 employeeData 가져오기
-  const pay = useMemo(() => calculatePay(employeeData), [employeeData]);
+  const pay = useMemo(
+    () => calculatePay(employeeData),
+    [employeeData]
+  );
 
   return (
     /* ... */
@@ -375,7 +384,10 @@ export function EmployeePanel() {
   const facade = useEmployeeFacade();
   const employeeData = useEmployeeData();
 
-  const pay = useMemo(() => facade.calculatePay(employeeData), [facade, employeeData]);
+  const pay = useMemo(
+    () => facade.calculatePay(employeeData),
+    [facade, employeeData]
+  );
 
   return (
     /* ... */
