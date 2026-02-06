@@ -11,7 +11,7 @@ import rehypePrettyCode from 'rehype-pretty-code'
 import type { Options } from 'rehype-pretty-code'
 import { getAllPosts, getPostBySlug } from '@/lib/posts'
 import { BLOG_AUTHOR } from '@/lib/authors'
-import { mdxComponents } from '@/components/mdx'
+import { mdxComponents, createImg, createImageList } from '@/components/mdx'
 import { Utterance } from '@/components/comments'
 import {
   TableOfContents,
@@ -89,6 +89,14 @@ export default async function PostPage({ params }: Props) {
 
   const contentWithoutTruncate = post.content.replace(/<!--truncate-->/g, '')
 
+  // 이미지 경로 자동 조합을 위한 basePath 설정 (카테고리/포스트명)
+  const imagePath = `${category}/${slug}`
+  const components = {
+    ...mdxComponents,
+    Img: createImg(imagePath),
+    ImageList: createImageList(imagePath),
+  }
+
   return (
     <div className='max-w-6xl mx-auto px-4 py-12'>
       <div className='flex gap-8 justify-center xl:justify-start'>
@@ -138,7 +146,7 @@ export default async function PostPage({ params }: Props) {
           <div className='prose dark:prose-invert max-w-none'>
             <MDXRemote
               source={contentWithoutTruncate}
-              components={mdxComponents}
+              components={components}
               options={{
                 mdxOptions: {
                   remarkPlugins: [remarkGfm],

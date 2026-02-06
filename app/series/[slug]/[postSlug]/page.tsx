@@ -16,7 +16,7 @@ import {
 } from '@/lib/posts'
 import { getSeriesBySlug } from '@/lib/series'
 import { BLOG_AUTHOR } from '@/lib/authors'
-import { mdxComponents } from '@/components/mdx'
+import { mdxComponents, createImg, createImageList } from '@/components/mdx'
 import {
   TableOfContents,
   MobileTableOfContents,
@@ -106,6 +106,14 @@ export default async function SeriesPostPage({ params }: Props) {
   const currentIndex = seriesPosts.findIndex((p) => p.meta.slug === postSlug)
   const seriesInfo = getSeriesBySlug(slug)
 
+  // 이미지 경로 자동 조합을 위한 basePath 설정 (시리즈/시리즈명/포스트명)
+  const imagePath = `series/${slug}/${postSlug}`
+  const components = {
+    ...mdxComponents,
+    Img: createImg(imagePath),
+    ImageList: createImageList(imagePath),
+  }
+
   return (
     <div className='max-w-6xl mx-auto px-4 py-12'>
       <div className='flex gap-8 justify-center xl:justify-start'>
@@ -162,7 +170,7 @@ export default async function SeriesPostPage({ params }: Props) {
           <div className='prose dark:prose-invert max-w-none'>
             <MDXRemote
               source={contentWithoutTruncate}
-              components={mdxComponents}
+              components={components}
               options={{
                 mdxOptions: {
                   remarkPlugins: [remarkGfm],
