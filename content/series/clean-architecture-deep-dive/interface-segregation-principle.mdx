@@ -1,0 +1,150 @@
+---
+title: 'ISP: 인터페이스 분리 원칙'
+description: ISP는 인터넷 서비스 제공자 아니냐고요,, 아니라고요? 네.
+date: 2026-02-10
+seriesOrder: 10
+tags:
+  - clean-architecture
+  - design-principles
+  - interface-segregation-principle
+---
+
+<Img
+  src='/isp.png'
+  alt='인터페이스 분리 원칙'
+  width='80%'
+  caption='인터페이스 분리 원칙'
+/>
+
+인터페이스 분리 원칙은 위 다이어그램에서 그 이름이 유래되었다.
+
+다수의 사용자가 `OPS` 클래스의 오퍼레이션을 사용한다. `User1`은 `op1`을, `User2`는 `op2`만을, `User3`은 `op3`만을 사용한다고 가정해 보자.
+
+`OPS`는 정적 타입 언어로 작성된 클래스이다. 이 경우 `User1`에서는 `op2`, `op3`를 전혀 사용하지 않음에도 `User1`의 코드는 이 두 메소드에 의존하게 된다.
+
+이러한 의존성으로 인해 `OPS` 클래스에서 `op2`의 소스 코드가 변경되면 `User1`도 다시 컴파일 후 새로 배포해야 한다.
+
+이러한 문제는 오퍼레이션을 인터페이스 단위로 분리하여 해결할 수 있다.
+
+<Img
+  src='/separated-operation.png'
+  alt='분리된 오퍼레이션'
+  width='80%'
+  caption='분리된 오퍼레이션'
+/>
+
+## ISP와 언어
+
+위 예제에서 본 사례는 언어 타입에 의존한다. 정적 타입 언어는 사용자가 `import`, `use` 또는 `include`와 같은 타입 선언문을 사용하도록 강제한다.
+
+이로 인해 소스 코드 의존성이 발생하고, 재컴파일 또는 재배포가 강제되는 상황이 무조건 초래된다.
+
+루비나 파이썬, 자바스크립트 같은 동적 타입 언어에서는 소스 코드에 이러한 선언문이 존재하지 않는다. 대신 런타임 추론이 발생한다. 따라서 소스 코드 의존성이 아예 없으며, 재컴파일과 재배포 또한 필요없다.
+
+이러한 사실로 인해 ISP는 아키텍처가 아니라 언어와 관련된 문제라고 결론내릴 여지가 있다.
+
+## ISP와 아키텍처
+
+ISP를 사용하는 근본적인 동기를 살펴보면, 잠재되어 있는 깊은 우려사항을 볼 수 있다.
+
+일반적으로, 필요 이상으로 많은 걸 포함하는 모듈에 의존하는 것은 해로운 일이다. 소스 코드 의존성의 경우 이는 분명한 사실인데, 불필요한 재컴파일과 재배포를 강제하기 때문이다.
+
+하지만 더 고수준인 아키텍처 수준에서도 마찬가지 상황이 발생한다. 아래 아키텍처를 살펴보자. S System은 F 프레임워크에 의존하고, F Framework는 D Database에 의존하고 있다. 추이 종속성이 발생하고 있는 것이다.
+
+<Img
+  src='/terrible-architecture.png'
+  alt='문제가 있는 아키텍처'
+  width='80%'
+  caption='문제가 있는 아키텍처'
+/>
+
+F에서 S와는 전혀 관계 없는 기능이 D에 포함된다고 가정하면, D 내부가 변경되면 F를 재배포해야 할 수도 있고 최악의 경우 S까지 재배포해야 할 수도 있다.
+도미노처럼 연쇄적으로 배포를 해야할 수도 있는 것이다. 하지만 더 중요한 것은 **F와 S에 불필요한 기능에 문제가 생겨도 F와 S는 그것에 영향을 받는다는 것**이다.
+
+이를 통해 배울 수 있는 교훈은 **불필요한 무언가에 의존하면 예상치도 못한 문제에 빠진다는 사실**이다.
+
+## 프론트엔드에서의 예시
+
+가장 먼저 떠오르는 건 props로 객체 전체를 다 넘기는 것이다.
+
+```ts
+// domain/User.ts
+export type User = {
+  id: string;
+  name: string;
+  email: string;
+  role: 'USER' | 'ADMIN';
+  permissions: string[];
+  createdAt: string;
+  updatedAt: string;
+};
+```
+
+```tsx
+function UserName({ user }: { user: User }) {
+  return <span>{user.name}</span>;
+}
+```
+
+`UserName` 컴포넌트는 `name`만 쓰는데 실제로는 `User`라는 거대한 도메인 개념에 의존하고 있다. 
+`role`에 새로운 값이 추가될 수도 있고, permissions의 타입이 바뀔 수도 있다. `UserName`은 이와 관계 없지만 영향 범위 안에 들어간다.
+
+ISP를 적용한다면 아래와 같이 쓸 수 있다.
+
+```tsx
+type UserNameProps = {
+  name: string;
+};
+
+function UserName({ name }: UserNameProps) {
+  return <span>{name}</span>;
+}
+```
+또 흔히 볼 수 있는 예시로는 거대한 hook을 그대로 가져다 쓰는 경우가 있겠다.
+
+```ts
+function useUser() {
+  const user = useQuery(...);
+  const update = useMutation(...);
+  const logout = useLogout();
+  const resetPassword = useResetPassword();
+
+  return { user, update, logout, resetPassword };
+}
+```
+
+```tsx
+const { user } = useUser();
+```
+
+위 한 줄로 인증, 계정 관리, 보안 정책까지 다 가져온 셈이 된다. 아래와 같이 개선할 수 있을 거 같다.
+
+```ts
+function useUserProfileView() {
+  return {
+    user: useQuery(...),
+  };
+}
+
+function useUserProfileCommand() {
+  return {
+    update: useMutation(...),
+  };
+}
+```
+
+```tsx
+const { user } = useUserProfileView();
+```
+
+이런 경우는 생각보다 흔하다.
+프론트엔드에서 자주 사용하는 구조들이고, 동적 타입 언어 환경에서는 당장 큰 문제가 드러나지 않기 때문에 심각하게 인식하지 못한 채 지나가기도 한다.
+
+아래와 같은 질문을 던져보거나 한 번쯤 고민해본 적이 있다면, 이미 인터페이스 분리 원칙을 위반한 코드를 경험했을 가능성이 크다.
+
+- 이 컴포넌트가 자기 역할 밖의 도메인 용어를 알고 있는가?
+- props, hook, store에서 실제로 사용하지 않는 쓰는 필드가 더 많지 않은가?
+- 컴포넌트가 **왜 이 변경에 영향을 받지?** 라는 의문이 든 적은 없는가?.
+
+이런 질문들을 의식하며 코드를 바라본다면, 컴포넌트가 불필요한 개념에 휘둘리지 않도록 경계를 세우는 데 도움이 된다. 
+결국 이는 인터페이스 분리 원칙을 더 잘 지킨 컴포넌트와 아키텍처로 이어질 것이다.
