@@ -16,11 +16,13 @@ import {
 } from '@/lib/posts'
 import { getSeriesBySlug } from '@/lib/series'
 import { BLOG_AUTHOR } from '@/lib/authors'
-import { mdxComponents, createImg, createImageList } from '@/components/mdx'
 import {
-  TableOfContents,
-  MobileTableOfContents,
-} from '@/components/blog/TableOfContents'
+  mdxComponents,
+  createImg,
+  createImageList,
+  createMarkdownImg,
+} from '@/components/mdx'
+import { MobileTableOfContents } from '@/components/blog/TableOfContents'
 import { ViewCounter } from '@/components/blog'
 
 const prettyCodeOptions: Options = {
@@ -101,63 +103,65 @@ export default async function SeriesPostPage({ params }: Props) {
     notFound()
   }
 
-  const contentWithoutTruncate = post.content.replace(/<!--truncate-->/g, '')
+  const hasDescriptionCaption = post.content.includes('<!--description-->')
+  const contentWithoutMetaComments = post.content.replace(/<!--description-->/g, '')
   const seriesPosts = getPostsBySeries(slug)
   const currentIndex = seriesPosts.findIndex((p) => p.meta.slug === postSlug)
   const seriesInfo = getSeriesBySlug(slug)
 
-  // 이미지 경로 자동 조합을 위한 basePath 설정 (시리즈/시리즈명/포스트명)
-  const imagePath = `series/${slug}/${postSlug}`
+  // 문서 폴더 구조를 기준으로 이미지 경로 자동 조합
+  const imagePath = post.meta.imageBasePath || `series/${slug}/${postSlug}`
   const components = {
     ...mdxComponents,
     Img: createImg(imagePath),
     ImageList: createImageList(imagePath),
+    img: createMarkdownImg(imagePath),
   }
 
   return (
-    <div className='max-w-6xl mx-auto px-4 py-12'>
-      <div className='flex gap-8 justify-center xl:justify-start'>
-        <article className='flex-1 max-w-3xl min-w-0'>
-          <header className='mb-8'>
+    <div className='max-w-3xl mx-auto px-4 py-12'>
+      <article className='min-w-0'>
+        <header className='mb-8'>
             <div className='flex items-center gap-2 text-sm text-muted-foreground mb-4'>
               <Link
                 href='/series'
                 className='hover:text-foreground transition-colors'
               >
-                Series
+                시리즈
               </Link>
-              <span>/</span>
-              <Link
-                href={`/series/${slug}`}
-                className='hover:text-foreground transition-colors'
-              >
-                {seriesInfo?.title ?? slug}
-              </Link>
+            <span>/</span>
+            <Link
+              href={`/series/${slug}`}
+              className='hover:text-foreground transition-colors'
+            >
+              {seriesInfo?.title ?? slug}
+            </Link>
+          </div>
+
+          <h1 className='text-4xl font-bold tracking-tight mb-3'>
+            {post.meta.title}
+          </h1>
+
+          <div className='flex justify-between items-center gap-3 text-sm text-muted-foreground'>
+            <time dateTime={post.meta.date}>
+              {format(new Date(post.meta.date), 'MMM dd, yyyy', {
+                locale: enUS,
+              })}
+            </time>
+            <div className='flex items-center gap-3'>
+              <ViewCounter slug={`${slug}/${postSlug}`} />
+              <span>{post.meta.readingTime}</span>
             </div>
+          </div>
+        </header>
 
-            <h1 className='text-4xl font-bold tracking-tight mb-3'>
-              {post.meta.title}
-            </h1>
+        <hr className='border-border mb-8' />
 
-            <div className='flex justify-between items-center gap-3 text-sm text-muted-foreground'>
-              <time dateTime={post.meta.date}>
-                {format(new Date(post.meta.date), 'MMM dd, yyyy', {
-                  locale: enUS,
-                })}
-              </time>
-              <div className='flex items-center gap-3'>
-                <ViewCounter slug={`${slug}/${postSlug}`} />
-                <span>{post.meta.readingTime}</span>
-              </div>
-            </div>
-          </header>
+        <MobileTableOfContents content={contentWithoutMetaComments} />
 
-          <hr className='border-border mb-8' />
-
-          <MobileTableOfContents content={contentWithoutTruncate} />
-
-          {post.meta.thumbnail && (
-            <div className='relative w-full aspect-[3/2] mb-8 rounded-lg overflow-hidden'>
+        {post.meta.thumbnail && (
+          <figure className='w-4/5 mx-auto mb-8'>
+            <div className='relative aspect-[3/2] rounded-lg overflow-hidden'>
               <Image
                 src={post.meta.thumbnail}
                 alt={post.meta.title}
@@ -166,60 +170,61 @@ export default async function SeriesPostPage({ params }: Props) {
                 priority
               />
             </div>
+            {hasDescriptionCaption && post.meta.description && (
+              <figcaption className='mt-2 text-center text-sm text-muted-foreground'>
+                {post.meta.description}
+              </figcaption>
+            )}
+          </figure>
+        )}
+        <div className='prose dark:prose-invert max-w-none'>
+          <MDXRemote
+            source={contentWithoutMetaComments}
+            components={components}
+            options={{
+              mdxOptions: {
+                remarkPlugins: [remarkGfm],
+                rehypePlugins: [
+                  rehypeSlug,
+                  [rehypePrettyCode, prettyCodeOptions],
+                ],
+              },
+            }}
+          />
+        </div>
+
+        <hr className='border-border my-12' />
+
+        {/* Series navigation */}
+        <nav className='flex justify-between gap-4'>
+          {currentIndex > 0 ? (
+            <Link
+              href={`/series/${slug}/${seriesPosts[currentIndex - 1].meta.slug}`}
+              className='flex-1 p-4 border border-border rounded-lg hover:border-foreground/20 transition-colors'
+            >
+              <span className='text-sm text-muted-foreground'>이전 글</span>
+              <p className='font-medium mt-1 line-clamp-1'>
+                {seriesPosts[currentIndex - 1].meta.title}
+              </p>
+            </Link>
+          ) : (
+            <div className='flex-1' />
           )}
-          <div className='prose dark:prose-invert max-w-none'>
-            <MDXRemote
-              source={contentWithoutTruncate}
-              components={components}
-              options={{
-                mdxOptions: {
-                  remarkPlugins: [remarkGfm],
-                  rehypePlugins: [
-                    rehypeSlug,
-                    [rehypePrettyCode, prettyCodeOptions],
-                  ],
-                },
-              }}
-            />
-          </div>
-
-          <hr className='border-border my-12' />
-
-          {/* Series navigation */}
-          <nav className='flex justify-between gap-4'>
-            {currentIndex > 0 ? (
-              <Link
-                href={`/series/${slug}/${seriesPosts[currentIndex - 1].meta.slug}`}
-                className='flex-1 p-4 border border-border rounded-lg hover:border-foreground/20 transition-colors'
-              >
-                <span className='text-sm text-muted-foreground'>이전 글</span>
-                <p className='font-medium mt-1 line-clamp-1'>
-                  {seriesPosts[currentIndex - 1].meta.title}
-                </p>
-              </Link>
-            ) : (
-              <div className='flex-1' />
-            )}
-            {currentIndex < seriesPosts.length - 1 ? (
-              <Link
-                href={`/series/${slug}/${seriesPosts[currentIndex + 1].meta.slug}`}
-                className='flex-1 p-4 border border-border rounded-lg hover:border-foreground/20 transition-colors text-right'
-              >
-                <span className='text-sm text-muted-foreground'>다음 글</span>
-                <p className='font-medium mt-1 line-clamp-1'>
-                  {seriesPosts[currentIndex + 1].meta.title}
-                </p>
-              </Link>
-            ) : (
-              <div className='flex-1' />
-            )}
-          </nav>
-        </article>
-
-        <aside className='hidden xl:block w-64 shrink-0 self-start sticky top-24'>
-          <TableOfContents content={contentWithoutTruncate} />
-        </aside>
-      </div>
+          {currentIndex < seriesPosts.length - 1 ? (
+            <Link
+              href={`/series/${slug}/${seriesPosts[currentIndex + 1].meta.slug}`}
+              className='flex-1 p-4 border border-border rounded-lg hover:border-foreground/20 transition-colors text-right'
+            >
+              <span className='text-sm text-muted-foreground'>다음 글</span>
+              <p className='font-medium mt-1 line-clamp-1'>
+                {seriesPosts[currentIndex + 1].meta.title}
+              </p>
+            </Link>
+          ) : (
+            <div className='flex-1' />
+          )}
+        </nav>
+      </article>
     </div>
   )
 }

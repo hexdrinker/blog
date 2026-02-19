@@ -3,7 +3,7 @@ import Link from 'next/link'
 export function Footer() {
   return (
     <footer className='w-full mt-auto'>
-      <div className='max-w-4xl mx-auto px-4 py-8'>
+      <div className='max-w-3xl mx-auto px-4 py-8'>
         <p className='text-sm text-muted-foreground text-center'>
           &copy; {new Date().getFullYear()}{' '}
           <Link

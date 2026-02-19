@@ -38,13 +38,13 @@ export default async function SeriesDetailPage({ params }: Props) {
   const posts = getPostsBySeries(slug)
 
   return (
-    <div className='max-w-4xl mx-auto px-4 py-12'>
+    <div className='max-w-3xl mx-auto px-4 py-12'>
       <header className='mb-8'>
         <Link
           href='/series'
           className='text-sm text-muted-foreground hover:text-foreground transition-colors mb-4 inline-block'
         >
-          &larr; 시리즈 목록
+          &larr; 시리즈 탭
         </Link>
         <h1 className='text-2xl font-semibold tracking-tight mb-1'>
           {series.title}

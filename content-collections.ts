@@ -1,6 +1,8 @@
 import { defineCollection, defineConfig } from '@content-collections/core'
 import { z } from 'zod'
 
+const IMAGE_BASE_URL = 'https://images.hexdrinker.dev'
+
 // reading time 계산 함수
 function calculateReadingTime(content: string): string {
   const wordsPerMinute = 200
@@ -11,10 +13,6 @@ function calculateReadingTime(content: string): string {
 
 // excerpt 추출 함수
 function extractExcerpt(content: string): string {
-  const truncateIndex = content.indexOf('<!--truncate-->')
-  if (truncateIndex > -1) {
-    return content.substring(0, truncateIndex).trim()
-  }
   const plainText = content
     .replace(/```[\s\S]*?```/g, '')
     .replace(/`[^`]+`/g, '')
@@ -25,6 +23,19 @@ function extractExcerpt(content: string): string {
   return plainText.substring(0, 200) + '...'
 }
 
+function resolveContentImage(src: string | undefined, basePath: string): string | undefined {
+  if (!src) return src
+
+  if (/^(https?:)?\/\//.test(src) || src.startsWith('data:')) {
+    return src
+  }
+
+  const normalizedBasePath = basePath.replace(/\/$/, '')
+  const normalizedSrc = src.replace(/^\//, '')
+
+  return `${IMAGE_BASE_URL}/${normalizedBasePath}/${normalizedSrc}`
+}
+
 const posts = defineCollection({
   name: 'posts',
   directory: 'content',
@@ -33,6 +44,7 @@ const posts = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string().optional(),
+    category: z.string().optional(),
     date: z.string(),
     tags: z.array(z.coerce.string()).default([]),
     draft: z.boolean().default(false),
@@ -44,18 +56,24 @@ const posts = defineCollection({
     // 파일 경로에서 category와 slug 추출
     // _meta.path는 "tech/shadow-dom" 또는 "series/clean-architecture/01-intro" 형식
     const pathParts = document._meta.path.split('/')
-    const category = pathParts[0]
+    const pathCategory = pathParts[0]
     const slug = pathParts[pathParts.length - 1]
 
     // series 폴더 구조인 경우: series/[시리즈명]/[파일명]
     // 시리즈명을 폴더에서 자동 추출
-    const isSeriesPost = category === 'series' && pathParts.length >= 3
+    const isSeriesPost = pathCategory === 'series' && pathParts.length >= 3
     const seriesFromPath = isSeriesPost ? pathParts[1] : undefined
+    const category = isSeriesPost ? 'series' : document.category || pathCategory
+    const imageBasePath = isSeriesPost
+      ? `series/${pathParts[1]}/${slug}`
+      : `${pathCategory}/${slug}`
 
     return {
       ...document,
       category,
       slug,
+      imageBasePath,
+      thumbnail: resolveContentImage(document.thumbnail, imageBasePath),
       // series 폴더 구조면 폴더명에서 시리즈 추출, 아니면 frontmatter에서
       series: seriesFromPath || document.series,
       permalink: isSeriesPost
@@ -85,6 +103,7 @@ const seriesMeta = defineCollection({
     return {
       ...document,
       slug,
+      thumbnail: resolveContentImage(document.thumbnail ?? undefined, `series/${slug}`),
     }
   },
 })

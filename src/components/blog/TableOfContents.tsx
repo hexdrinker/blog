@@ -138,7 +138,7 @@ export function MobileTableOfContents({ content }: TableOfContentsProps) {
   }
 
   return (
-    <div className='xl:hidden mb-8'>
+    <div className='mb-8'>
       <button
         onClick={() => setIsOpen(!isOpen)}
         className='flex items-center justify-between w-full px-4 py-3 bg-muted/50 rounded-lg text-sm font-medium text-foreground hover:bg-muted transition-colors'

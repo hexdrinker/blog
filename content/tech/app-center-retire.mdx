@@ -6,13 +6,14 @@ tags:
   - React Native
   - CodePush
   - App Center
-thumbnail: https://images.hexdrinker.dev/tech/app-center-retire/thumbnail.png
+thumbnail: thumbnail.png
 ---
+
+<!--description-->
 
 MS의 Visual Studio App Center가 2025년 3월 31일 부로 지원이 종료된다.  
 그렇다 이 글은 CodePush의 App Center로부터의 ~~(열강들의 도움을 받은,,)~~ 독립 선언문 이다.
 
-<!--truncate-->
 
 ## 👋 잘가라 ~~CodePush~~ 아니,, App Center
 
@@ -21,7 +22,7 @@ CodePush는 MS에서 만들었고 Visual Studio App Center를 통해 운영되�
 (RN은 메타에서 만들었는데 CodePush는 왜 MS가 운영하고 관리하는지는(...) 궁금해졌는데 이따 알아보도록 하자 그건.)
 
 <Img
-  src='https://images.hexdrinker.dev/experience/code-push-migration/no-more-description.webp'
+  src='no-more-description.webp'
   alt='no-more-description'
   caption='OTA에 대한 자세한 설명은 생략한다.'
   width='30%'
@@ -32,7 +33,7 @@ CodePush는 MS에서 만들었고 Visual Studio App Center를 통해 운영되�
 그러므로 CodePush라는 이름의 서비스는 존재하지만 그를 지원해줬던 App Center를 대체할 무언가가 필요해졌다.
 
 <Img
-  src='https://images.hexdrinker.dev/experience/code-push-migration/app-center-retire.png'
+  src='app-center-retire.png'
   alt='app-center-retire'
   caption='앱 센터 공식 홈페이지 중 일부'
   width='80%'
@@ -56,7 +57,7 @@ CodePush 기능의 기초적이면서 가장 핵심이 되는 것은 자바스�
 ### CodePush Standalone Server
 
 <Img
-  src='https://images.hexdrinker.dev/experience/code-push-migration/code-push-server.png'
+  src='code-push-server.png'
   alt='code-push-server'
   caption='MS에서 공개한 Standalone Server의 README 중 일부'
   width='80%'
@@ -70,7 +71,7 @@ CodePush 기능의 기초적이면서 가장 핵심이 되는 것은 자바스�
 아래의 이미지는 code-push-server의 storage interface인데 계정, 앱, 구성원, 배포 환경, 패키지, Blob, 엑세스 키를 관리하는 완전한 저장소 시스템의 구현을 위한 인터페이스라고 볼 수 있다.
 
 <Img
-  src='https://images.hexdrinker.dev/experience/code-push-migration/storage-interface.png'
+  src='storage-interface.png'
   alt='storage-interface'
   caption='이게 뭐꼬,,, OTL'
   width='80%'
@@ -81,7 +82,7 @@ CodePush 기능의 기초적이면서 가장 핵심이 되는 것은 자바스�
 일단 내게 주어진 임무는 코드 베이스를 바탕으로 한땀한땀 수정을 해서 완전한 시스템을 만든다가 아니라 제한된 리소스에서 최대한 빠르게 App Center의 핵심 기능을 대체할 무언가를 만들어낸다였다. 물론 완벽한 시스템을 만드는 것은 개발자로서는 좋은 경험이고 만족스럽겠지만 비즈니스적으로 큰 임팩트도 없고 도움이 되지는 않을 것이다. 그 점에 입각하면 저걸 다 뜯어고쳐가며 일일이 만드는 선택지는 날라갔다. 그래서 다른 이들이 먼저 개선하거나 만든 코드는 없을까 찾기 시작했다.
 
 <Img
-  src='https://images.hexdrinker.dev/experience/code-push-migration/code-push-server-fork.png'
+  src='code-push-server-fork.png'
   alt='code-push-server-fork'
   width='30%'
 />
@@ -95,7 +96,7 @@ CodePush 기능의 기초적이면서 가장 핵심이 되는 것은 자바스�
 1. [revopush](https://revopush.org/)
 
    <Img
-     src='https://images.hexdrinker.dev/experience/code-push-migration/revopush.png'
+     src='revopush.png'
      alt='revopush'
      width='80%'
    />
@@ -106,7 +107,7 @@ CodePush 기능의 기초적이면서 가장 핵심이 되는 것은 자바스�
 2. [hot-updater](https://gronxb.github.io/hot-updater/)
 
    <Img
-     src='https://images.hexdrinker.dev/experience/code-push-migration/hot-updater.png'
+     src='hot-updater.png'
      alt='hot-updater'
      width='80%'
    />
@@ -118,7 +119,7 @@ CodePush 기능의 기초적이면서 가장 핵심이 되는 것은 자바스�
 
 3. [nmengual/code-push-server](https://github.com/nmengual/code-push-server)
    <Img
-     src='https://images.hexdrinker.dev/experience/code-push-migration/vendor-lock-issue.png'
+     src='vendor-lock-issue.png'
      alt='vendor-lock-issue'
      width='80%'
    />
@@ -139,7 +140,7 @@ CodePush 기능의 기초적이면서 가장 핵심이 되는 것은 자바스�
 와중에 블로그 글과 코드에 대해 궁금한 점이 생겼는데 글 내에는 댓글창도 없었고 글의 저자이신 Floyd Kim님에게 접근할 수 있는 수단이 없었다. 숨고에 재직하시는 지인이 있어서 그 분께 문의하여 이메일을 받아서 질의를 하고 답을 받았다.
 
 <Img
-  src='https://images.hexdrinker.dev/experience/code-push-migration/kind-man.png'
+  src='kind-man.png'
   alt='kind-man'
   caption='친절한 그,,'
   width='30%'
@@ -193,7 +194,7 @@ Floyd님과 이메일로 질의응답을 하며 확인한 결과, 포크 뜰 당
 처음엔 명령어를 통해서만 기능 수행이 가능했는데 옵션이 많아서 휴먼 에러가 날 가능성이 높다고 생각했다. 보통 배포스크립트를 통해서 자동 배포를 하기 때문에 딱히 명령어 입력을 직접 수행할 일은 없지만 내가 테스트를 하면서 그것에 불편함을 느꼈고 수동 배포를 진행해야할 때가 있을지도 모르니 좀 더 편리했으면 좋겠다는 생각이 들었다.
 
 <Img
-  src='https://images.hexdrinker.dev/experience/code-push-migration/release-command.gif'
+  src='release-command.gif'
   alt='release-command'
   width='70%'
 />
@@ -202,7 +203,7 @@ Floyd님과 이메일로 질의응답을 하며 확인한 결과, 포크 뜰 당
 이런 쪽을 써본 적만 있지 직접 다뤄본 적이 없어서 commander.js에서 이런 방법도 제공하는 줄 알았지만 그건 아니더라. `inquirer` 란 패키지를 알게 되었고 이를 통해서 편리하게 수동으로 관리를 할 수 있게 되었다. 물론 옵션을 명령어에 포함해서 작성한다면 대화형 방식은 생략된다.
 
 <Img
-  src='https://images.hexdrinker.dev/experience/code-push-migration/updated.png'
+  src='updated.png'
   alt='updated'
   caption='업데이트 완료!'
   width='30%'

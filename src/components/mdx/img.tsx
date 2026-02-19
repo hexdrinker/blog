@@ -1,3 +1,5 @@
+import type { ImgHTMLAttributes } from 'react'
+
 const IMAGE_BASE_URL = 'https://images.hexdrinker.dev'
 
 interface ImgProps {
@@ -13,7 +15,7 @@ interface ImgProps {
  * - 그렇지 않으면 basePath와 조합하여 전체 URL 생성
  */
 export function resolveImageUrl(src: string, basePath?: string): string {
-  if (src.startsWith('http')) {
+  if (/^(https?:)?\/\//.test(src) || src.startsWith('data:')) {
     return src
   }
 
@@ -51,6 +53,32 @@ export function createImg(basePath: string) {
           </figcaption>
         )}
       </figure>
+    )
+  }
+}
+
+interface MarkdownImgProps extends ImgHTMLAttributes<HTMLImageElement> {
+  src?: string
+}
+
+/**
+ * basePath를 주입받아 마크다운 기본 img 렌더러를 생성합니다.
+ */
+export function createMarkdownImg(basePath: string) {
+  return function MarkdownImg({ src, alt, className, ...props }: MarkdownImgProps) {
+    if (!src) return null
+
+    const resolvedSrc = resolveImageUrl(src, basePath)
+    const mergedClassName = `my-4 rounded-lg max-w-full h-auto ${className || ''}`.trim()
+
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={resolvedSrc}
+        alt={alt || ''}
+        className={mergedClassName}
+        {...props}
+      />
     )
   }
 }

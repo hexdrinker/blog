@@ -10,13 +10,15 @@ import rehypeSlug from 'rehype-slug'
 import rehypePrettyCode from 'rehype-pretty-code'
 import type { Options } from 'rehype-pretty-code'
 import { getAllPosts, getPostBySlug } from '@/lib/posts'
+import { BLOG_CATEGORY_MAP } from '@/lib/categories'
 import { BLOG_AUTHOR } from '@/lib/authors'
-import { mdxComponents, createImg, createImageList } from '@/components/mdx'
-import { Utterance } from '@/components/comments'
 import {
-  TableOfContents,
-  MobileTableOfContents,
-} from '@/components/blog/TableOfContents'
+  mdxComponents,
+  createImg,
+  createImageList,
+  createMarkdownImg,
+} from '@/components/mdx'
+import { MobileTableOfContents } from '@/components/blog/TableOfContents'
 import { ViewCounter } from '@/components/blog'
 
 const prettyCodeOptions: Options = {
@@ -87,53 +89,57 @@ export default async function PostPage({ params }: Props) {
     notFound()
   }
 
-  const contentWithoutTruncate = post.content.replace(/<!--truncate-->/g, '')
+  const hasDescriptionCaption = post.content.includes('<!--description-->')
+  const contentWithoutMetaComments = post.content.replace(/<!--description-->/g, '')
+  const categoryLabel =
+    BLOG_CATEGORY_MAP.get(post.meta.category)?.label || post.meta.category
 
-  // 이미지 경로 자동 조합을 위한 basePath 설정 (카테고리/포스트명)
-  const imagePath = `${category}/${slug}`
+  // 문서 폴더 구조를 기준으로 이미지 경로 자동 조합
+  const imagePath = post.meta.imageBasePath || `${category}/${slug}`
   const components = {
     ...mdxComponents,
     Img: createImg(imagePath),
     ImageList: createImageList(imagePath),
+    img: createMarkdownImg(imagePath),
   }
 
   return (
-    <div className='max-w-6xl mx-auto px-4 py-12'>
-      <div className='flex gap-8 justify-center xl:justify-start'>
-        <article className='flex-1 max-w-3xl min-w-0'>
-          <header className='mb-8'>
-            <div className='flex items-center gap-2 text-sm text-muted-foreground mb-4'>
-              <Link
-                href={`/${post.meta.category}`}
-                className='hover:text-foreground transition-colors capitalize'
-              >
-                {post.meta.category}
-              </Link>
+    <div className='max-w-3xl mx-auto px-4 py-12'>
+      <article className='min-w-0'>
+        <header className='mb-8'>
+          <div className='flex items-center gap-2 text-sm text-muted-foreground mb-4'>
+            <Link
+              href={`/${post.meta.category}`}
+              className='hover:text-foreground transition-colors capitalize'
+            >
+              {categoryLabel}
+            </Link>
+          </div>
+
+          <h1 className='text-4xl font-bold tracking-tight mb-3'>
+            {post.meta.title}
+          </h1>
+
+          <div className='flex justify-between items-center gap-3 text-sm text-muted-foreground'>
+            <time dateTime={post.meta.date}>
+              {format(new Date(post.meta.date), 'MMM dd, yyyy', {
+                locale: enUS,
+              })}
+            </time>
+            <div className='flex items-center gap-3'>
+              <ViewCounter slug={slug} />
+              <span>{post.meta.readingTime}</span>
             </div>
+          </div>
+        </header>
 
-            <h1 className='text-4xl font-bold tracking-tight mb-3'>
-              {post.meta.title}
-            </h1>
+        <hr className='border-border mb-8' />
 
-            <div className='flex justify-between items-center gap-3 text-sm text-muted-foreground'>
-              <time dateTime={post.meta.date}>
-                {format(new Date(post.meta.date), 'MMM dd, yyyy', {
-                  locale: enUS,
-                })}
-              </time>
-              <div className='flex items-center gap-3'>
-                <ViewCounter slug={slug} />
-                <span>{post.meta.readingTime}</span>
-              </div>
-            </div>
-          </header>
+        <MobileTableOfContents content={contentWithoutMetaComments} />
 
-          <hr className='border-border mb-8' />
-
-          <MobileTableOfContents content={contentWithoutTruncate} />
-
-          {post.meta.thumbnail && (
-            <div className='relative w-full aspect-[3/2] mb-8 rounded-lg overflow-hidden'>
+        {post.meta.thumbnail && (
+          <figure className='w-4/5 mx-auto mb-8'>
+            <div className='relative aspect-[3/2] rounded-lg overflow-hidden'>
               <Image
                 src={post.meta.thumbnail}
                 alt={post.meta.title}
@@ -142,27 +148,31 @@ export default async function PostPage({ params }: Props) {
                 priority
               />
             </div>
-          )}
-          <div className='prose dark:prose-invert max-w-none'>
-            <MDXRemote
-              source={contentWithoutTruncate}
-              components={components}
-              options={{
-                mdxOptions: {
-                  remarkPlugins: [remarkGfm],
-                  rehypePlugins: [rehypeSlug, [rehypePrettyCode, prettyCodeOptions]],
-                },
-              }}
-            />
-          </div>
+            {hasDescriptionCaption && post.meta.description && (
+              <figcaption className='mt-2 text-center text-sm text-muted-foreground'>
+                {post.meta.description}
+              </figcaption>
+            )}
+          </figure>
+        )}
+        <div className='prose dark:prose-invert max-w-none'>
+          <MDXRemote
+            source={contentWithoutMetaComments}
+            components={components}
+            options={{
+              mdxOptions: {
+                remarkPlugins: [remarkGfm],
+                rehypePlugins: [
+                  rehypeSlug,
+                  [rehypePrettyCode, prettyCodeOptions],
+                ],
+              },
+            }}
+          />
+        </div>
 
-          <hr className='border-border my-12' />
-        </article>
-
-        <aside className='hidden xl:block w-64 shrink-0 self-start sticky top-24'>
-          <TableOfContents content={contentWithoutTruncate} />
-        </aside>
-      </div>
+        <hr className='border-border my-12' />
+      </article>
     </div>
   )
 }

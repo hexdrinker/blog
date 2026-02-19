@@ -1,3 +1,3 @@
 export { mdxComponents } from './components'
-export { createImg, resolveImageUrl } from './img'
+export { createImg, createMarkdownImg, resolveImageUrl } from './img'
 export { createImageList } from './image-list'

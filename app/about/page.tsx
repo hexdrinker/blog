@@ -35,7 +35,7 @@ export default function AboutPage() {
   const author = getAuthor('hexdrinker')
 
   return (
-    <div className='max-w-6xl mx-auto px-4 py-12'>
+    <div className='max-w-3xl mx-auto px-4 py-12'>
       <header className='mb-12 text-center'>
         {author && (
           <>

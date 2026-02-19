@@ -1,5 +1,16 @@
 // 카테고리 타입
-export type PostCategory = 'tech' | 'essay' | 'interest' | 'series'
+export type PostCategory =
+  | 'tech'
+  | 'log'
+  | 'daily'
+  | 'music'
+  | 'book'
+  | 'travel'
+  | 'movie'
+  | 'concert'
+  | 'series'
+  | 'essay'
+  | 'interest'
 
 // 포스트 공통 메타 정보
 export interface BasePostMeta {
@@ -10,6 +21,7 @@ export interface BasePostMeta {
   slug: string
   category: string
   readingTime: string
+  imageBasePath?: string
   draft?: boolean
   thumbnail?: string
 }

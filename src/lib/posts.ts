@@ -17,6 +17,7 @@ function transformPost(post: (typeof allPosts)[number]): Post {
       slug: post.slug,
       category: post.category,
       readingTime: post.readingTime,
+      imageBasePath: (post as { imageBasePath?: string }).imageBasePath,
       draft: post.draft,
       thumbnail: post.thumbnail,
       series: post.series,
@@ -38,10 +39,10 @@ export function getAllPosts(): Post[] {
     )
 }
 
-// 메인 페이지용: 시리즈 포스트를 제외한 일반 포스트만 반환
+// 메인 페이지용: 모든 포스트 반환
 export function getMainPagePosts(): Post[] {
   return allPosts
-    .filter((post) => !post.draft && post.category !== 'series')
+    .filter((post) => !post.draft)
     .map(transformPost)
     .sort(
       (a, b) =>
@@ -107,6 +108,12 @@ export function getPostsByYear(): Record<string, Post[]> {
 }
 
 export function getPostsByCategory(category: string): Post[] {
+  if (category === 'series' || category === 'study') {
+    return getAllPosts().filter(
+      (post) => post.meta.category === 'study' || post.meta.category === 'series',
+    )
+  }
+
   return getAllPosts().filter((post) => post.meta.category === category)
 }
 
@@ -115,7 +122,7 @@ export function getAllCategories(): string[] {
   const categories = new Set<string>()
 
   for (const post of posts) {
-    categories.add(post.meta.category)
+    categories.add(post.meta.category === 'study' ? 'series' : post.meta.category)
   }
 
   return Array.from(categories)
