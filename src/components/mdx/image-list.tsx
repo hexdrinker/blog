@@ -40,24 +40,23 @@ function renderImageList({
   caption?: string
   gap?: string
 }) {
+  const gridColumnsClass = images.length <= 1 ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-2'
+
   return (
     <figure className='my-4 flex flex-col items-center'>
-      <div className={`flex flex-row flex-wrap justify-center ${gap}`}>
+      <div className={`grid w-full ${gridColumnsClass} ${gap}`}>
         {images.map((image, index) => (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             key={index}
             src={image.src}
             alt={image.alt}
-            className='rounded-lg max-w-full h-auto flex-1 min-w-0 object-cover'
-            style={{
-              maxWidth: images.length > 0 ? `${100 / images.length - 2}%` : '100%',
-            }}
+            className='block w-full h-auto rounded-lg object-contain'
           />
         ))}
       </div>
       {caption && (
-        <figcaption className='-mt-4 text-sm text-muted-foreground text-center'>
+        <figcaption className='mt-2 text-sm text-muted-foreground text-center'>
           {caption}
         </figcaption>
       )}
