@@ -258,6 +258,14 @@
   height: auto;
 }
 
+.mdx-toggle > summary::-webkit-details-marker {
+  display: none;
+}
+
+.mdx-toggle > summary::marker {
+  content: '';
+}
+
 /* 모바일에서만 width 속성 무시하고 컨테이너에 맞춤 */
 @media (max-width: 768px) {
   .imageWrapper img {

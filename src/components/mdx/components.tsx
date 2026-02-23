@@ -4,12 +4,16 @@ import Link from 'next/link'
 import { Callout } from './callout'
 import { Img } from './img'
 import { ImageList } from './image-list'
+import { Details, Summary, Toggle } from './toggle'
 import { YouTube } from './youtube'
 
 export const mdxComponents: MDXComponents = {
   Callout,
+  Toggle,
   Img,
   ImageList,
+  details: Details,
+  summary: Summary,
   YouTube,
   h1: ({ children, ...props }) => (
     <h1
