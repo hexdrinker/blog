@@ -67,3 +67,9 @@ DB와 업무 규칙이 관련 없다고 생각할 수도 있지만 DB는 업무 
 경계선을 그리려면 먼저 시스템을 컴포넌트 단위로 분할해야 한다. 일부는 핵심 업무 규칙이고 일부는 플러그인, 어떤 것들은 필수 기능을 포함할 수도 있겠다. 그 다음에 컴포넌트 사이의 화살표가 핵심 업무 규칙을 향하도록 컴포넌트를 배치해야 한다.
 
 이는 [의존성 역전 원칙](https://hexdrinker.dev/series/clean-architecture-deep-dive/dependency-inversion-principle)과 [안정된 추상화 원칙](https://hexdrinker.dev/series/clean-architecture-deep-dive/component-coupling)을 응용한 것이다.
+
+<Callout type='comment'>
+  단일 번들 프론트엔드 제품에서의 경계는 "변경 이유가 다른 정책들을 '의존성 방향'으로 분리한 선"이라고 볼 수 있겠다.
+  <br />
+  번들이 하나이기 때문에 물리적 분리는 되지 않지만 **의존성(import)** 방향을 강제하면 경계가 강해진다. 즉, 경계는 모듈 그래프 위에 그어지는 선이다.
+</Callout>
