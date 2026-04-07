@@ -74,6 +74,9 @@ importers:
       rehype-slug:
         specifier: ^6.0.0
         version: 6.0.0
+      remark-cjk-adjacent-strong:
+        specifier: ^0.0.2
+        version: 0.0.2
       remark-gfm:
         specifier: ^4.0.1
         version: 4.0.1
@@ -2641,6 +2644,10 @@ packages:
 
   rehype-slug@6.0.0:
     resolution: {integrity: sha512-lWyvf/jwu+oS5+hL5eClVd3hNdmwM1kAC0BUvEGD19pajQMIzcNUd/k9GsfQ+FfECvX+JE+e9/btsKH0EjJT6A==}
+
+  remark-cjk-adjacent-strong@0.0.2:
+    resolution: {integrity: sha512-qAiWq2XRaozf8GTeiWGjcsk2jzlwkRiavGg+3uIwKdkb3uBd7E1r0TbjR6iEuiTChIVJerq1ENmLN7k27qlCIQ==}
+    engines: {node: '>=18'}
 
   remark-gfm@4.0.1:
     resolution: {integrity: sha512-1quofZ2RQ9EWdeN34S79+KExV1764+wCUGop5CPL1WGdD0ocPpu91lzPGbwWMECpEpd42kJGQwzRfyov9j4yNg==}
@@ -5992,6 +5999,8 @@ snapshots:
       hast-util-heading-rank: 3.0.0
       hast-util-to-string: 3.0.1
       unist-util-visit: 5.0.0
+
+  remark-cjk-adjacent-strong@0.0.2: {}
 
   remark-gfm@4.0.1:
     dependencies:

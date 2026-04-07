@@ -24,6 +24,7 @@ import {
 } from '@/components/mdx'
 import { MobileTableOfContents } from '@/components/blog/TableOfContents'
 import { ViewCounter } from '@/components/blog'
+import remarkCjkAdjacentStrong from 'remark-cjk-adjacent-strong'
 
 const prettyCodeOptions: Options = {
   theme: {
@@ -104,7 +105,10 @@ export default async function SeriesPostPage({ params }: Props) {
   }
 
   const hasDescriptionCaption = post.content.includes('<!--description-->')
-  const contentWithoutMetaComments = post.content.replace(/<!--description-->/g, '')
+  const contentWithoutMetaComments = post.content.replace(
+    /<!--description-->/g,
+    '',
+  )
   const seriesPosts = getPostsBySeries(slug)
   const currentIndex = seriesPosts.findIndex((p) => p.meta.slug === postSlug)
   const seriesInfo = getSeriesBySlug(slug)
@@ -122,13 +126,13 @@ export default async function SeriesPostPage({ params }: Props) {
     <div className='max-w-3xl mx-auto px-4 py-12'>
       <article className='min-w-0'>
         <header className='mb-8'>
-            <div className='flex items-center gap-2 text-sm text-muted-foreground mb-4'>
-              <Link
-                href='/series'
-                className='hover:text-foreground transition-colors'
-              >
-                시리즈
-              </Link>
+          <div className='flex items-center gap-2 text-sm text-muted-foreground mb-4'>
+            <Link
+              href='/series'
+              className='hover:text-foreground transition-colors'
+            >
+              시리즈
+            </Link>
             <span>/</span>
             <Link
               href={`/series/${slug}`}
@@ -183,7 +187,7 @@ export default async function SeriesPostPage({ params }: Props) {
             components={components}
             options={{
               mdxOptions: {
-                remarkPlugins: [remarkGfm],
+                remarkPlugins: [remarkGfm, remarkCjkAdjacentStrong],
                 rehypePlugins: [
                   rehypeSlug,
                   [rehypePrettyCode, prettyCodeOptions],

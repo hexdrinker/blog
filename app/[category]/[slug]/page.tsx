@@ -20,6 +20,7 @@ import {
 } from '@/components/mdx'
 import { MobileTableOfContents } from '@/components/blog/TableOfContents'
 import { ViewCounter } from '@/components/blog'
+import remarkCjkAdjacentStrong from 'remark-cjk-adjacent-strong'
 
 const prettyCodeOptions: Options = {
   theme: {
@@ -90,7 +91,10 @@ export default async function PostPage({ params }: Props) {
   }
 
   const hasDescriptionCaption = post.content.includes('<!--description-->')
-  const contentWithoutMetaComments = post.content.replace(/<!--description-->/g, '')
+  const contentWithoutMetaComments = post.content.replace(
+    /<!--description-->/g,
+    '',
+  )
   const categoryLabel =
     BLOG_CATEGORY_MAP.get(post.meta.category)?.label || post.meta.category
 
@@ -161,7 +165,7 @@ export default async function PostPage({ params }: Props) {
             components={components}
             options={{
               mdxOptions: {
-                remarkPlugins: [remarkGfm],
+                remarkPlugins: [remarkGfm, remarkCjkAdjacentStrong],
                 rehypePlugins: [
                   rehypeSlug,
                   [rehypePrettyCode, prettyCodeOptions],
