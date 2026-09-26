@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import { ThemeProvider } from '@/components/layout/ThemeProvider'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
+import { ThemeBackdrop } from '@/components/layout/ThemeBackdrop'
 import { getMainPagePosts } from '@/lib/posts'
 import { BLOG_CATEGORY_MAP } from '@/lib/categories'
 import './globals.css'
@@ -50,6 +51,9 @@ export const metadata: Metadata = {
   },
 }
 
+// 첫 페인트 전에 방문자 시각으로 시간대를 정해 배경 디테일을 바꾼다
+const TIME_OF_DAY_SCRIPT = `(function(){var h=new Date().getHours();document.documentElement.dataset.time=h>=5&&h<8?'dawn':h>=8&&h<17?'day':h>=17&&h<20?'dusk':'night'})()`
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -69,6 +73,9 @@ export default function RootLayout({
       lang='ko'
       suppressHydrationWarning
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: TIME_OF_DAY_SCRIPT }} />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
@@ -78,6 +85,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <ThemeBackdrop />
           <Header searchItems={searchItems} />
           <main className='flex-1'>{children}</main>
           <Footer />

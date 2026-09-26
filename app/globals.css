@@ -285,3 +285,43 @@
   overflow-wrap: break-word;
   word-break: break-word;
 }
+
+/* ThemeBackdrop 장면 애니메이션 */
+@keyframes backdrop-drift {
+  from { transform: translateX(-4vw); }
+  to { transform: translateX(4vw); }
+}
+@keyframes backdrop-twinkle {
+  0%, 100% { opacity: 0.25; }
+  50% { opacity: 1; }
+}
+@keyframes backdrop-spin {
+  to { transform: rotate(360deg); }
+}
+.backdrop-cloud { animation: backdrop-drift 60s ease-in-out infinite alternate; }
+.backdrop-twinkle { animation: backdrop-twinkle 4s ease-in-out infinite; }
+.backdrop-windmill { animation: backdrop-spin 14s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop-cloud,
+  .backdrop-twinkle,
+  .backdrop-windmill { animation: none; }
+}
+
+/* 접속 시간대: <html data-time="dawn|day|dusk|night"> (layout의 인라인 스크립트가 설정) */
+@custom-variant dawn (&:where([data-time="dawn"] *));
+@custom-variant day (&:where([data-time="day"] *));
+@custom-variant dusk (&:where([data-time="dusk"] *));
+@custom-variant night (&:where([data-time="night"] *));
+
+@keyframes backdrop-meteor {
+  0% { transform: translate(0, 0) rotate(24deg); opacity: 0; }
+  2% { opacity: 1; }
+  8% { transform: translate(420px, 190px) rotate(24deg); opacity: 0; }
+  100% { transform: translate(420px, 190px) rotate(24deg); opacity: 0; }
+}
+.backdrop-meteor { animation: backdrop-meteor 14s ease-in infinite 3s; opacity: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop-meteor { animation: none; }
+}
