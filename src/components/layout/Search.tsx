@@ -52,7 +52,7 @@ export function Search({ items }: { items: SearchItem[] }) {
       <button
         type='button'
         onClick={open}
-        className='w-8 sm:w-9 h-9 flex items-center justify-center rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer'
+        className='w-8 sm:w-9 h-9 flex items-center justify-center rounded-md text-muted-foreground hover:text-foreground hover:bg-foreground/10 transition-colors cursor-pointer'
         aria-label='검색 (⌘K)'
       >
         <SearchIcon className='w-[18px] h-[18px]' />
@@ -63,7 +63,7 @@ export function Search({ items }: { items: SearchItem[] }) {
         ref={dialogRef}
         onClose={() => setQuery('')}
         onClick={(event) => event.target === dialogRef.current && close()}
-        className='m-auto mt-[12vh] w-[calc(100%-2rem)] max-w-lg rounded-lg border border-border bg-background p-0 text-foreground shadow-xl backdrop:bg-black/50'
+        className='m-auto mt-[12vh] w-[calc(100%-2rem)] max-w-lg rounded-lg border border-foreground/10 bg-background/80 p-0 backdrop-blur-xl text-foreground shadow-xl backdrop:bg-black/50'
       >
         <form
           onSubmit={(event) => {
@@ -102,7 +102,7 @@ export function Search({ items }: { items: SearchItem[] }) {
                   <Link
                     href={item.href}
                     onClick={close}
-                    className='block rounded-md px-3 py-2 hover:bg-accent focus-visible:bg-accent outline-none'
+                    className='block rounded-md px-3 py-2 hover:bg-foreground/10 focus-visible:bg-foreground/10 outline-none'
                   >
                     <span className='block text-sm truncate'>{item.title}</span>
                     <span className='block text-xs text-muted-foreground'>

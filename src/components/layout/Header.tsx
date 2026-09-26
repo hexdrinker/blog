@@ -64,13 +64,13 @@ export function Header({ searchItems }: { searchItems: SearchItem[] }) {
                 <ChevronDown className='w-3.5 h-3.5 transition-transform group-hover:rotate-180 group-focus-within:rotate-180' />
               </Link>
               <div className='invisible absolute left-0 top-full z-50 pt-2 opacity-0 transition-opacity group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100'>
-                <ul className='min-w-32 rounded-md border border-border bg-background p-1 shadow-lg'>
+                <ul className='min-w-32 rounded-md border border-foreground/10 bg-background/70 p-1 shadow-lg backdrop-blur-md'>
                   {POST_MENU_ITEMS.map(({ key, name, href }) => (
                     <li key={key}>
                       <Link
                         href={href}
                         onClick={(event) => event.currentTarget.blur()}
-                        className={`block rounded px-3 py-1.5 text-sm transition-colors hover:bg-accent ${
+                        className={`block rounded px-3 py-1.5 text-sm transition-colors hover:bg-foreground/10 ${
                           currentSection === key
                             ? 'text-foreground'
                             : 'text-muted-foreground hover:text-foreground'
@@ -101,7 +101,7 @@ export function Header({ searchItems }: { searchItems: SearchItem[] }) {
               target={href.startsWith('http') ? '_blank' : undefined}
               rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
               aria-label={name}
-              className='w-8 sm:w-9 h-9 flex items-center justify-center rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors'
+              className='w-8 sm:w-9 h-9 flex items-center justify-center rounded-md text-muted-foreground hover:text-foreground hover:bg-foreground/10 transition-colors'
             >
               <Icon className='w-[18px] h-[18px]' />
             </Link>
