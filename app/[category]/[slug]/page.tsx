@@ -143,15 +143,17 @@ export default async function PostPage({ params }: Props) {
 
         {post.meta.thumbnail && (
           <figure className='w-4/5 mx-auto mb-8'>
-            <div className='relative aspect-[3/2] rounded-lg overflow-hidden'>
-              <Image
-                src={post.meta.thumbnail}
-                alt={post.meta.title}
-                fill
-                className='object-cover'
-                priority
-              />
-            </div>
+            {/* 썸네일마다 비율이 달라서(3:2, 16:9, 정사각형) 자르지 않고 원본 비율로 보여준다 */}
+            <Image
+              src={post.meta.thumbnail}
+              alt={post.meta.title}
+              width={1600}
+              height={1000}
+              sizes='(min-width: 768px) 590px, 80vw'
+              // 정사각형처럼 세로가 긴 썸네일은 너무 커지지 않게 높이를 제한한다
+              className='mx-auto h-auto max-h-[28rem] w-auto max-w-full rounded-lg'
+              priority
+            />
             {hasDescriptionCaption && post.meta.description && (
               <figcaption className='mt-2 text-center text-sm text-muted-foreground'>
                 {post.meta.description}
