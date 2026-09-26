@@ -72,6 +72,7 @@ export function PostCard({ post, showCategory = false }: PostCardProps) {
             )}
           </div>
           <div className='flex items-center gap-3 text-sm text-muted-foreground tabular-nums whitespace-nowrap'>
+            <span>{meta.readingTime}</span>
             <time dateTime={meta.date}>
               {format(new Date(meta.date), 'yyyy.MM.dd')}
             </time>
