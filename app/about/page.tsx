@@ -104,7 +104,7 @@ export default function AboutPage() {
             key={activity.title}
             title={activity.title}
             period={activity.period}
-            href={activity.link?.href}
+            href={activity.href}
           />
         ))}
       </Section>
