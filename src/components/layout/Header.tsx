@@ -1,159 +1,114 @@
 'use client'
 
-import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
+import { ChevronDown, Github, Linkedin, Rss } from 'lucide-react'
 import { BLOG_CATEGORIES } from '@/lib/categories'
 import { ThemeToggle } from './ThemeToggle'
+import { Search, type SearchItem } from './Search'
 
-const postCategories = BLOG_CATEGORIES.map((category) => ({
-  name: category.label,
-  href: `/${category.key}`,
-}))
+const SOCIAL_LINKS = [
+  { name: 'GitHub', href: 'https://github.com/hexdrinker', icon: Github },
+  { name: 'LinkedIn', href: 'https://linkedin.com/in/hexdrinker', icon: Linkedin },
+  { name: 'RSS', href: '/feed.xml', icon: Rss },
+]
 
-export function Header() {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+const POST_MENU_ITEMS = [
+  { key: 'posts', name: 'All', href: '/posts' },
+  ...BLOG_CATEGORIES.map(({ key }) => ({
+    key,
+    name: key[0].toUpperCase() + key.slice(1),
+    href: `/${key}`,
+  })),
+]
+
+export function Header({ searchItems }: { searchItems: SearchItem[] }) {
   const pathname = usePathname()
+  const isAbout = pathname.startsWith('/about')
+  // 홈과 About을 뺀 나머지는 모두 글 목록·글 상세 페이지다
+  const isPosts = pathname !== '/' && !isAbout
+  const currentSection = pathname.split('/')[1]
+
+  const navLinkClassName = (isActive: boolean) =>
+    `text-sm transition-colors ${
+      isActive ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
+    }`
 
   return (
     <header className='w-full'>
-      <div className='max-w-3xl mx-auto px-4 h-14 flex items-center justify-between'>
-        {/* Mobile menu button */}
-        <button
-          onClick={() => setIsMobileMenuOpen(true)}
-          className='md:hidden w-9 h-9 flex items-center justify-center rounded-md hover:bg-accent transition-colors'
-          aria-label='Open menu'
-        >
-          <svg
-            xmlns='http://www.w3.org/2000/svg'
-            width='20'
-            height='20'
-            viewBox='0 0 24 24'
-            fill='none'
-            stroke='currentColor'
-            strokeWidth='2'
-            strokeLinecap='round'
-            strokeLinejoin='round'
-          >
-            <line
-              x1='4'
-              x2='20'
-              y1='12'
-              y2='12'
-            />
-            <line
-              x1='4'
-              x2='20'
-              y1='6'
-              y2='6'
-            />
-            <line
-              x1='4'
-              x2='20'
-              y1='18'
-              y2='18'
-            />
-          </svg>
-        </button>
-
-        <Link
-          href='/'
-          className='flex items-center'
-        >
-          <Image
-            src='/img/logos/hexdrinker-629.jpeg'
-            alt='hexdrinker'
-            width={32}
-            height={32}
-            className='rounded-full'
-          />
-        </Link>
-
-        {/* Desktop navigation */}
-        <nav className='hidden md:flex items-center gap-6'>
+      <div className='max-w-3xl mx-auto px-4 h-14 flex items-center justify-between gap-2'>
+        <div className='flex items-center gap-4 sm:gap-5'>
           <Link
-            href='/about'
-            className='text-sm text-muted-foreground hover:text-foreground transition-colors'
+            href='/'
+            className='flex items-center shrink-0'
+            aria-label='홈'
           >
-            About
+            <Image
+              src='/img/logos/hexdrinker-629.jpeg'
+              alt='hexdrinker'
+              width={32}
+              height={32}
+              className='rounded-full'
+            />
           </Link>
-          <ThemeToggle />
-        </nav>
+          <nav className='flex items-center gap-4 sm:gap-5'>
+            {/* hover·키보드 포커스로 열리는 드롭다운. 모바일은 탭하면 /posts로 이동한다 */}
+            <div className='group relative'>
+              <Link
+                href='/posts'
+                onClick={(event) => event.currentTarget.blur()}
+                className={`flex items-center gap-0.5 ${navLinkClassName(isPosts)}`}
+              >
+                Posts
+                <ChevronDown className='w-3.5 h-3.5 transition-transform group-hover:rotate-180 group-focus-within:rotate-180' />
+              </Link>
+              <div className='invisible absolute left-0 top-full z-50 pt-2 opacity-0 transition-opacity group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100'>
+                <ul className='min-w-32 rounded-md border border-border bg-background p-1 shadow-lg'>
+                  {POST_MENU_ITEMS.map(({ key, name, href }) => (
+                    <li key={key}>
+                      <Link
+                        href={href}
+                        onClick={(event) => event.currentTarget.blur()}
+                        className={`block rounded px-3 py-1.5 text-sm transition-colors hover:bg-accent ${
+                          currentSection === key
+                            ? 'text-foreground'
+                            : 'text-muted-foreground hover:text-foreground'
+                        }`}
+                      >
+                        {name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+            <Link
+              href='/about'
+              className={navLinkClassName(isAbout)}
+            >
+              About
+            </Link>
+          </nav>
+        </div>
 
-        {/* Mobile theme toggle */}
-        <div className='md:hidden'>
+        <div className='flex items-center'>
+          <Search items={searchItems} />
+          {SOCIAL_LINKS.map(({ name, href, icon: Icon }) => (
+            <Link
+              key={name}
+              href={href}
+              target={href.startsWith('http') ? '_blank' : undefined}
+              rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
+              aria-label={name}
+              className='w-8 sm:w-9 h-9 flex items-center justify-center rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors'
+            >
+              <Icon className='w-[18px] h-[18px]' />
+            </Link>
+          ))}
           <ThemeToggle />
         </div>
       </div>
-
-      {/* Mobile side navigation */}
-      {isMobileMenuOpen && (
-        <>
-          {/* Backdrop */}
-          <div
-            className='fixed inset-0 bg-black/50 z-40 md:hidden'
-            onClick={() => setIsMobileMenuOpen(false)}
-          />
-
-          {/* Side panel */}
-          <div className='fixed inset-y-0 left-0 w-64 bg-background border-r border-border z-50 md:hidden'>
-            <div className='flex items-center justify-between h-14 px-4 border-b border-border'>
-              <span className='font-semibold'>Menu</span>
-              <button
-                onClick={() => setIsMobileMenuOpen(false)}
-                className='w-9 h-9 flex items-center justify-center rounded-md hover:bg-accent transition-colors'
-                aria-label='Close menu'
-              >
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  width='20'
-                  height='20'
-                  viewBox='0 0 24 24'
-                  fill='none'
-                  stroke='currentColor'
-                  strokeWidth='2'
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                >
-                  <path d='M18 6 6 18' />
-                  <path d='m6 6 12 12' />
-                </svg>
-              </button>
-            </div>
-
-            <nav className='p-4'>
-              <div className='space-y-1'>
-                <Link
-                  href='/'
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={`block px-2 py-2 text-sm rounded-md transition-colors ${
-                    pathname === '/'
-                      ? 'bg-accent text-foreground'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-accent'
-                  }`}
-                >
-                  Home
-                </Link>
-              </div>
-              <div className='space-y-1'>
-                <Link
-                  href='/about'
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={`block px-2 py-2 text-sm rounded-md transition-colors ${
-                    pathname === '/about'
-                      ? 'bg-accent text-foreground'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-accent'
-                  }`}
-                >
-                  About
-                </Link>
-              </div>
-            </nav>
-          </div>
-        </>
-      )}
     </header>
   )
 }

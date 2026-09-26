@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import { ThemeProvider } from '@/components/layout/ThemeProvider'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
+import { getMainPagePosts } from '@/lib/posts'
+import { BLOG_CATEGORY_MAP } from '@/lib/categories'
 import './globals.css'
 
 const geistSans = Geist({
@@ -53,6 +55,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const searchItems = getMainPagePosts().map(({ slug, meta }) => ({
+    title: meta.title,
+    description: meta.description,
+    href: `/${slug}`,
+    category: BLOG_CATEGORY_MAP.get(meta.category)?.label ?? meta.category,
+    date: meta.date.slice(0, 10).replaceAll('-', '.'),
+    tags: meta.tags,
+  }))
+
   return (
     <html
       lang='ko'
@@ -67,7 +78,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Header />
+          <Header searchItems={searchItems} />
           <main className='flex-1'>{children}</main>
           <Footer />
         </ThemeProvider>
