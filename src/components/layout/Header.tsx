@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
@@ -15,7 +16,6 @@ const SOCIAL_LINKS = [
 ]
 
 const POST_MENU_ITEMS = [
-  { key: 'posts', name: 'All', href: '/posts' },
   ...BLOG_CATEGORIES.map(({ key }) => ({
     key,
     name: key[0].toUpperCase() + key.slice(1),
@@ -29,6 +29,21 @@ export function Header({ searchItems }: { searchItems: SearchItem[] }) {
   // 홈과 About을 뺀 나머지는 모두 글 목록·글 상세 페이지다
   const isPosts = pathname !== '/' && !isAbout
   const currentSection = pathname.split('/')[1]
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const menuRef = useRef<HTMLDivElement>(null)
+
+  // 페이지를 옮기면 메뉴를 닫는다
+  useEffect(() => setIsMenuOpen(false), [pathname])
+
+  // 터치 기기에서 메뉴 바깥을 누르면 닫는다
+  useEffect(() => {
+    if (!isMenuOpen) return
+    const onPointerDown = (event: PointerEvent) => {
+      if (!menuRef.current?.contains(event.target as Node)) setIsMenuOpen(false)
+    }
+    document.addEventListener('pointerdown', onPointerDown)
+    return () => document.removeEventListener('pointerdown', onPointerDown)
+  }, [isMenuOpen])
 
   const navLinkClassName = (isActive: boolean) =>
     `text-sm transition-colors ${
@@ -53,17 +68,24 @@ export function Header({ searchItems }: { searchItems: SearchItem[] }) {
             />
           </Link>
           <nav className='flex items-center gap-4 sm:gap-5'>
-            {/* hover·키보드 포커스로 열리는 드롭다운. 모바일은 탭하면 /posts로 이동한다 */}
-            <div className='group relative'>
-              <Link
-                href='/posts'
-                onClick={(event) => event.currentTarget.blur()}
-                className={`flex items-center gap-0.5 ${navLinkClassName(isPosts)}`}
+            {/* 데스크톱은 hover·키보드 포커스, 터치 기기는 탭으로 연다 */}
+            <div
+              ref={menuRef}
+              data-open={isMenuOpen}
+              onMouseLeave={() => setIsMenuOpen(false)}
+              className='group relative'
+            >
+              <button
+                type='button'
+                aria-expanded={isMenuOpen}
+                aria-haspopup='true'
+                onClick={() => setIsMenuOpen((open) => !open)}
+                className={`flex items-center gap-0.5 cursor-pointer ${navLinkClassName(isPosts)}`}
               >
                 Posts
-                <ChevronDown className='w-3.5 h-3.5 transition-transform group-hover:rotate-180 group-focus-within:rotate-180' />
-              </Link>
-              <div className='invisible absolute left-0 top-full z-50 pt-2 opacity-0 transition-opacity group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100'>
+                <ChevronDown className='w-3.5 h-3.5 transition-transform group-hover:rotate-180 group-focus-within:rotate-180 group-data-[open=true]:rotate-180' />
+              </button>
+              <div className='invisible absolute left-0 top-full z-50 pt-2 opacity-0 transition-opacity group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100 group-data-[open=true]:visible group-data-[open=true]:opacity-100'>
                 <ul className='min-w-32 rounded-md border border-foreground/10 bg-background/70 p-1 shadow-lg backdrop-blur-md'>
                   {POST_MENU_ITEMS.map(({ key, name, href }) => (
                     <li key={key}>
