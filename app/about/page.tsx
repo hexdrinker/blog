@@ -1,104 +1,113 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
-import { getAuthor } from '@/lib/authors'
-import { Mail, Github, Linkedin, Rss } from 'lucide-react'
+import { ACTIVITIES, CAREERS, CURRENT_WORK } from './constant'
 
 export const metadata: Metadata = {
   title: 'About',
-  description: 'hexdrinker에 대해서',
+  description: '프론트엔드 엔지니어 박영호의 경력과 활동',
 }
 
-const SOCIAL_LINKS = [
-  {
-    name: 'Email',
-    href: 'mailto:hexdrinker2020@gmail.com',
-    icon: Mail,
-  },
-  {
-    name: 'GitHub',
-    href: 'https://github.com/hexdrinker',
-    icon: Github,
-  },
-  {
-    name: 'LinkedIn',
-    href: 'https://linkedin.com/in/hexdrinker',
-    icon: Linkedin,
-  },
-  {
-    name: 'RSS',
-    href: '/feed.xml',
-    icon: Rss,
-  },
-]
+function Section({
+  title,
+  children,
+}: {
+  title: string
+  children: React.ReactNode
+}) {
+  return (
+    <section>
+      <h2 className='mb-5 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.14em] after:h-px after:flex-1 after:bg-border'>
+        {title}
+      </h2>
+      <ul className='space-y-5'>{children}</ul>
+    </section>
+  )
+}
+
+function Item({
+  title,
+  period,
+  role,
+  team,
+  href,
+}: {
+  title: string
+  period?: string
+  role?: string
+  team?: string
+  href?: string
+}) {
+  return (
+    <li className='grid gap-x-6 gap-y-0.5 sm:grid-cols-[1fr_auto] sm:items-baseline'>
+      {href ? (
+        <a
+          href={href}
+          target='_blank'
+          rel='noopener noreferrer'
+          className='font-semibold hover:text-primary transition-colors'
+        >
+          {title} ↗
+        </a>
+      ) : (
+        <span className='font-semibold'>{title}</span>
+      )}
+      {period && (
+        <span className='text-sm text-muted-foreground tabular-nums sm:row-start-1 sm:col-start-2 sm:text-right'>
+          {period}
+        </span>
+      )}
+      {role && (
+        <p className='text-sm sm:col-span-2'>
+          <span className='text-muted-foreground'>{role}</span>
+          {team && (
+            <span className='text-muted-foreground/60'> · {team}</span>
+          )}
+        </p>
+      )}
+    </li>
+  )
+}
 
 export default function AboutPage() {
-  const author = getAuthor('hexdrinker')
-
   return (
-    <div className='max-w-3xl mx-auto px-4 py-12'>
-      <header className='mb-12 text-center'>
-        {author && (
-          <>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={author.image_url}
-              alt={author.name}
-              className='w-32 h-32 rounded-full mx-auto mb-6'
-            />
-            <h1 className='text-3xl font-bold mb-2'>{author.name}</h1>
-            <p className='text-lg text-muted-foreground mb-6'>{author.title}</p>
-            <div className='flex items-center justify-center gap-4'>
-              {SOCIAL_LINKS.map((link) => {
-                const isInternal =
-                  !link.href.startsWith('http') &&
-                  !link.href.startsWith('mailto:') &&
-                  !link.href.endsWith('.xml')
+    <div className='max-w-3xl mx-auto px-4 py-12 space-y-12'>
+      <h1 className='sr-only'>About</h1>
 
-                const linkClassName =
-                  'w-10 h-10 flex items-center justify-center rounded-full text-muted-foreground hover:text-foreground hover:border-foreground transition-colors hover:bg-slate-100 dark:hover:bg-slate-800'
+      <Section title='Currently working on'>
+        {CURRENT_WORK.map((work) => (
+          <Item
+            key={work.company}
+            title={work.company}
+            period={work.period}
+            role={work.role}
+            team={work.team}
+            href={work.href}
+          />
+        ))}
+      </Section>
 
-                if (isInternal) {
-                  return (
-                    <Link
-                      key={link.name}
-                      href={link.href}
-                      className={linkClassName}
-                      aria-label={link.name}
-                    >
-                      <link.icon
-                        size={20}
-                        strokeWidth={1.5}
-                      />
-                    </Link>
-                  )
-                }
+      <Section title='Career'>
+        {CAREERS.map((career) => (
+          <Item
+            key={career.company}
+            title={career.company}
+            period={career.period}
+            role={career.role}
+            team={career.team}
+            href={career.href}
+          />
+        ))}
+      </Section>
 
-                return (
-                  <a
-                    key={link.name}
-                    href={link.href}
-                    target={
-                      link.href.startsWith('mailto:') ? undefined : '_blank'
-                    }
-                    rel={
-                      link.href.startsWith('mailto:')
-                        ? undefined
-                        : 'noopener noreferrer'
-                    }
-                    className={linkClassName}
-                    aria-label={link.name}
-                  >
-                    <link.icon
-                      size={20}
-                      strokeWidth={1.5}
-                    />
-                  </a>
-                )
-              })}
-            </div>
-          </>
-        )}
-      </header>
+      <Section title='Activities'>
+        {ACTIVITIES.map((activity) => (
+          <Item
+            key={activity.title}
+            title={activity.title}
+            period={activity.period}
+            href={activity.link?.href}
+          />
+        ))}
+      </Section>
     </div>
   )
 }
