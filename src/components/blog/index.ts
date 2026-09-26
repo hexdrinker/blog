@@ -1,4 +1,6 @@
 export { PostCard } from './PostCard'
 export { PostList } from './PostList'
 export { ViewCounter } from './ViewCounter'
+export { ArticleList } from './ArticleList'
+export { PostThumbnail } from './PostThumbnail'
 export { BookShelf, getBookTitle } from './BookShelf'

@@ -5,12 +5,16 @@ import { notFound } from 'next/navigation'
 import { getPostsByCategory, getAllCategories } from '@/lib/posts'
 import { getAllSeriesWithMeta } from '@/lib/series'
 import { BLOG_CATEGORIES, BLOG_CATEGORY_MAP } from '@/lib/categories'
-import { BookShelf, PostList } from '@/components/blog'
+import { ArticleList, BookShelf, PostList } from '@/components/blog'
 
 const configuredCategories = BLOG_CATEGORIES.map((category) => category.key)
 const POSTS_PER_PAGE = 10
 // 책장은 한 줄 4권이라 줄이 딱 맞게 12권씩
 const BOOKS_PER_PAGE = 12
+// 썸네일 카드 목록으로 보여주는 카테고리
+const ARTICLE_LAYOUT_CATEGORIES = new Set(['tech', 'log', 'daily'])
+// 가운데 정렬 제목(— ◆ TITLE ◆ —)을 쓰는 카테고리
+const CENTERED_HEADER_CATEGORIES = new Set([...ARTICLE_LAYOUT_CATEGORIES, 'series', 'bookshelf'])
 
 interface Props {
   params: Promise<{ category: string }>
@@ -46,7 +50,9 @@ export default async function CategoryPage({ params, searchParams }: Props) {
   const { page } = await searchParams
   const validCategories = new Set([...configuredCategories, ...getAllCategories()])
   const isSeriesCategory = category === 'series'
+  const isArticleLayout = ARTICLE_LAYOUT_CATEGORIES.has(category)
   const isBookShelf = category === 'bookshelf'
+  const hasCenteredHeader = CENTERED_HEADER_CATEGORIES.has(category)
 
   // 유효하지 않은 카테고리는 404
   if (!validCategories.has(category)) {
@@ -76,7 +82,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
 
   return (
     <div className='max-w-3xl mx-auto px-4 py-12'>
-      {isBookShelf ? (
+      {hasCenteredHeader ? (
         <header className='mb-8 text-center'>
           <div className='flex items-center justify-center gap-3 text-muted-foreground'>
             <span className='h-px w-10 bg-gradient-to-r from-transparent to-muted-foreground/60' />
@@ -89,7 +95,10 @@ export default async function CategoryPage({ params, searchParams }: Props) {
           </div>
           {meta?.description && (
             <p className='mt-3 text-sm text-muted-foreground'>
-              {meta.description} · {totalPosts}개의 글
+              {meta.description} ·{' '}
+              {isSeriesCategory
+                ? `${seriesList.length}개의 시리즈`
+                : `${totalPosts}개의 글`}
             </p>
           )}
         </header>
@@ -118,7 +127,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
       )}
       <div
         className={`mb-6 flex flex-nowrap gap-2 overflow-x-auto pb-1 md:flex-wrap md:overflow-visible ${
-          isBookShelf ? 'md:justify-center' : ''
+          hasCenteredHeader ? 'md:justify-center' : ''
         }`}
       >
         <Link
@@ -186,6 +195,11 @@ export default async function CategoryPage({ params, searchParams }: Props) {
             ))}
           </div>
         )
+      ) : isArticleLayout ? (
+        <ArticleList
+          posts={paginatedPosts}
+          featureFirst={currentPage === 1}
+        />
       ) : isBookShelf ? (
         <BookShelf posts={paginatedPosts} />
       ) : (
