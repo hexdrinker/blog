@@ -4,6 +4,7 @@ import { ThemeProvider } from '@/components/layout/ThemeProvider'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { ThemeBackdrop } from '@/components/layout/ThemeBackdrop'
+import { WeatherSync } from '@/components/layout/WeatherSync'
 import { getMainPagePosts } from '@/lib/posts'
 import { BLOG_CATEGORY_MAP } from '@/lib/categories'
 import './globals.css'
@@ -51,8 +52,11 @@ export const metadata: Metadata = {
   },
 }
 
-// 첫 페인트 전에 방문자 시각으로 시간대를 정해 배경 디테일을 바꾼다
-const TIME_OF_DAY_SCRIPT = `(function(){var h=new Date().getHours();document.documentElement.dataset.time=h>=5&&h<8?'dawn':h>=8&&h<17?'day':h>=17&&h<20?'dusk':'night'})()`
+// 첫 페인트 전에 배경 시간대·날씨와 테마를 정한다
+// 1) ?time=&weather= 파라미터 2) WeatherSync가 저장해 둔 방문자 위치의 날씨(15분) 3) 기기 시계 순으로 쓴다
+// 낮에만 라이트, 새벽·저녁·밤은 다크 테마가 되도록 next-themes가 읽는 값도 여기서 정한다
+// WebGL 하늘을 쓸 브라우저면 data-sky='gl'을 붙여, 로딩 중엔 일러스트 대신 단순 그라데이션만 보여준다
+const SKY_SCRIPT = `(function(){var d=document.documentElement,t,w;try{var q=new URLSearchParams(location.search);t=q.get('time');w=q.get('weather');if(!t&&!w){var s=JSON.parse(sessionStorage.getItem('sky')||'null');if(s&&Date.now()-s.at<9e5){t=s.time;w=s.weather}}}catch(e){}if(!t){var h=new Date().getHours();t=h>=5&&h<8?'dawn':h>=8&&h<17?'day':h>=17&&h<20?'dusk':'night'}d.dataset.time=t;if(w)d.dataset.weather=w;try{localStorage.setItem('theme',t==='day'?'light':'dark')}catch(e){}try{if(window.WebGLRenderingContext&&!matchMedia('(prefers-reduced-motion: reduce)').matches)d.dataset.sky='gl'}catch(e){}})()`
 
 export default function RootLayout({
   children,
@@ -74,7 +78,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: TIME_OF_DAY_SCRIPT }} />
+        <script dangerouslySetInnerHTML={{ __html: SKY_SCRIPT }} />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
@@ -86,6 +90,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ThemeBackdrop />
+          <WeatherSync />
           <Header searchItems={searchItems} />
           <main className='flex-1'>{children}</main>
           <Footer />

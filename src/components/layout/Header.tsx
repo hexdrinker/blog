@@ -6,8 +6,10 @@ import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { ChevronDown, Github, Linkedin, Rss } from 'lucide-react'
 import { BLOG_CATEGORIES } from '@/lib/categories'
-import { ThemeToggle } from './ThemeToggle'
+// 테마는 접속 시간대로 자동으로 정해진다 (app/layout.tsx)
+// import { ThemeToggle } from './ThemeToggle'
 import { Search, type SearchItem } from './Search'
+import { DevSkyPanel } from './DevSkyPanel'
 
 const SOCIAL_LINKS = [
   { name: 'GitHub', href: 'https://github.com/hexdrinker', icon: Github },
@@ -53,7 +55,8 @@ export function Header({ searchItems }: { searchItems: SearchItem[] }) {
   return (
     <header className='w-full'>
       <div className='max-w-3xl mx-auto px-4 h-14 flex items-center justify-between gap-2'>
-        <div className='flex items-center gap-4 sm:gap-5'>
+        <div className='relative flex items-center gap-4 sm:gap-5'>
+          {process.env.NODE_ENV === 'development' && <DevSkyPanel />}
           <Link
             href='/'
             className='flex items-center shrink-0'
@@ -130,7 +133,7 @@ export function Header({ searchItems }: { searchItems: SearchItem[] }) {
               <Icon className='w-[18px] h-[18px]' />
             </Link>
           ))}
-          <ThemeToggle />
+          {/* <ThemeToggle /> */}
         </div>
       </div>
     </header>
