@@ -398,7 +398,7 @@
 /* SeriesCarousel 카드 */
 .series-stage {
   position: relative;
-  height: 400px;
+  height: 430px;
   perspective: 1200px;
   overflow-x: clip;
   touch-action: pan-y;
@@ -408,9 +408,9 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 240px;
+  width: 260px;
   aspect-ratio: 5 / 7;
-  margin: -168px 0 0 -120px;
+  margin: -182px 0 0 -130px;
   transition:
     transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
     opacity 0.5s ease,
@@ -454,8 +454,11 @@
   );
 }
 .series-card-art {
+  position: relative;
   display: grid;
-  flex: 0 0 42%;
+  /* 시리즈 썸네일(16:9)이 잘리지 않도록 칸 비율을 맞춘다 */
+  flex: none;
+  aspect-ratio: 16 / 9;
   place-items: center;
   margin: 6px 8px 0;
   overflow: hidden;
@@ -498,8 +501,8 @@
   opacity: 1;
 }
 @media (max-width: 640px) {
-  .series-stage { height: 340px; }
-  .series-slot { width: 200px; margin: -140px 0 0 -100px; }
+  .series-stage { height: 350px; }
+  .series-slot { width: 210px; margin: -147px 0 0 -105px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .series-slot,

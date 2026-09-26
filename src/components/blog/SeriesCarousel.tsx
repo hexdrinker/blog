@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef, useState, type CSSProperties, type PointerEvent } from 'react'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
@@ -11,6 +12,7 @@ export interface SeriesCard {
   description: string
   date: string
   readingTime: string
+  thumbnail?: string
 }
 
 // 가운데 카드 양옆으로 몇 장까지 보여줄지
@@ -157,8 +159,20 @@ export function SeriesCarousel({ cards }: { cards: SeriesCard[] }) {
                     <span>No. {String(card.order).padStart(2, '0')}</span>
                     <span>{card.readingTime}</span>
                   </div>
-                  <div className='series-card-art'>
-                    <span className='series-card-number'>{card.order}</span>
+                  {/* 비율은 CSS 파일 대신 클래스로 직접 고정한다 (16:9 썸네일) */}
+                  <div className='series-card-art relative aspect-video flex-none'>
+                    {card.thumbnail ? (
+                      <Image
+                        src={card.thumbnail}
+                        alt=''
+                        fill
+                        sizes='260px'
+                        draggable={false}
+                        className='object-contain'
+                      />
+                    ) : (
+                      <span className='series-card-number'>{card.order}</span>
+                    )}
                   </div>
                   <div className='series-card-text'>
                     <h3 className='text-sm font-bold leading-snug text-balance line-clamp-2'>

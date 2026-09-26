@@ -45,6 +45,7 @@ export default async function SeriesDetailPage({ params }: Props) {
     description: post.meta.description,
     date: format(new Date(post.meta.date), 'yyyy.MM.dd'),
     readingTime: post.meta.readingTime,
+    thumbnail: post.meta.thumbnail,
   }))
 
   return (
