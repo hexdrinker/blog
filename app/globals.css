@@ -295,17 +295,12 @@
   0%, 100% { opacity: 0.25; }
   50% { opacity: 1; }
 }
-@keyframes backdrop-spin {
-  to { transform: rotate(360deg); }
-}
 .backdrop-cloud { animation: backdrop-drift 60s ease-in-out infinite alternate; }
 .backdrop-twinkle { animation: backdrop-twinkle 4s ease-in-out infinite; }
-.backdrop-windmill { animation: backdrop-spin 14s linear infinite; }
 
 @media (prefers-reduced-motion: reduce) {
   .backdrop-cloud,
-  .backdrop-twinkle,
-  .backdrop-windmill { animation: none; }
+  .backdrop-twinkle { animation: none; }
 }
 
 /* 접속 시간대: <html data-time="dawn|day|dusk|night"> (layout의 인라인 스크립트가 설정) */
@@ -509,4 +504,65 @@
 @media (prefers-reduced-motion: reduce) {
   .series-slot,
   .series-card { transition: none; }
+}
+
+/* 방문자 위치의 날씨: <html data-weather="clear|cloudy|rain|snow|fog|storm"> (WeatherSync가 설정) */
+@custom-variant cloudy (&:where([data-weather="cloudy"] *));
+@custom-variant rain (&:where([data-weather="rain"] *));
+@custom-variant snow (&:where([data-weather="snow"] *));
+@custom-variant fog (&:where([data-weather="fog"] *));
+@custom-variant storm (&:where([data-weather="storm"] *));
+@custom-variant overcast (&:where([data-weather="rain"] *, [data-weather="storm"] *, [data-weather="snow"] *));
+
+/* 빗줄기·눈송이는 타일을 translate로 흘려서 GPU에서 합성되게 한다 */
+.backdrop-rain,
+.backdrop-snow {
+  position: absolute;
+  inset: calc(var(--tile) * -1) 0 0 0;
+  background-repeat: repeat;
+  background-size: var(--tile) var(--tile);
+  animation: backdrop-fall var(--speed) linear infinite;
+}
+.backdrop-rain {
+  transform-origin: top;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cg stroke='%235d6f8c' stroke-opacity='.45' stroke-width='1.2' stroke-linecap='round'%3E%3Cpath d='M12 4v16M52 44v14M92 18v18M32 78v16M76 96v14M108 64v16'/%3E%3C/g%3E%3C/svg%3E");
+}
+.dark .backdrop-rain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cg stroke='%23c3d0ec' stroke-opacity='.4' stroke-width='1.2' stroke-linecap='round'%3E%3Cpath d='M12 4v16M52 44v14M92 18v18M32 78v16M76 96v14M108 64v16'/%3E%3C/g%3E%3C/svg%3E");
+}
+.backdrop-rain-far { --tile: 120px; --speed: 0.9s; opacity: 0.6; }
+.backdrop-rain-near { --tile: 180px; --speed: 0.55s; }
+.backdrop-snow {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cg fill='%23fff' fill-opacity='.9'%3E%3Ccircle cx='20' cy='30' r='2.2'/%3E%3Ccircle cx='90' cy='12' r='1.6'/%3E%3Ccircle cx='150' cy='60' r='2.6'/%3E%3Ccircle cx='60' cy='110' r='1.8'/%3E%3Ccircle cx='130' cy='150' r='2.2'/%3E%3Ccircle cx='180' cy='120' r='1.4'/%3E%3Ccircle cx='30' cy='170' r='2.4'/%3E%3C/g%3E%3C/svg%3E");
+  filter: drop-shadow(0 0 1px rgb(100 116 139 / 0.35));
+}
+.backdrop-snow-far { --tile: 200px; --speed: 14s; opacity: 0.6; }
+.backdrop-snow-near { --tile: 300px; --speed: 9s; }
+@keyframes backdrop-fall {
+  to { transform: translateY(var(--tile)); }
+}
+.backdrop-rain-far,
+.backdrop-rain-near { animation-name: backdrop-rain-fall; }
+@keyframes backdrop-rain-fall {
+  from { transform: skewX(-8deg) translateY(0); }
+  to { transform: skewX(-8deg) translateY(var(--tile)); }
+}
+@keyframes backdrop-flash {
+  0%, 92%, 96%, 100% { opacity: 0; }
+  93%, 97% { opacity: 0.35; }
+}
+.backdrop-flash { opacity: 0; animation: backdrop-flash 9s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop-rain,
+  .backdrop-snow,
+  .backdrop-flash { animation: none; }
+}
+
+/* WebGL 하늘을 쓰는 브라우저(<html data-sky="gl">)에선 CSS 일러스트 하늘 대신 자리표시 그라데이션을 보여준다 */
+[data-sky='gl'] .css-sky {
+  display: none;
+}
+[data-sky='gl'] .sky-placeholder {
+  display: block;
 }

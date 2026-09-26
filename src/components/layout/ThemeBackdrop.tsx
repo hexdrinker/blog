@@ -1,3 +1,5 @@
+import { SkyLayer } from './SkyLayer'
+
 // 라이트: 해가 뜬 들판과 마을 / 다크: 달이 뜬 우주
 // next-themes가 <html>에 붙이는 .dark 클래스로 두 장면 중 하나만 보여준다
 
@@ -24,11 +26,13 @@ const STARS = Array.from({ length: 180 }, () => ({
 
 function DaySky() {
   return (
-    <div className='absolute inset-0 dark:hidden'>
+    <div className='css-sky absolute inset-0 dark:hidden'>
       {/* 하늘: 기본은 낮, 접속 시간대(data-time)에 따라 바뀐다 */}
       <div className='absolute inset-0 bg-[linear-gradient(to_bottom,#a9d6f5_0%,#cfe8fa_40%,#eef7fb_70%,#fbf6e6_100%)] dawn:bg-[linear-gradient(to_bottom,#b7c4ec_0%,#e6cde0_45%,#fbd9cf_75%,#ffe2bf_100%)] dusk:bg-[linear-gradient(to_bottom,#9fb0e0_0%,#e3b5c8_45%,#fcc3a4_75%,#ffcf96_100%)] night:bg-[linear-gradient(to_bottom,#b3bde3_0%,#cfd2ee_45%,#e5e0f2_80%,#efe9f1_100%)]' />
+      {/* 날씨: 흐리거나 비·눈·안개면 하늘이 잿빛으로 가라앉는다 */}
+      <div className='absolute inset-0 bg-[#9aa6b6] opacity-0 transition-opacity duration-1000 cloudy:opacity-30 overcast:opacity-55 fog:opacity-35' />
       {/* 해: 새벽·저녁엔 지평선 가까이 내려오고 밤엔 진다 */}
-      <div className='absolute top-[72px] right-[6%] h-32 w-32 max-lg:opacity-50 dawn:top-[46vh] dusk:top-[44vh] night:hidden'>
+      <div className='absolute top-[72px] right-[6%] h-32 w-32 max-lg:opacity-50 transition-opacity duration-1000 dawn:top-[46vh] dusk:top-[44vh] night:hidden cloudy:opacity-60 fog:opacity-40 overcast:opacity-0'>
         <div className='absolute -inset-[196px] rounded-full bg-[radial-gradient(circle,rgba(255,244,196,0.95)_0%,rgba(255,226,140,0.55)_14%,rgba(255,221,150,0.18)_32%,transparent_62%)] dawn:bg-[radial-gradient(circle,rgba(255,226,200,0.9)_0%,rgba(255,190,150,0.45)_16%,transparent_60%)] dusk:bg-[radial-gradient(circle,rgba(255,200,150,0.9)_0%,rgba(255,150,100,0.45)_16%,transparent_60%)]' />
         <div className='absolute inset-0 rounded-full bg-[radial-gradient(circle_at_40%_40%,#fffbe6,#ffe08a_70%,#ffd36b)] shadow-[0_0_60px_20px_rgba(255,220,120,0.45)] dawn:bg-[radial-gradient(circle_at_40%_40%,#fff4e0,#ffc58f_70%,#ffab70)] dusk:bg-[radial-gradient(circle_at_40%_40%,#ffe6c4,#ff9f6b_70%,#f57f55)] dusk:shadow-[0_0_70px_24px_rgba(255,140,90,0.45)]' />
       </div>
@@ -37,95 +41,20 @@ function DaySky() {
       <div className='backdrop-cloud absolute top-[11%] left-[10%] h-14 w-32 rounded-full bg-white/75 blur-md [animation-delay:-20s] dusk:bg-[#ffe0d2]/80' />
       <div className='backdrop-cloud absolute top-[30%] left-[58%] h-8 w-44 rounded-full bg-white/60 blur-md [animation-delay:-45s] dusk:bg-[#ffd6c4]/65' />
       <div className='backdrop-cloud absolute top-[42%] left-[20%] h-7 w-36 rounded-full bg-white/50 blur-md [animation-delay:-70s] dusk:bg-[#ffd6c4]/55' />
-      {/* 들판과 마을 */}
-      <svg
-        className='absolute inset-x-0 bottom-0 h-[30vh] min-h-[180px] w-full'
-        viewBox='0 0 1440 320'
-        preserveAspectRatio='xMidYMax slice'
-        aria-hidden='true'
-      >
-        {/* 먼 언덕 */}
-        <path
-          d='M0 170 C 180 120 320 150 470 132 C 640 112 760 150 930 128 C 1110 104 1280 140 1440 118 L1440 320 L0 320 Z'
-          fill='#d5e8c8'
-        />
-        {/* 마을 */}
-        <g transform='translate(1170 88)'>
-          <rect x='0' y='22' width='26' height='22' fill='#f3e6d0' />
-          <path d='M-3 23 L13 8 L29 23 Z' fill='#d59a7b' />
-          <rect x='34' y='16' width='20' height='28' fill='#efe0c6' />
-          <path d='M31 17 L44 4 L57 17 Z' fill='#c98a6c' />
-          <rect x='62' y='26' width='30' height='18' fill='#f5ead7' />
-          <path d='M59 27 L77 13 L95 27 Z' fill='#d8a283' />
-          {/* 종탑 */}
-          <rect x='100' y='6' width='14' height='38' fill='#ebdcc2' />
-          <path d='M98 7 L107 -14 L116 7 Z' fill='#b98068' />
-          <rect x='104' y='14' width='6' height='8' rx='3' fill='#c9b596' />
-          <rect x='122' y='24' width='24' height='20' fill='#f1e3cc' />
-          <path d='M119 25 L134 12 L149 25 Z' fill='#cf9577' />
-          {/* 창문: 저녁·밤엔 불이 켜진다 */}
-          <g className='fill-[#e3c9a4] dusk:fill-[#ffc964] night:fill-[#ffd27a]'>
-            <rect x='6' y='29' width='5' height='5' />
-            <rect x='40' y='24' width='5' height='5' />
-            <rect x='70' y='32' width='5' height='5' />
-            <rect x='82' y='32' width='5' height='5' />
-            <rect x='128' y='30' width='5' height='5' />
-          </g>
-        </g>
-        {/* 풍차 */}
-        <g transform='translate(190 116)'>
-          <path d='M-7 40 L-4 4 L4 4 L7 40 Z' fill='#efe2cb' />
-          <g
-            className='backdrop-windmill'
-            fill='#e4d2b4'
-          >
-            {[0, 90, 180, 270].map((angle) => (
-              <rect
-                key={angle}
-                x='-1.5'
-                y='-22'
-                width='3'
-                height='22'
-                transform={`rotate(${angle})`}
-              />
-            ))}
-          </g>
-          <circle r='2.5' fill='#cdb58f' />
-        </g>
-        {/* 중간 언덕 */}
-        <path
-          d='M0 220 C 200 180 380 214 560 196 C 760 176 900 216 1100 198 C 1260 184 1360 200 1440 192 L1440 320 L0 320 Z'
-          fill='#c3dfae'
-        />
-        {/* 나무 */}
-        <g fill='#a9cf92'>
-          <circle cx='180' cy='196' r='14' />
-          <circle cx='200' cy='200' r='10' />
-          <circle cx='640' cy='186' r='12' />
-          <circle cx='1210' cy='188' r='13' />
-          <circle cx='1230' cy='193' r='9' />
-        </g>
-        {/* 가까운 들판과 밭고랑 */}
-        <path
-          d='M0 262 C 240 236 480 258 720 248 C 960 238 1200 258 1440 244 L1440 320 L0 320 Z'
-          fill='#b2d69a'
-        />
-        <g
-          stroke='#a3cb89'
-          strokeWidth='2'
-          fill='none'
-        >
-          <path d='M0 286 C 360 270 1080 290 1440 272' />
-          <path d='M0 304 C 360 290 1080 308 1440 292' />
-        </g>
-      </svg>
+      {/* 먹구름: 흐린 날에만 */}
+      <div className='absolute inset-x-0 top-0 h-[45vh] opacity-0 transition-opacity duration-1000 cloudy:opacity-70 overcast:opacity-100'>
+        <div className='backdrop-cloud absolute top-[4%] left-[2%] h-24 w-[38rem] rounded-full bg-[#aab4c2]/80 blur-2xl' />
+        <div className='backdrop-cloud absolute top-[10%] right-[4%] h-28 w-[42rem] rounded-full bg-[#9ea9b8]/80 blur-2xl [animation-delay:-30s]' />
+        <div className='backdrop-cloud absolute top-[24%] left-[30%] h-20 w-[30rem] rounded-full bg-[#b3bcc8]/70 blur-2xl [animation-delay:-50s]' />
+      </div>
+
     </div>
   )
 }
 
 function NightSky() {
   return (
-    <div className='absolute inset-0 hidden dark:block'>
+    <div className='css-sky absolute inset-0 hidden dark:block'>
       <div className='absolute inset-0 bg-[radial-gradient(ellipse_at_70%_0%,#1c2458_0%,#0d1230_45%,#060816_100%)]' />
       {/* 은하수 */}
       <div className='absolute left-1/2 top-1/2 h-[38vh] w-[160vmax] -translate-x-1/2 -translate-y-1/2 -rotate-[24deg] bg-[radial-gradient(ellipse_at_center,rgba(170,160,255,0.16)_0%,rgba(120,150,255,0.08)_35%,transparent_70%)] blur-2xl' />
@@ -159,17 +88,111 @@ function NightSky() {
         ))}
       </svg>
 
-      {/* 별똥별: 밤에만 가끔 지나간다 */}
-      <div className='backdrop-meteor absolute left-[30%] top-[12%] hidden h-px w-40 bg-gradient-to-r from-transparent via-white/70 to-white night:block' />
+      {/* 날씨: 구름이 끼면 별이 가려진다 */}
+      <div className='absolute inset-0 bg-[#080b1a] opacity-0 transition-opacity duration-1000 cloudy:opacity-45 overcast:opacity-65 fog:opacity-40' />
+      <div className='absolute inset-x-0 top-0 h-[50vh] opacity-0 transition-opacity duration-1000 cloudy:opacity-70 overcast:opacity-100'>
+        <div className='backdrop-cloud absolute top-[6%] left-[4%] h-24 w-[38rem] rounded-full bg-[#1b2140]/90 blur-2xl' />
+        <div className='backdrop-cloud absolute top-[14%] right-[2%] h-28 w-[42rem] rounded-full bg-[#171c36]/90 blur-2xl [animation-delay:-30s]' />
+      </div>
+
+      {/* 별똥별: 맑은 밤에만 가끔 지나간다 */}
+      <div className='backdrop-meteor absolute left-[30%] top-[12%] hidden h-px w-40 bg-gradient-to-r from-transparent via-white/70 to-white night:block cloudy:hidden overcast:hidden fog:hidden' />
 
       {/* 달: 낮 시간대엔 흐린 낮달 */}
-      <div className='absolute top-[72px] right-[6%] max-lg:opacity-50 day:opacity-60 h-28 w-28 rounded-full bg-[radial-gradient(circle_at_38%_35%,#fbf8ea,#e4e0cb_65%,#cfcab2)] shadow-[0_0_70px_18px_rgba(235,232,200,0.22)]'>
+      <div className='absolute top-[72px] right-[6%] max-lg:opacity-50 day:opacity-60 cloudy:opacity-50 fog:opacity-40 overcast:opacity-15 transition-opacity duration-1000 h-28 w-28 rounded-full bg-[radial-gradient(circle_at_38%_35%,#fbf8ea,#e4e0cb_65%,#cfcab2)] shadow-[0_0_70px_18px_rgba(235,232,200,0.22)]'>
         <span className='absolute left-[22%] top-[28%] h-5 w-5 rounded-full bg-[#d3ceb6]/80' />
         <span className='absolute left-[58%] top-[20%] h-3 w-3 rounded-full bg-[#d3ceb6]/70' />
         <span className='absolute left-[48%] top-[56%] h-7 w-7 rounded-full bg-[#d6d1b9]/70' />
         <span className='absolute left-[24%] top-[64%] h-2.5 w-2.5 rounded-full bg-[#d3ceb6]/70' />
       </div>
     </div>
+  )
+}
+
+// 사인파 여러 개를 겹쳐 봉우리가 들쭉날쭉한 능선을 만든다 (시드 고정이라 매번 같은 산)
+function ridgePath(seed: number, base: number, amplitude: number, detail: number) {
+  const rand = mulberry32(seed)
+  const waves = Array.from({ length: 5 }, (_, i) => ({
+    frequency: (0.004 + rand() * 0.004) * 2 ** i,
+    phase: rand() * Math.PI * 2,
+    weight: 0.55 ** i,
+  }))
+  const points: string[] = []
+  for (let x = 0; x <= 1440; x += 12) {
+    const height = waves.reduce(
+      (sum, wave) => sum + Math.sin(x * wave.frequency + wave.phase) * wave.weight,
+      0,
+    )
+    const jitter = (rand() - 0.5) * detail
+    points.push(`${x} ${(base - height * amplitude + jitter).toFixed(1)}`)
+  }
+  return `M0 320 L${points.join(' L')} L1440 320 Z`
+}
+
+const RIDGES = [
+  {
+    id: 'far',
+    d: ridgePath(21, 150, 34, 2),
+    top: '[stop-color:#b9c8d6] dawn:[stop-color:#6f5d7b] dusk:[stop-color:#6d5872] night:[stop-color:#1d2440]',
+    bottom: '[stop-color:#d4dee7] dawn:[stop-color:#8a7589] dusk:[stop-color:#8a6f84] night:[stop-color:#232a45]',
+    className: 'fog:opacity-40',
+  },
+  {
+    id: 'mid',
+    d: ridgePath(34, 196, 24, 3),
+    top: '[stop-color:#9db1c3] dawn:[stop-color:#4f4262] dusk:[stop-color:#4c3d5a] night:[stop-color:#151b30]',
+    bottom: '[stop-color:#b6c6d4] dawn:[stop-color:#605171] dusk:[stop-color:#5d4b6a] night:[stop-color:#1a2036]',
+    className: 'fog:opacity-60',
+  },
+  {
+    id: 'near',
+    d: ridgePath(55, 244, 14, 5),
+    top: '[stop-color:#7f97ac] dawn:[stop-color:#322a42] dusk:[stop-color:#30263d] night:[stop-color:#0c1020]',
+    bottom: '[stop-color:#91a7ba] dawn:[stop-color:#3b3150] dusk:[stop-color:#382d47] night:[stop-color:#0f1324]',
+    className: 'fog:opacity-80',
+  },
+]
+
+// 먼 산부터 가까운 산까지 세 겹. 먼 산일수록 옅고 아래로 갈수록 안개가 낀 듯 밝아진다
+// 해 뜰 녘·질 녘엔 역광이라 산이 어두운 실루엣이 된다
+function Ridges() {
+  return (
+    <svg
+      className='absolute inset-x-0 bottom-0 h-[26vh] min-h-[160px] w-full'
+      viewBox='0 0 1440 320'
+      preserveAspectRatio='xMidYMax slice'
+      aria-hidden='true'
+    >
+      <defs>
+        {RIDGES.map((ridge) => (
+          <linearGradient
+            key={ridge.id}
+            id={`ridge-${ridge.id}`}
+            x1='0'
+            y1='0'
+            x2='0'
+            y2='1'
+          >
+            <stop
+              offset='0'
+              className={ridge.top}
+            />
+            <stop
+              offset='1'
+              className={ridge.bottom}
+            />
+          </linearGradient>
+        ))}
+      </defs>
+      {RIDGES.map((ridge) => (
+        <path
+          key={ridge.id}
+          d={ridge.d}
+          fill={`url(#ridge-${ridge.id})`}
+          className={ridge.className}
+        />
+      ))}
+    </svg>
   )
 }
 
@@ -181,6 +204,24 @@ export function ThemeBackdrop() {
     >
       <DaySky />
       <NightSky />
+      {/* WebGL 하늘을 불러오는 동안 보이는 자리표시. 시간대별로 WebGL 하늘과 비슷한 색이다 */}
+      <div className='sky-placeholder absolute inset-0 hidden bg-[linear-gradient(to_bottom,#86a4c2_0%,#a9bfd3_55%,#cdd8e2_100%)] dawn:bg-[linear-gradient(to_bottom,#3b475d_0%,#8e7a78_55%,#d99a64_100%)] dusk:bg-[linear-gradient(to_bottom,#3b475d_0%,#8e7a78_55%,#d99a64_100%)] night:bg-[linear-gradient(to_bottom,#0b0f20_0%,#141a2e_60%,#1e2438_100%)] overcast:bg-[linear-gradient(to_bottom,#8d98a5_0%,#aab3bd_60%,#c3cad2_100%)] night:overcast:bg-[linear-gradient(to_bottom,#0a0c14_0%,#12151f_100%)]' />
+      <SkyLayer />
+      {/* 글이 잘 읽히도록 하늘을 살짝 눌러준다. 비·눈엔 잿빛, 다크 테마엔 짙은 남색을 더한다 */}
+      <div className='absolute inset-0 transition-colors duration-1000 overcast:bg-[#8994a3]/35 dark:bg-[#060b24]/30 night:bg-[#050a28]/60 dark:overcast:bg-[#05070f]/55' />
+      <Ridges />
+
+      {/* 비·눈·안개·번개는 두 장면 공통 */}
+      <div className='css-sky absolute inset-0 hidden rain:block storm:block'>
+        <div className='backdrop-rain backdrop-rain-far' />
+        <div className='backdrop-rain backdrop-rain-near' />
+      </div>
+      <div className='css-sky absolute inset-0 hidden snow:block'>
+        <div className='backdrop-snow backdrop-snow-far' />
+        <div className='backdrop-snow backdrop-snow-near' />
+      </div>
+      <div className='absolute inset-x-0 bottom-0 h-2/3 opacity-0 transition-opacity duration-1000 fog:opacity-100 bg-[linear-gradient(to_top,rgba(236,239,243,0.9),rgba(236,239,243,0.45)_50%,transparent)] dark:bg-[linear-gradient(to_top,rgba(120,130,165,0.35),transparent)]' />
+      <div className='backdrop-flash absolute inset-0 hidden bg-white storm:block' />
     </div>
   )
 }
