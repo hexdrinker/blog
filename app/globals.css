@@ -325,3 +325,77 @@
 @media (prefers-reduced-motion: reduce) {
   .backdrop-meteor { animation: none; }
 }
+
+/* BookShelf 입체 책 */
+.book {
+  display: block;
+  padding: 14px;
+}
+.book-body {
+  position: relative;
+  display: block;
+  perspective: 1600px;
+}
+.book-pages {
+  position: absolute;
+  inset: 1.5% 4px 1.5% 8px;
+  border: 1px solid #9ca3af;
+  border-radius: 2px 6px 6px 2px;
+  background: linear-gradient(to right, #f3f3f0, #fff 30%);
+  box-shadow: 10px 40px 40px -10px rgb(0 0 0 / 0.19);
+}
+.book-leaf {
+  position: absolute;
+  inset: 1.5% 6px 1.5% 0;
+  border-radius: 1px 5px 5px 1px;
+  background: linear-gradient(to right, #efece5, #fdfcf9 12%, #fffefb);
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.06);
+  transform-origin: left center;
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.book-cover {
+  position: relative;
+  display: block;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  border-radius: 2px 6px 6px 2px;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.25);
+  transform-origin: left center;
+  transition:
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.55s ease;
+}
+.book-gutter {
+  position: absolute;
+  top: 0;
+  left: 8px;
+  z-index: 5;
+  width: 20px;
+  height: 100%;
+  border-left: 2px solid rgb(0 0 0 / 0.04);
+  background: linear-gradient(to right, rgb(255 255 255 / 0.2), transparent);
+}
+.book-gloss {
+  position: absolute;
+  inset: 0 0 0 auto;
+  z-index: 4;
+  width: 95%;
+  background: linear-gradient(to right, transparent, rgb(255 255 255 / 0.2));
+  opacity: 0.1;
+  transition: opacity 0.55s ease;
+}
+.book:is(:hover, :focus-visible) .book-cover {
+  transform: rotateY(-32deg);
+  box-shadow:
+    14px 8px 22px -6px rgb(0 0 0 / 0.22),
+    30px 26px 42px -10px rgb(0 0 0 / 0.12);
+}
+.book:is(:hover, :focus-visible) .leaf-1 { transform: rotateY(-32deg); transition-delay: 0.05s; }
+.book:is(:hover, :focus-visible) .leaf-2 { transform: rotateY(-24deg); transition-delay: 0.1s; }
+.book:is(:hover, :focus-visible) .leaf-3 { transform: rotateY(-16deg); transition-delay: 0.15s; }
+.book:is(:hover, :focus-visible) .book-gloss { opacity: 0.5; }
+
+@media (prefers-reduced-motion: reduce) {
+  .book-cover,
+  .book-leaf { transition: none; }
+}

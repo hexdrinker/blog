@@ -68,12 +68,18 @@ const posts = defineCollection({
       ? `series/${pathParts[1]}/${slug}`
       : `${pathCategory}/${slug}`
 
+    // 본문에 <Img src='cover.jpg' /> 형태로 넣은 표지를 목록에서 쓸 수 있게 뽑아둔다
+    const coverSrc = document.content.match(
+      /<Img[^>]*?src=['"]([^'"]*cover\.[a-z]+)['"]/,
+    )?.[1]
+
     return {
       ...document,
       category,
       slug,
       imageBasePath,
       thumbnail: resolveContentImage(document.thumbnail, imageBasePath),
+      cover: resolveContentImage(coverSrc, imageBasePath),
       // series 폴더 구조면 폴더명에서 시리즈 추출, 아니면 frontmatter에서
       series: seriesFromPath || document.series,
       permalink: isSeriesPost

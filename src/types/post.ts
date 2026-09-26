@@ -4,7 +4,7 @@ export type PostCategory =
   | 'log'
   | 'daily'
   | 'music'
-  | 'book'
+  | 'bookshelf'
   | 'travel'
   | 'movie'
   | 'concert'
@@ -24,6 +24,7 @@ export interface BasePostMeta {
   imageBasePath?: string
   draft?: boolean
   thumbnail?: string
+  cover?: string
 }
 
 // 일반 카테고리 포스트 메타 정보 (tech, essay 등)

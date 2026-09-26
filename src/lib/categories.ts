@@ -33,8 +33,8 @@ export const BLOG_CATEGORIES = [
   //   description: '내가 좋아하는 음악만 다루는 공간',
   // },
   {
-    key: 'book',
-    label: '독서',
+    key: 'bookshelf',
+    label: '책서랍',
     description: '책 좀 읽어라 으이그',
     badgeClassName:
       'border-lime-200 bg-lime-50 text-lime-700 dark:border-lime-900/70 dark:bg-lime-950/40 dark:text-lime-300',

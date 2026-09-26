@@ -20,6 +20,7 @@ function transformPost(post: (typeof allPosts)[number]): Post {
       imageBasePath: (post as { imageBasePath?: string }).imageBasePath,
       draft: post.draft,
       thumbnail: post.thumbnail,
+      cover: post.cover,
       series: post.series,
       seriesOrder: post.seriesOrder,
     },

@@ -5,10 +5,12 @@ import { notFound } from 'next/navigation'
 import { getPostsByCategory, getAllCategories } from '@/lib/posts'
 import { getAllSeriesWithMeta } from '@/lib/series'
 import { BLOG_CATEGORIES, BLOG_CATEGORY_MAP } from '@/lib/categories'
-import { PostList } from '@/components/blog'
+import { BookShelf, PostList } from '@/components/blog'
 
 const configuredCategories = BLOG_CATEGORIES.map((category) => category.key)
 const POSTS_PER_PAGE = 10
+// 책장은 한 줄 4권이라 줄이 딱 맞게 12권씩
+const BOOKS_PER_PAGE = 12
 
 interface Props {
   params: Promise<{ category: string }>
@@ -44,6 +46,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
   const { page } = await searchParams
   const validCategories = new Set([...configuredCategories, ...getAllCategories()])
   const isSeriesCategory = category === 'series'
+  const isBookShelf = category === 'bookshelf'
 
   // 유효하지 않은 카테고리는 404
   if (!validCategories.has(category)) {
@@ -54,7 +57,8 @@ export default async function CategoryPage({ params, searchParams }: Props) {
   const seriesList = isSeriesCategory ? getAllSeriesWithMeta() : []
   const meta = BLOG_CATEGORY_MAP.get(category)
   const totalPosts = posts.length
-  const totalPages = Math.max(1, Math.ceil(totalPosts / POSTS_PER_PAGE))
+  const perPage = isBookShelf ? BOOKS_PER_PAGE : POSTS_PER_PAGE
+  const totalPages = Math.max(1, Math.ceil(totalPosts / perPage))
 
   const parsedPageNumber = parseInt(page || '1', 10)
   const parsedPage = Number.isNaN(parsedPageNumber)
@@ -62,8 +66,8 @@ export default async function CategoryPage({ params, searchParams }: Props) {
     : Math.max(1, parsedPageNumber)
   const currentPage = Math.min(parsedPage, totalPages)
 
-  const startIndex = (currentPage - 1) * POSTS_PER_PAGE
-  const paginatedPosts = posts.slice(startIndex, startIndex + POSTS_PER_PAGE)
+  const startIndex = (currentPage - 1) * perPage
+  const paginatedPosts = posts.slice(startIndex, startIndex + perPage)
 
   const makePageHref = (targetPage: number) =>
     targetPage === 1 ? `/${category}` : `/${category}?page=${targetPage}`
@@ -72,28 +76,51 @@ export default async function CategoryPage({ params, searchParams }: Props) {
 
   return (
     <div className='max-w-3xl mx-auto px-4 py-12'>
-      <header className='mb-8'>
-        <h1 className='text-2xl font-semibold tracking-tight'>
-          {meta?.label || category}
-        </h1>
-        <div
-          className={`mt-2 flex items-end gap-4 ${
-            meta?.description ? 'justify-between' : 'justify-end'
-          }`}
-        >
+      {isBookShelf ? (
+        <header className='mb-8 text-center'>
+          <div className='flex items-center justify-center gap-3 text-muted-foreground'>
+            <span className='h-px w-10 bg-gradient-to-r from-transparent to-muted-foreground/60' />
+            <span className='text-[8px] opacity-60'>◆</span>
+            <h1 className='pl-[0.3em] text-base font-semibold uppercase tracking-[0.3em]'>
+              {category}
+            </h1>
+            <span className='text-[8px] opacity-60'>◆</span>
+            <span className='h-px w-10 bg-gradient-to-l from-transparent to-muted-foreground/60' />
+          </div>
           {meta?.description && (
-            <p className='text-sm leading-relaxed text-muted-foreground'>
-              {meta.description}
+            <p className='mt-3 text-sm text-muted-foreground'>
+              {meta.description} · {totalPosts}개의 글
             </p>
           )}
-          <p className='shrink-0 text-xs text-muted-foreground/80'>
-            {isSeriesCategory
-              ? `${seriesList.length}개의 시리즈`
-              : `${totalPosts}개의 글`}
-          </p>
-        </div>
-      </header>
-      <div className='mb-6 flex flex-nowrap gap-2 overflow-x-auto pb-1 md:flex-wrap md:overflow-visible'>
+        </header>
+      ) : (
+        <header className='mb-8'>
+          <h1 className='text-2xl font-semibold tracking-tight'>
+            {meta?.label || category}
+          </h1>
+          <div
+            className={`mt-2 flex items-end gap-4 ${
+              meta?.description ? 'justify-between' : 'justify-end'
+            }`}
+          >
+            {meta?.description && (
+              <p className='text-sm leading-relaxed text-muted-foreground'>
+                {meta.description}
+              </p>
+            )}
+            <p className='shrink-0 text-xs text-muted-foreground/80'>
+              {isSeriesCategory
+                ? `${seriesList.length}개의 시리즈`
+                : `${totalPosts}개의 글`}
+            </p>
+          </div>
+        </header>
+      )}
+      <div
+        className={`mb-6 flex flex-nowrap gap-2 overflow-x-auto pb-1 md:flex-wrap md:overflow-visible ${
+          isBookShelf ? 'md:justify-center' : ''
+        }`}
+      >
         <Link
           href='/posts'
           className='inline-flex shrink-0 items-center rounded-full border px-3 py-1 text-sm transition-colors border-border text-muted-foreground hover:text-foreground'
@@ -159,6 +186,8 @@ export default async function CategoryPage({ params, searchParams }: Props) {
             ))}
           </div>
         )
+      ) : isBookShelf ? (
+        <BookShelf posts={paginatedPosts} />
       ) : (
         <PostList posts={paginatedPosts} />
       )}
