@@ -95,7 +95,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
       </header>
       <div className='mb-6 flex flex-nowrap gap-2 overflow-x-auto pb-1 md:flex-wrap md:overflow-visible'>
         <Link
-          href='/'
+          href='/posts'
           className='inline-flex shrink-0 items-center rounded-full border px-3 py-1 text-sm transition-colors border-border text-muted-foreground hover:text-foreground'
         >
           전체
