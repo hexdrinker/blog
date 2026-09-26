@@ -59,13 +59,15 @@ export function Header({ searchItems }: { searchItems: SearchItem[] }) {
             className='flex items-center shrink-0'
             aria-label='홈'
           >
-            <Image
-              src='/img/logos/hexdrinker-629.jpeg'
-              alt='hexdrinker'
-              width={32}
-              height={32}
-              className='rounded-full'
-            />
+            <span className='relative h-8 w-8 overflow-hidden rounded-full border border-foreground/10 bg-white'>
+              <Image
+                src='/img/logos/youngho.png'
+                alt='hexdrinker'
+                fill
+                sizes='64px'
+                className='origin-[50%_28%] scale-[2] object-cover [image-rendering:pixelated]'
+              />
+            </span>
           </Link>
           <nav className='flex items-center gap-4 sm:gap-5'>
             {/* 데스크톱은 hover·키보드 포커스, 터치 기기는 탭으로 연다 */}
