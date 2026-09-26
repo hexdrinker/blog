@@ -69,7 +69,7 @@ function Item({
 
 export default function AboutPage() {
   return (
-    <div className='max-w-3xl mx-auto px-4 py-12 space-y-12'>
+    <div className='max-w-2xl mx-auto px-4 py-12 space-y-12'>
       <h1 className='sr-only'>About</h1>
 
       <Section title='Currently working on'>
