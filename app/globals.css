@@ -399,3 +399,114 @@
   .book-cover,
   .book-leaf { transition: none; }
 }
+
+/* SeriesCarousel 카드 */
+.series-stage {
+  position: relative;
+  height: 400px;
+  perspective: 1200px;
+  overflow-x: clip;
+  touch-action: pan-y;
+  user-select: none;
+}
+.series-slot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 240px;
+  aspect-ratio: 5 / 7;
+  margin: -168px 0 0 -120px;
+  transition:
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.5s ease,
+    filter 0.5s ease;
+}
+/* 드래그 중에는 손가락을 바로 따라오도록 전환을 끈다 */
+.series-stage.is-dragging .series-slot {
+  transition: none;
+}
+.series-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 6px;
+  border-radius: 14px;
+  cursor: pointer;
+  background: linear-gradient(
+    145deg,
+    hsl(var(--card-hue) 70% 64%),
+    hsl(calc(var(--card-hue) + 40) 65% 42%)
+  );
+  box-shadow: 0 10px 30px -10px rgb(0 0 0 / 0.5);
+  transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  transition:
+    transform 0.2s ease-out,
+    box-shadow 0.3s ease;
+}
+.series-card.is-active {
+  box-shadow: 0 22px 50px -12px hsl(var(--card-hue) 80% 50% / 0.55);
+}
+.series-card-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 9px;
+  background: linear-gradient(
+    180deg,
+    hsl(var(--card-hue) 45% 30%),
+    hsl(var(--card-hue) 40% 16%)
+  );
+}
+.series-card-art {
+  display: grid;
+  flex: 0 0 42%;
+  place-items: center;
+  margin: 6px 8px 0;
+  overflow: hidden;
+  border-radius: 6px;
+  background:
+    radial-gradient(circle at 30% 25%, hsl(calc(var(--card-hue) + 30) 90% 78% / 0.85), transparent 55%),
+    repeating-linear-gradient(45deg, hsl(var(--card-hue) 55% 42%) 0 10px, hsl(var(--card-hue) 55% 36%) 10px 20px);
+  box-shadow: inset 0 0 0 2px rgb(255 255 255 / 0.25);
+}
+.series-card-number {
+  font-size: 64px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: rgb(255 255 255 / 0.92);
+  text-shadow: 0 4px 16px rgb(0 0 0 / 0.35);
+}
+.series-card-text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  margin: 8px;
+  padding: 10px;
+  border-radius: 6px;
+  color: var(--foreground);
+  background: color-mix(in oklch, var(--background) 90%, transparent);
+}
+.series-card-glare {
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    radial-gradient(circle at var(--glare-x, 50%) var(--glare-y, 50%), rgb(255 255 255 / 0.35), transparent 45%),
+    linear-gradient(115deg, transparent 30%, hsl(calc(var(--card-hue) + 60) 100% 80% / 0.25) 45%, hsl(calc(var(--card-hue) + 140) 100% 80% / 0.25) 55%, transparent 70%);
+  mix-blend-mode: soft-light;
+  transition: opacity 0.3s ease;
+}
+.series-card.is-active:hover .series-card-glare {
+  opacity: 1;
+}
+@media (max-width: 640px) {
+  .series-stage { height: 340px; }
+  .series-slot { width: 200px; margin: -140px 0 0 -100px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .series-slot,
+  .series-card { transition: none; }
+}
