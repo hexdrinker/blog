@@ -17,7 +17,9 @@ const FOCUS_OFFSET = 36 * DEG
 // 해가 낮으면 지평선의 노을을, 높으면 위쪽의 파란 하늘을 담도록 카메라를 든다
 const CAMERA_PITCH_LOW = 15 * DEG
 const CAMERA_PITCH_HIGH = 19 * DEG
-const MOON_DISTANCE = 90
+// 달·은하수는 지형(~900)·바다보다 멀리 둔다. 보이는 크기는 SKY_SCALE만큼 키워서 그대로 유지한다
+const MOON_DISTANCE = 20000
+const SKY_SCALE = MOON_DISTANCE / 90
 
 interface Preset {
   turbidity: number
@@ -197,10 +199,10 @@ function MilkyWay() {
   const band = useCanvasTexture(drawMilkyWay, 256)
   return (
     <mesh
-      position={[-40, 160, -420]}
+      position={[-40 * 40, 160 * 40, -420 * 40]}
       rotation={[0, 0, -0.5]}
     >
-      <planeGeometry args={[900, 360]} />
+      <planeGeometry args={[900 * 40, 360 * 40]} />
       <meshBasicMaterial
         map={band.texture}
         transparent
@@ -208,6 +210,7 @@ function MilkyWay() {
         depthWrite={false}
         blending={THREE.AdditiveBlending}
         toneMapped={false}
+        fog={false}
       />
     </mesh>
   )
@@ -229,7 +232,7 @@ function Moon({ position, phase, southern, dim }: { position: THREE.Vector3; pha
     if (southern) right.negate()
     const angle = phase * Math.PI * 2
     const direction = right.multiplyScalar(Math.sin(angle)).add(toCamera.multiplyScalar(-Math.cos(angle)))
-    return position.clone().add(direction.multiplyScalar(50))
+    return position.clone().add(direction.multiplyScalar(50 * SKY_SCALE))
   }, [position, phase, southern])
 
   useEffect(() => {
@@ -258,7 +261,7 @@ function Moon({ position, phase, southern, dim }: { position: THREE.Vector3; pha
       >
         <group ref={radialRef}>
           <mesh ref={moonRef}>
-            <sphereGeometry args={[3, 48, 48]} />
+            <sphereGeometry args={[3 * SKY_SCALE, 48, 48]} />
             {/* 하늘 노출을 낮춰도 달은 밝게 보이도록 톤 매핑에서 뺀다 */}
             <meshStandardMaterial
               map={surface.texture}
@@ -267,6 +270,7 @@ function Moon({ position, phase, southern, dim }: { position: THREE.Vector3; pha
               transparent
               opacity={dim ? 0.5 : 1}
               toneMapped={false}
+              fog={false}
             />
           </mesh>
         </group>
@@ -278,7 +282,7 @@ function Moon({ position, phase, southern, dim }: { position: THREE.Vector3; pha
       />
       <sprite
         position={position}
-        scale={[14, 14, 1]}
+        scale={[14 * SKY_SCALE, 14 * SKY_SCALE, 1]}
       >
         <spriteMaterial
           map={glow.texture}
@@ -286,58 +290,10 @@ function Moon({ position, phase, southern, dim }: { position: THREE.Vector3; pha
           opacity={glowOpacity}
           depthWrite={false}
           blending={THREE.AdditiveBlending}
+          fog={false}
         />
       </sprite>
     </group>
-  )
-}
-
-function Rain({ count, color }: { count: number; color: string }) {
-  const positions = useMemo(() => {
-    const random = mulberry32(3)
-    const array = new Float32Array(count * 6)
-    for (let i = 0; i < count; i++) {
-      const x = (random() - 0.5) * 50
-      const y = -14 + random() * 34
-      const z = -6 - random() * 24
-      array.set([x, y, z, x + 0.12, y + 0.9, z], i * 6)
-    }
-    return array
-  }, [count])
-  const geometryRef = useRef<THREE.BufferGeometry>(null)
-
-  useFrame((_, delta) => {
-    const step = Math.min(delta, 0.1) * 26
-    for (let i = 0; i < count; i++) {
-      const o = i * 6
-      positions[o] -= step * 0.12
-      positions[o + 1] -= step
-      if (positions[o + 1] < -14) {
-        positions[o] += 2.5
-        positions[o + 1] += 34
-      }
-      positions[o + 3] = positions[o] + 0.12
-      positions[o + 4] = positions[o + 1] + 0.9
-    }
-    geometryRef.current!.attributes.position.needsUpdate = true
-  })
-
-  return (
-    <lineSegments frustumCulled={false}>
-      <bufferGeometry ref={geometryRef}>
-        <bufferAttribute
-          attach='attributes-position'
-          args={[positions, 3]}
-        />
-      </bufferGeometry>
-      <lineBasicMaterial
-        color={color}
-        transparent
-        opacity={0.45}
-        depthWrite={false}
-        toneMapped={false}
-      />
-    </lineSegments>
   )
 }
 
@@ -461,8 +417,17 @@ function Scene({ onReady }: { onReady: () => void }) {
             time={skyTime}
             weather={sky.weather}
             sunDirection={view.sunDirection}
+            glintDirection={isNight && view.moonUp ? view.moonPosition.clone().normalize() : undefined}
           />
-          <Painterly />
+          <Painterly
+            skySaturation={
+              sky.weather === 'clear'
+                ? { day: 1.65, dawn: 1.25, dusk: 1.25, night: 1.1 }[skyTime]
+                : sky.weather === 'cloudy'
+                  ? { day: 1.35, dawn: 1.15, dusk: 1.15, night: 1 }[skyTime]
+                  : 1
+            }
+          />
         </>
       )}
       <FrameDriver
@@ -480,11 +445,13 @@ function Scene({ onReady }: { onReady: () => void }) {
         mieDirectionalG={skyParams.mieDirectionalG}
       />
       {view.sunAltitude < -4 && clearish && (
+        // 지형·바다보다 멀리 둬야 땅 위에 별이 겹치지 않는다. 거리에 반비례해 작아지므로 크기를 그만큼 키운다.
+        // drei Stars 셰이더는 좌표를 두 배로 그려서(w=0.5) 실제 거리는 약 2만 4천이다 (카메라 far 3만 안쪽)
         <Stars
-          radius={300}
-          depth={80}
+          radius={12000}
+          depth={1200}
           count={sky.weather === 'clear' ? 5000 : 1500}
-          factor={4}
+          factor={4 * (12000 / 300)}
           saturation={0}
           fade
           speed={0.4}
@@ -499,12 +466,7 @@ function Scene({ onReady }: { onReady: () => void }) {
           dim={!isNight || !clearish}
         />
       )}
-      {(sky.weather === 'rain' || sky.weather === 'storm') && (
-        <Rain
-          count={sky.weather === 'storm' ? 1600 : 1000}
-          color={isNight ? '#b8c4e0' : '#dfe6f0'}
-        />
-      )}
+      {/* 비는 모든 레이어 위에 그려지는 CSS 비(ThemeBackdrop)가 맡는다 */}
       {sky.weather === 'snow' && <Snow count={1400} />}
     </>
   )
@@ -516,7 +478,7 @@ export default function SkyCanvas({ onReady }: { onReady: () => void }) {
       frameloop='demand'
       dpr={[1, 1.5]}
       gl={{ antialias: false, powerPreference: 'low-power' }}
-      camera={{ fov: CAMERA_FOV, near: 0.1, far: 2000, position: [0, 0, 0] }}
+      camera={{ fov: CAMERA_FOV, near: 0.5, far: 30000, position: [0, 0, 0] }}
       // ACES는 밝은 하늘의 채도를 많이 깎아서, 색조를 더 잘 지키는 Neutral 톤 매핑을 쓴다
       onCreated={({ gl }) => {
         gl.toneMapping = THREE.NeutralToneMapping
