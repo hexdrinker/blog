@@ -5,25 +5,15 @@ import * as SunCalc from 'suncalc'
 export const SKY_TIMES = ['dawn', 'day', 'dusk', 'night'] as const
 export const SKY_WEATHERS = ['clear', 'cloudy', 'rain', 'snow', 'fog', 'storm'] as const
 
-// 랜드마크 도시 7곳 + 지형 5가지. 순서는 테스트 모달의 버튼 순서다
-export const LANDSCAPES = [
-  'hills',
-  'coast',
-  'alpine',
-  'snow',
-  'desert',
-  'seoul',
-  'busan',
-  'tokyo',
-  'newyork',
-  'paris',
-  'london',
-  'sanfrancisco',
-] as const
+// 지형 5가지. 순서는 테스트 모달의 버튼 순서다
+const TERRAIN_LANDSCAPES = ['hills', 'coast', 'alpine', 'snow', 'desert'] as const
+// 랜드마크 도시 7곳. SVG 스카이라인은 남겨두되 지금은 쓰지 않는다 (LANDSCAPES에서 빠져 있어 선택되지 않는다)
+const CITY_LANDSCAPES = ['seoul', 'busan', 'tokyo', 'newyork', 'paris', 'london', 'sanfrancisco'] as const
+export const LANDSCAPES: readonly Landscape[] = [...TERRAIN_LANDSCAPES /* , ...CITY_LANDSCAPES */]
 
 export type SkyTime = (typeof SKY_TIMES)[number]
 export type SkyWeather = (typeof SKY_WEATHERS)[number]
-export type Landscape = (typeof LANDSCAPES)[number]
+export type Landscape = (typeof TERRAIN_LANDSCAPES)[number] | (typeof CITY_LANDSCAPES)[number]
 
 export interface SkyState {
   latitude: number

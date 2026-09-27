@@ -696,13 +696,14 @@ export function Landscape() {
       <Scenery id='alpine'><Alpine /></Scenery>
       <Scenery id='snow'><Snow /></Scenery>
       <Scenery id='desert'><Desert /></Scenery>
+      {/* 도시 스카이라인은 지금 쓰지 않는다 (sky.ts의 CITY_LANDSCAPES)
       <Scenery id='seoul'><Seoul /></Scenery>
       <Scenery id='busan'><Busan /></Scenery>
       <Scenery id='tokyo'><Tokyo /></Scenery>
       <Scenery id='newyork'><NewYork /></Scenery>
       <Scenery id='paris'><Paris /></Scenery>
       <Scenery id='london'><London /></Scenery>
-      <Scenery id='sanfrancisco'><SanFrancisco /></Scenery>
+      <Scenery id='sanfrancisco'><SanFrancisco /></Scenery> */}
     </div>
   )
 }

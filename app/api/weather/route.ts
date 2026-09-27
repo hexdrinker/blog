@@ -75,10 +75,11 @@ async function isCoastal(latitude: number, longitude: number) {
 }
 
 async function toLandscape(latitude: number, longitude: number, elevation: number): Promise<Landscape> {
-  const landmark = LANDMARKS.find(
-    (city) => distanceKm(latitude, longitude, city.latitude, city.longitude) <= LANDMARK_RADIUS_KM,
-  )
-  if (landmark) return landmark.id
+  // 도시 스카이라인은 지금 쓰지 않는다. 다시 켜려면 아래 주석을 풀고 sky.ts의 LANDSCAPES에 도시를 넣는다
+  // const landmark = LANDMARKS.find(
+  //   (city) => distanceKm(latitude, longitude, city.latitude, city.longitude) <= LANDMARK_RADIUS_KM,
+  // )
+  // if (landmark) return landmark.id
   if (Math.abs(latitude) >= 60 || elevation >= 2500) return 'snow'
   if (elevation >= 1000) return 'alpine'
   if (await isCoastal(latitude, longitude)) return 'coast'
