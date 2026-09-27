@@ -122,13 +122,14 @@ export function ThemeBackdrop() {
       {/* WebGL 하늘을 불러오는 동안 보이는 자리표시. 시간대별로 WebGL 하늘과 비슷한 색이다 */}
       <div className='sky-placeholder absolute inset-0 hidden bg-[linear-gradient(to_bottom,#86a4c2_0%,#a9bfd3_55%,#cdd8e2_100%)] dawn:bg-[linear-gradient(to_bottom,#3b475d_0%,#8e7a78_55%,#d99a64_100%)] dusk:bg-[linear-gradient(to_bottom,#3b475d_0%,#8e7a78_55%,#d99a64_100%)] night:bg-[linear-gradient(to_bottom,#0b0f20_0%,#141a2e_60%,#1e2438_100%)] overcast:bg-[linear-gradient(to_bottom,#8d98a5_0%,#aab3bd_60%,#c3cad2_100%)] night:overcast:bg-[linear-gradient(to_bottom,#0a0c14_0%,#12151f_100%)]' />
       <SkyLayer />
-      {/* 글이 잘 읽히도록 하늘을 살짝 눌러준다. 비·눈엔 잿빛, 다크 테마엔 짙은 남색을 더한다 */}
-      <div className='absolute inset-0 transition-colors duration-1000 overcast:bg-[#8a949f]/60 storm:bg-[#5f6873]/70 dark:bg-[#060b24]/30 night:bg-[#050a28]/60 dark:overcast:bg-[#05070f]/55' />
+      {/* 글이 잘 읽히도록 하늘을 살짝 눌러준다. 비·뇌우엔 잿빛, 눈엔 옅은 흰빛(눈이 회색으로 죽지 않게), 다크 테마엔 짙은 남색 */}
+      <div className='absolute inset-0 transition-colors duration-1000 rain:bg-[#8a949f]/60 storm:bg-[#5f6873]/70 snow:bg-[#eef1f5]/30 dark:bg-[#060b24]/30 night:bg-[#050a28]/60 dark:rain:bg-[#05070f]/55 dark:storm:bg-[#05070f]/55 dark:snow:bg-[#1c2438]/35' />
       <PaintedClouds />
       <Landscape />
 
       {/* 비·눈·안개·번개는 두 장면 공통 */}
-      <div className='css-sky absolute inset-0 hidden rain:block storm:block'>
+      {/* 비는 잿빛 막·구름보다 위에 그려야 낮에도 보인다. WebGL 하늘을 쓸 때도 이 CSS 비를 쓴다 */}
+      <div className='absolute inset-0 hidden rain:block storm:block'>
         <div className='backdrop-rain backdrop-rain-far' />
         <div className='backdrop-rain backdrop-rain-near' />
       </div>
@@ -140,7 +141,7 @@ export function ThemeBackdrop() {
       <div className='backdrop-flash absolute inset-0 hidden bg-white storm:block' />
       {/* 수채화지 질감: 하늘과 풍경을 한 장의 그림처럼 묶는다 */}
       <svg
-        className='absolute inset-0 h-full w-full opacity-[0.22] mix-blend-multiply dark:opacity-[0.1] dark:mix-blend-soft-light'
+        className='absolute inset-0 h-full w-full opacity-[0.1] mix-blend-multiply dark:opacity-[0.1] dark:mix-blend-soft-light'
         aria-hidden='true'
       >
         <filter id='backdrop-paper'>
