@@ -584,6 +584,8 @@ function Glow({
 const LIGHTHOUSE = { x: ISLANDS[0].x + 12, z: ISLANDS[0].z, base: SEA_LEVEL - 1 + ISLANDS[0].height * 0.78 }
 const LIGHTHOUSE_HEIGHT = 20
 
+const BEAM_LENGTH = 120
+
 function Lighthouse({ lit }: { lit: boolean }) {
   const beamRef = useRef<THREE.Group>(null)
   const flashRef = useRef<THREE.Sprite>(null)
@@ -653,14 +655,14 @@ function Lighthouse({ lit }: { lit: boolean }) {
             ref={beamRef}
             position={[0, top + 1, 0]}
           >
-            {/* 양쪽으로 뻗는 빛줄기 두 가닥 */}
+            {/* 양쪽으로 뻗는 빛줄기 두 가닥. 길면 카메라 쪽으로 돌 때 끝이 코앞까지 와서 화면 위를 크게 덮는다 */}
             {[0, Math.PI].map((rotation) => (
               <mesh
                 key={rotation}
                 rotation={[0, rotation, 0]}
-                position={[Math.cos(rotation) * 120, 0, 0]}
+                position={[Math.cos(rotation) * BEAM_LENGTH / 2, 0, 0]}
               >
-                <planeGeometry args={[240, 6]} />
+                <planeGeometry args={[BEAM_LENGTH, 6]} />
                 <meshBasicMaterial
                   map={beamTexture}
                   color='#fff0c2'
