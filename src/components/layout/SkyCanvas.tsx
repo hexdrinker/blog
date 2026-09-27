@@ -3,10 +3,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { Cloud, Clouds, Sky, Stars } from '@react-three/drei'
+import { Sky, Stars } from '@react-three/drei'
 import * as SunCalc from 'suncalc'
-import type { SkyWeather } from '@/lib/sky'
+import { getSkyTime, type SkyWeather } from '@/lib/sky'
 import { useSky } from './WeatherSync'
+import { Painterly, Terrain, TERRAIN_LANDSCAPES } from './SkyTerrain'
 
 const DEG = Math.PI / 180
 const FPS = 30
@@ -14,8 +15,8 @@ const CAMERA_FOV = 55
 // 해(밤엔 달)가 화면 오른쪽 위에 오도록 카메라 기준 방위를 돌린다. 화면이 좁으면 안쪽으로 당긴다
 const FOCUS_OFFSET = 36 * DEG
 // 해가 낮으면 지평선의 노을을, 높으면 위쪽의 파란 하늘을 담도록 카메라를 든다
-const CAMERA_PITCH_LOW = 10 * DEG
-const CAMERA_PITCH_HIGH = 26 * DEG
+const CAMERA_PITCH_LOW = 15 * DEG
+const CAMERA_PITCH_HIGH = 19 * DEG
 const MOON_DISTANCE = 90
 
 interface Preset {
@@ -23,20 +24,16 @@ interface Preset {
   rayleigh: number
   mieCoefficient: number
   mieDirectionalG: number
-  clouds: number
-  cloudOpacity: number
-  /** 0이면 햇빛 받은 구름색, 1이면 잿빛 먹구름 */
-  overcast: number
 }
 
-// 날씨마다 대기 탁도와 구름 양을 바꾼다
+// 날씨마다 대기 탁도를 바꾼다 (구름은 PaintedClouds가 그린다)
 const PRESETS: Record<SkyWeather, Preset> = {
-  clear: { turbidity: 2, rayleigh: 3.5, mieCoefficient: 0.002, mieDirectionalG: 0.95, clouds: 7, cloudOpacity: 0.75, overcast: 0 },
-  cloudy: { turbidity: 9, rayleigh: 2.4, mieCoefficient: 0.008, mieDirectionalG: 0.8, clouds: 15, cloudOpacity: 0.8, overcast: 0.35 },
-  fog: { turbidity: 12, rayleigh: 2, mieCoefficient: 0.012, mieDirectionalG: 0.75, clouds: 9, cloudOpacity: 0.6, overcast: 0.5 },
-  rain: { turbidity: 16, rayleigh: 2.5, mieCoefficient: 0.02, mieDirectionalG: 0.7, clouds: 18, cloudOpacity: 0.95, overcast: 0.85 },
-  snow: { turbidity: 14, rayleigh: 2.2, mieCoefficient: 0.015, mieDirectionalG: 0.7, clouds: 17, cloudOpacity: 0.9, overcast: 0.7 },
-  storm: { turbidity: 20, rayleigh: 3, mieCoefficient: 0.025, mieDirectionalG: 0.7, clouds: 20, cloudOpacity: 1, overcast: 1 },
+  clear: { turbidity: 2, rayleigh: 3.5, mieCoefficient: 0.002, mieDirectionalG: 0.95 },
+  cloudy: { turbidity: 9, rayleigh: 2.4, mieCoefficient: 0.008, mieDirectionalG: 0.8 },
+  fog: { turbidity: 12, rayleigh: 2, mieCoefficient: 0.012, mieDirectionalG: 0.75 },
+  rain: { turbidity: 16, rayleigh: 2.5, mieCoefficient: 0.02, mieDirectionalG: 0.7 },
+  snow: { turbidity: 14, rayleigh: 2.2, mieCoefficient: 0.015, mieDirectionalG: 0.7 },
+  storm: { turbidity: 20, rayleigh: 3, mieCoefficient: 0.025, mieDirectionalG: 0.7 },
 }
 
 // 서버·클라이언트 모두 같은 배치가 나오도록 시드 고정 난수를 쓴다
@@ -110,26 +107,6 @@ function createFbm(seed: number) {
     }
     return sum
   }
-}
-
-// drei Cloud는 기본 텍스처를 외부 CDN에서 받으므로 구름 조각을 직접 그린다
-function drawCloudPuff(ctx: CanvasRenderingContext2D, size: number) {
-  const fbm = createFbm(7)
-  const image = ctx.createImageData(size, size)
-  for (let y = 0; y < size; y++) {
-    for (let x = 0; x < size; x++) {
-      const dx = x / size - 0.5
-      const dy = y / size - 0.5
-      const r = Math.sqrt(dx * dx + dy * dy) * 2
-      const falloff = Math.max(0, Math.min(1, (1 - r) / 0.7))
-      const n = fbm((x / size) * 5, (y / size) * 5)
-      const alpha = Math.max(0, Math.min(1, (n - 0.3) * 2.2)) * falloff * falloff
-      const i = (y * size + x) * 4
-      image.data[i] = image.data[i + 1] = image.data[i + 2] = 255
-      image.data[i + 3] = alpha * 255
-    }
-  }
-  ctx.putImageData(image, 0, 0)
 }
 
 // 달 표면: 밝은 회색 바탕에 바다(어두운 얼룩)와 크레이터를 흩뿌린다
@@ -315,86 +292,6 @@ function Moon({ position, phase, southern, dim }: { position: THREE.Vector3; pha
   )
 }
 
-// 하늘 노출(toneMappingExposure)을 낮춰도 구름은 하얗게 보이도록 톤 매핑에서 뺀다
-class UnlitCloudMaterial extends THREE.MeshBasicMaterial {
-  constructor() {
-    super()
-    this.toneMapped = false
-  }
-}
-
-// 구름이 흘러가다 이 폭을 넘으면 반대편에서 다시 나온다
-const CLOUD_WRAP = 280
-
-function CloudLayer({ preset, color, opacity }: { preset: Preset; color: THREE.Color; opacity: number }) {
-  const puff = useCanvasTexture(drawCloudPuff, 512)
-  const cloudRefs = useRef<(THREE.Group | null)[]>([])
-
-  // 좌우 ±70°, 높이 6°~38° 범위에 거리도 제각각으로 흩뿌려 하늘 전체에 깔리게 한다
-  const configs = useMemo(() => {
-    const random = mulberry32(42)
-    const low = preset.overcast > 0.5
-    return Array.from({ length: preset.clouds }, (_, i) => {
-      const distance = 130 + random() * 110
-      const azimuth = (-70 + ((i + random()) / preset.clouds) * 140) * DEG
-      const elevation = ((low ? 4 : 6) + random() * (low ? 22 : 32)) * DEG
-      return {
-        seed: i + 1,
-        position: [
-          distance * Math.sin(azimuth),
-          distance * Math.tan(elevation),
-          -distance * Math.cos(azimuth),
-        ] as [number, number, number],
-        bounds: [20 + random() * 16, 3 + random() * 4, 8] as [number, number, number],
-        volume: 12 + random() * 10,
-        // 초당 이동 거리. 멀리 있는 구름일수록 느려 보인다
-        speed: 0.35 + random() * 0.5,
-      }
-    })
-  }, [preset.clouds, preset.overcast])
-
-  useFrame((_, delta) => {
-    const step = Math.min(delta, 0.1)
-    configs.forEach((config, i) => {
-      const cloud = cloudRefs.current[i]
-      if (!cloud) return
-      cloud.position.x += config.speed * step
-      if (cloud.position.x > CLOUD_WRAP) cloud.position.x -= CLOUD_WRAP * 2
-    })
-  })
-
-  return (
-    <Clouds
-      material={UnlitCloudMaterial}
-      texture={puff.url}
-      limit={800}
-      frustumCulled={false}
-    >
-      {configs.map((config, i) => (
-        <group
-          key={config.seed}
-          ref={(node) => {
-            cloudRefs.current[i] = node
-          }}
-          position={config.position}
-        >
-          <Cloud
-            seed={config.seed}
-            bounds={config.bounds}
-            volume={config.volume}
-            segments={24}
-            growth={6}
-            speed={0.1}
-            fade={60}
-            opacity={opacity}
-            color={color}
-          />
-        </group>
-      ))}
-    </Clouds>
-  )
-}
-
 function Rain({ count, color }: { count: number; color: string }) {
   const positions = useMemo(() => {
     const random = mulberry32(3)
@@ -499,12 +396,6 @@ function useClock(fixed: Date | null) {
   return fixed ?? now
 }
 
-const WARM = new THREE.Color('#ffc6a3')
-const WHITE = new THREE.Color('#ffffff')
-const NIGHT = new THREE.Color('#232a48')
-const GRAY_DAY = new THREE.Color('#98a1ac')
-const GRAY_NIGHT = new THREE.Color('#191d2e')
-
 function Scene({ onReady }: { onReady: () => void }) {
   const sky = useSky()
   const size = useThree((state) => state.size)
@@ -529,14 +420,6 @@ function Scene({ onReady }: { onReady: () => void }) {
     const focusOffset = Math.min(FOCUS_OFFSET, halfWidth - 8 * DEG)
     const relative = (azimuth: number) => azimuthDelta(azimuth, focus) * DEG + focusOffset
 
-    // 햇빛 받은 구름색: 낮 흰색 → 해 질 녘 주황 → 밤 남색, 흐릴수록 잿빛
-    const lit =
-      sunAltitude > 10
-        ? WHITE.clone()
-        : sunAltitude > -6
-          ? WARM.clone().lerp(WHITE, (sunAltitude + 6) / 16)
-          : NIGHT.clone()
-    const gray = sunAltitude > -6 ? GRAY_DAY : GRAY_NIGHT
 
     return {
       pitch,
@@ -546,9 +429,8 @@ function Scene({ onReady }: { onReady: () => void }) {
       moonPosition: toVector(displayAltitude(moon.altitude, topEdge), relative(moon.azimuth), MOON_DISTANCE),
       moonUp: moon.altitude > -3,
       phase,
-      cloudColor: lit.lerp(gray, preset.overcast),
     }
-  }, [date, sky.latitude, sky.longitude, preset.overcast, size.width, size.height])
+  }, [date, sky.latitude, sky.longitude, size.width, size.height])
 
   const isNight = view.sunAltitude < -6
   // 밤에는 대기 산란을 줄여야 하늘이 회색으로 뜨지 않는다
@@ -556,9 +438,33 @@ function Scene({ onReady }: { onReady: () => void }) {
     ? { turbidity: 1, rayleigh: 0.4, mieCoefficient: 0.002, mieDirectionalG: 0.8 }
     : preset
   const clearish = sky.weather === 'clear' || sky.weather === 'cloudy'
+  // 지형 풍경은 3D 지형 + 회화풍 후처리로, 도시 풍경은 SVG(Landscape)로 그린다
+  const showTerrain = TERRAIN_LANDSCAPES.includes(sky.landscape)
+  const skyTime = getSkyTime(date, sky.latitude, sky.longitude)
+
+  // 3D로 그리는 풍경을 알려서 같은 풍경의 SVG를 숨긴다 (Landscape의 [data-sky-terrain])
+  useEffect(() => {
+    const root = document.documentElement
+    if (showTerrain) root.dataset.skyTerrain = sky.landscape
+    else delete root.dataset.skyTerrain
+    return () => {
+      delete root.dataset.skyTerrain
+    }
+  }, [showTerrain, sky.landscape])
 
   return (
     <>
+      {showTerrain && (
+        <>
+          <Terrain
+            landscape={sky.landscape}
+            time={skyTime}
+            weather={sky.weather}
+            sunDirection={view.sunDirection}
+          />
+          <Painterly />
+        </>
+      )}
       <FrameDriver
         onReady={onReady}
         pitch={view.pitch}
@@ -593,11 +499,6 @@ function Scene({ onReady }: { onReady: () => void }) {
           dim={!isNight || !clearish}
         />
       )}
-      <CloudLayer
-        preset={preset}
-        color={view.cloudColor}
-        opacity={preset.cloudOpacity * (isNight ? 0.55 : 1)}
-      />
       {(sky.weather === 'rain' || sky.weather === 'storm') && (
         <Rain
           count={sky.weather === 'storm' ? 1600 : 1000}

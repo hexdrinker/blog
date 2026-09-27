@@ -1,4 +1,6 @@
 import { SkyLayer } from './SkyLayer'
+import { Landscape } from './Landscape'
+import { PaintedClouds } from './PaintedClouds'
 
 // 라이트: 해가 뜬 들판과 마을 / 다크: 달이 뜬 우주
 // next-themes가 <html>에 붙이는 .dark 클래스로 두 장면 중 하나만 보여준다
@@ -109,93 +111,6 @@ function NightSky() {
   )
 }
 
-// 사인파 여러 개를 겹쳐 봉우리가 들쭉날쭉한 능선을 만든다 (시드 고정이라 매번 같은 산)
-function ridgePath(seed: number, base: number, amplitude: number, detail: number) {
-  const rand = mulberry32(seed)
-  const waves = Array.from({ length: 5 }, (_, i) => ({
-    frequency: (0.004 + rand() * 0.004) * 2 ** i,
-    phase: rand() * Math.PI * 2,
-    weight: 0.55 ** i,
-  }))
-  const points: string[] = []
-  for (let x = 0; x <= 1440; x += 12) {
-    const height = waves.reduce(
-      (sum, wave) => sum + Math.sin(x * wave.frequency + wave.phase) * wave.weight,
-      0,
-    )
-    const jitter = (rand() - 0.5) * detail
-    points.push(`${x} ${(base - height * amplitude + jitter).toFixed(1)}`)
-  }
-  return `M0 320 L${points.join(' L')} L1440 320 Z`
-}
-
-const RIDGES = [
-  {
-    id: 'far',
-    d: ridgePath(21, 150, 34, 2),
-    top: '[stop-color:#b9c8d6] dawn:[stop-color:#6f5d7b] dusk:[stop-color:#6d5872] night:[stop-color:#1d2440]',
-    bottom: '[stop-color:#d4dee7] dawn:[stop-color:#8a7589] dusk:[stop-color:#8a6f84] night:[stop-color:#232a45]',
-    className: 'fog:opacity-40',
-  },
-  {
-    id: 'mid',
-    d: ridgePath(34, 196, 24, 3),
-    top: '[stop-color:#9db1c3] dawn:[stop-color:#4f4262] dusk:[stop-color:#4c3d5a] night:[stop-color:#151b30]',
-    bottom: '[stop-color:#b6c6d4] dawn:[stop-color:#605171] dusk:[stop-color:#5d4b6a] night:[stop-color:#1a2036]',
-    className: 'fog:opacity-60',
-  },
-  {
-    id: 'near',
-    d: ridgePath(55, 244, 14, 5),
-    top: '[stop-color:#7f97ac] dawn:[stop-color:#322a42] dusk:[stop-color:#30263d] night:[stop-color:#0c1020]',
-    bottom: '[stop-color:#91a7ba] dawn:[stop-color:#3b3150] dusk:[stop-color:#382d47] night:[stop-color:#0f1324]',
-    className: 'fog:opacity-80',
-  },
-]
-
-// 먼 산부터 가까운 산까지 세 겹. 먼 산일수록 옅고 아래로 갈수록 안개가 낀 듯 밝아진다
-// 해 뜰 녘·질 녘엔 역광이라 산이 어두운 실루엣이 된다
-function Ridges() {
-  return (
-    <svg
-      className='absolute inset-x-0 bottom-0 h-[26vh] min-h-[160px] w-full'
-      viewBox='0 0 1440 320'
-      preserveAspectRatio='xMidYMax slice'
-      aria-hidden='true'
-    >
-      <defs>
-        {RIDGES.map((ridge) => (
-          <linearGradient
-            key={ridge.id}
-            id={`ridge-${ridge.id}`}
-            x1='0'
-            y1='0'
-            x2='0'
-            y2='1'
-          >
-            <stop
-              offset='0'
-              className={ridge.top}
-            />
-            <stop
-              offset='1'
-              className={ridge.bottom}
-            />
-          </linearGradient>
-        ))}
-      </defs>
-      {RIDGES.map((ridge) => (
-        <path
-          key={ridge.id}
-          d={ridge.d}
-          fill={`url(#ridge-${ridge.id})`}
-          className={ridge.className}
-        />
-      ))}
-    </svg>
-  )
-}
-
 export function ThemeBackdrop() {
   return (
     <div
@@ -208,8 +123,9 @@ export function ThemeBackdrop() {
       <div className='sky-placeholder absolute inset-0 hidden bg-[linear-gradient(to_bottom,#86a4c2_0%,#a9bfd3_55%,#cdd8e2_100%)] dawn:bg-[linear-gradient(to_bottom,#3b475d_0%,#8e7a78_55%,#d99a64_100%)] dusk:bg-[linear-gradient(to_bottom,#3b475d_0%,#8e7a78_55%,#d99a64_100%)] night:bg-[linear-gradient(to_bottom,#0b0f20_0%,#141a2e_60%,#1e2438_100%)] overcast:bg-[linear-gradient(to_bottom,#8d98a5_0%,#aab3bd_60%,#c3cad2_100%)] night:overcast:bg-[linear-gradient(to_bottom,#0a0c14_0%,#12151f_100%)]' />
       <SkyLayer />
       {/* 글이 잘 읽히도록 하늘을 살짝 눌러준다. 비·눈엔 잿빛, 다크 테마엔 짙은 남색을 더한다 */}
-      <div className='absolute inset-0 transition-colors duration-1000 overcast:bg-[#8994a3]/35 dark:bg-[#060b24]/30 night:bg-[#050a28]/60 dark:overcast:bg-[#05070f]/55' />
-      <Ridges />
+      <div className='absolute inset-0 transition-colors duration-1000 overcast:bg-[#8a949f]/60 storm:bg-[#5f6873]/70 dark:bg-[#060b24]/30 night:bg-[#050a28]/60 dark:overcast:bg-[#05070f]/55' />
+      <PaintedClouds />
+      <Landscape />
 
       {/* 비·눈·안개·번개는 두 장면 공통 */}
       <div className='css-sky absolute inset-0 hidden rain:block storm:block'>
@@ -222,6 +138,19 @@ export function ThemeBackdrop() {
       </div>
       <div className='absolute inset-x-0 bottom-0 h-2/3 opacity-0 transition-opacity duration-1000 fog:opacity-100 bg-[linear-gradient(to_top,rgba(236,239,243,0.9),rgba(236,239,243,0.45)_50%,transparent)] dark:bg-[linear-gradient(to_top,rgba(120,130,165,0.35),transparent)]' />
       <div className='backdrop-flash absolute inset-0 hidden bg-white storm:block' />
+      {/* 수채화지 질감: 하늘과 풍경을 한 장의 그림처럼 묶는다 */}
+      <svg
+        className='absolute inset-0 h-full w-full opacity-[0.22] mix-blend-multiply dark:opacity-[0.1] dark:mix-blend-soft-light'
+        aria-hidden='true'
+      >
+        <filter id='backdrop-paper'>
+          <feTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='5' seed='7' result='noise' />
+          <feDiffuseLighting in='noise' surfaceScale='1.4' lightingColor='#ffffff'>
+            <feDistantLight azimuth='45' elevation='58' />
+          </feDiffuseLighting>
+        </filter>
+        <rect width='100%' height='100%' filter='url(#backdrop-paper)' />
+      </svg>
     </div>
   )
 }
