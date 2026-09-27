@@ -41,3 +41,5 @@ next-env.d.ts
 
 .omx
 .omc
+# 풍경 그림 원본 (pnpm landscapes로 public/img/landscapes에 다듬어 넣는다)
+/landscapes-src
