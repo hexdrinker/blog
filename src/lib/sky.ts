@@ -5,13 +5,31 @@ import * as SunCalc from 'suncalc'
 export const SKY_TIMES = ['dawn', 'day', 'dusk', 'night'] as const
 export const SKY_WEATHERS = ['clear', 'cloudy', 'rain', 'snow', 'fog', 'storm'] as const
 
+// 랜드마크 도시 7곳 + 지형 5가지. 순서는 테스트 모달의 버튼 순서다
+export const LANDSCAPES = [
+  'hills',
+  'coast',
+  'alpine',
+  'snow',
+  'desert',
+  'seoul',
+  'busan',
+  'tokyo',
+  'newyork',
+  'paris',
+  'london',
+  'sanfrancisco',
+] as const
+
 export type SkyTime = (typeof SKY_TIMES)[number]
 export type SkyWeather = (typeof SKY_WEATHERS)[number]
+export type Landscape = (typeof LANDSCAPES)[number]
 
 export interface SkyState {
   latitude: number
   longitude: number
   weather: SkyWeather
+  landscape: Landscape
   /** 테스트용으로 고정한 시각. null이면 현재 시각 */
   date: Date | null
 }
@@ -24,7 +42,30 @@ function fallbackLocation() {
   return { latitude: 37, longitude: -new Date().getTimezoneOffset() / 4 }
 }
 
-let state: SkyState = { ...fallbackLocation(), weather: 'clear', date: null }
+// WeatherSync가 저장해 둔 값(15분)이 있으면 처음부터 그걸로 시작해서 풍경이 한 번 바뀌어 보이지 않게 한다
+function readCachedSky(): Partial<SkyState> {
+  if (typeof window === 'undefined') return {}
+  try {
+    const cached = JSON.parse(sessionStorage.getItem(SKY_STORAGE_KEY) ?? 'null')
+    if (!cached || Date.now() - cached.at > 15 * 60 * 1000) return {}
+    return {
+      latitude: cached.latitude,
+      longitude: cached.longitude,
+      ...(SKY_WEATHERS.includes(cached.weather) && { weather: cached.weather }),
+      ...(LANDSCAPES.includes(cached.landscape) && { landscape: cached.landscape }),
+    }
+  } catch {
+    return {}
+  }
+}
+
+let state: SkyState = {
+  ...fallbackLocation(),
+  weather: 'clear',
+  landscape: 'hills',
+  date: null,
+  ...readCachedSky(),
+}
 const listeners = new Set<() => void>()
 
 export const skyStore = {
@@ -69,11 +110,12 @@ export function getDateForSkyTime(time: SkyTime, latitude: number, longitude: nu
   return pick
 }
 
-/** <html data-time/data-weather>를 바꾸고, 맞춰야 할 테마를 돌려준다 */
-export function applySkyToDocument(time: SkyTime, weather: SkyWeather): 'light' | 'dark' {
+/** <html data-time/data-weather/data-landscape>를 바꾸고, 맞춰야 할 테마를 돌려준다 */
+export function applySkyToDocument(time: SkyTime, weather: SkyWeather, landscape: Landscape): 'light' | 'dark' {
   const root = document.documentElement
   root.dataset.time = time
   root.dataset.weather = weather
+  root.dataset.landscape = landscape
   // 노을·여명 하늘은 위쪽이 어두워서 밝은 글씨가 잘 읽힌다. 낮에만 라이트 테마를 쓴다
   return time === 'day' ? 'light' : 'dark'
 }

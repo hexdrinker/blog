@@ -4,10 +4,12 @@ import { useRef } from 'react'
 import {
   getDateForSkyTime,
   getSkyTime,
+  LANDSCAPES,
   SKY_STORAGE_KEY,
   SKY_TIMES,
   SKY_WEATHERS,
   skyStore,
+  type Landscape,
   type SkyTime,
   type SkyWeather,
 } from '@/lib/sky'
@@ -31,6 +33,21 @@ const WEATHER_LABELS: Record<string, string> = {
   storm: '뇌우',
 }
 
+const LANDSCAPE_LABELS: Record<Landscape, string> = {
+  hills: '산 능선',
+  coast: '바다',
+  alpine: '고산',
+  snow: '설원',
+  desert: '사막',
+  seoul: '서울',
+  busan: '부산',
+  tokyo: '도쿄',
+  newyork: '뉴욕',
+  paris: '파리',
+  london: '런던',
+  sanfrancisco: '샌프란시스코',
+}
+
 // 개발 환경 전용: 헤더 로고 왼쪽 빈 공간을 5번 누르면 배경 시간대·날씨를 바꿔볼 수 있다
 export function DevSkyPanel() {
   const sky = useSky()
@@ -51,6 +68,7 @@ export function DevSkyPanel() {
   const changeTime = (next: SkyTime) =>
     skyStore.set({ date: getDateForSkyTime(next, sky.latitude, sky.longitude) })
   const changeWeather = (next: SkyWeather) => skyStore.set({ weather: next })
+  const changeLandscape = (next: Landscape) => skyStore.set({ landscape: next })
 
   // 위치 기반 값을 다시 받아오도록 저장값을 지우고 새로고침한다
   const resetToLocation = () => {
@@ -115,6 +133,22 @@ export function DevSkyPanel() {
                 className={optionClassName(weather === value)}
               >
                 {WEATHER_LABELS[value]}
+              </button>
+            ))}
+          </div>
+        </fieldset>
+
+        <fieldset className='mt-4'>
+          <legend className='mb-2 text-xs text-muted-foreground'>풍경</legend>
+          <div className='flex flex-wrap gap-2'>
+            {LANDSCAPES.map((value) => (
+              <button
+                key={value}
+                type='button'
+                onClick={() => changeLandscape(value)}
+                className={optionClassName(sky.landscape === value)}
+              >
+                {LANDSCAPE_LABELS[value]}
               </button>
             ))}
           </div>
