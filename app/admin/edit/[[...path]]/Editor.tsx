@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState, useTransition, type ReactNode } from 'react'
+import { useEffect, useMemo, useRef, useState, useTransition, type ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useTheme } from 'next-themes'
@@ -9,7 +9,7 @@ import { markdown } from '@codemirror/lang-markdown'
 import { BLOG_CATEGORIES } from '@/lib/categories'
 import { cn } from '@/lib/utils'
 import { AlertModal } from '../../AlertModal'
-import { previewPost, savePost } from '../../actions'
+import { createImageUpload, previewPost, savePost } from '../../actions'
 
 type Frontmatter = Record<string, unknown>
 
@@ -31,8 +31,8 @@ interface Draft {
   slug: string
 }
 
-const EXTENSIONS = [markdown(), EditorView.lineWrapping]
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/
+const IMAGE_ACCEPT = 'image/jpeg,image/png,image/gif,image/webp,image/avif'
 
 // content/series/{series}/{slug}.mdx 또는 content/{category}/{slug}.mdx
 function splitPath(path?: string) {
@@ -71,7 +71,6 @@ export function Editor({
   const [preview, setPreview] = useState<ReactNode>(null)
   const [previewError, setPreviewError] = useState('')
   const [isSaving, startSaving] = useTransition()
-  const [alertMessage, setAlertMessage] = useState('')
   // 테마는 브라우저에서만 알 수 있어서 마운트 뒤에 편집기 테마를 정한다 (hydration 불일치 방지)
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
@@ -120,6 +119,91 @@ export function Editor({
     }, 600)
     return () => clearTimeout(timer)
   }, [body, id])
+
+  // 이미지는 S3에 바로 올리고, 파일명만 돌려준다 (글 폴더 기준 상대 경로)
+  const [uploading, setUploading] = useState(0)
+  const [alertMessage, setAlertMessage] = useState('')
+  // 성공은 흐름을 끊지 않게 버튼 옆에 잠깐만 보여준다
+  const [uploadNotice, setUploadNotice] = useState('')
+  const noticeTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
+  function notifyUploaded(fileName: string) {
+    setUploadNotice(`✓ ${fileName} 업로드 완료`)
+    clearTimeout(noticeTimer.current)
+    noticeTimer.current = setTimeout(() => setUploadNotice(''), 3000)
+  }
+  async function uploadImage(file: File) {
+    // 업로드 오류는 화면 위쪽 메시지로는 놓치기 쉬워서 모달로 알린다
+    if (!slug || (category === 'series' && !series)) {
+      setAlertMessage('카테고리와 slug를 먼저 정해 주세요.\n이미지는 {카테고리}/{slug}/ 폴더에 저장됩니다.')
+      return null
+    }
+    setUploading((n) => n + 1)
+    try {
+      const result = await createImageUpload(id, file.name, file.type)
+      if (!result.ok) {
+        setAlertMessage(result.error)
+        return null
+      }
+      const res = await fetch(result.uploadUrl, {
+        method: 'PUT',
+        headers: { 'Content-Type': file.type },
+        body: file,
+      })
+      if (!res.ok) {
+        setAlertMessage(`이미지 업로드 실패 (${res.status}). S3 CORS·권한 설정을 확인하세요.`)
+        return null
+      }
+      notifyUploaded(result.fileName)
+      return result.fileName
+    } catch (error) {
+      setAlertMessage(`이미지 업로드 실패: ${(error as Error).message}`)
+      return null
+    } finally {
+      setUploading((n) => n - 1)
+    }
+  }
+
+  // 본문 커서 위치(드롭이면 놓은 위치)에 <Img />를 넣는다
+  const viewRef = useRef<EditorView | null>(null)
+  async function insertImages(files: File[], pos?: number) {
+    for (const file of files) {
+      const fileName = await uploadImage(file)
+      const view = viewRef.current
+      if (!fileName || !view) continue
+      const at = pos ?? view.state.selection.main.head
+      const text = `<Img src='${fileName}' alt='' />\n`
+      view.dispatch({ changes: { from: at, insert: text }, selection: { anchor: at + text.length } })
+      pos = undefined
+    }
+  }
+  const insertImagesRef = useRef(insertImages)
+  insertImagesRef.current = insertImages
+
+  const extensions = useMemo(() => {
+    const imageFiles = (list?: FileList | null) =>
+      Array.from(list ?? []).filter((file) => file.type.startsWith('image/'))
+    return [
+      markdown(),
+      EditorView.lineWrapping,
+      EditorView.domEventHandlers({
+        paste(event) {
+          const files = imageFiles(event.clipboardData?.files)
+          if (!files.length) return false
+          event.preventDefault()
+          insertImagesRef.current(files)
+          return true
+        },
+        drop(event, view) {
+          const files = imageFiles(event.dataTransfer?.files)
+          if (!files.length) return false
+          event.preventDefault()
+          const pos = view.posAtCoords({ x: event.clientX, y: event.clientY }) ?? undefined
+          insertImagesRef.current(files, pos)
+          return true
+        },
+      }),
+    ]
+  }, [])
 
   function save(draftValue: boolean) {
     startSaving(async () => {
@@ -319,15 +403,51 @@ export function Editor({
           <span className='text-xs text-muted-foreground'>
             썸네일 (파일명은 {slug ? id : `${category}/{slug}`}/ 기준, 또는 전체 URL)
           </span>
-          <input
-            value={String(frontmatter.thumbnail ?? '')}
-            onChange={(e) => setField('thumbnail', e.target.value)}
-            className={inputClass}
-          />
+          <div className='flex gap-2'>
+            <input
+              value={String(frontmatter.thumbnail ?? '')}
+              onChange={(e) => setField('thumbnail', e.target.value)}
+              className={inputClass}
+            />
+            <span className={cn(buttonClass, 'relative cursor-pointer')}>
+              업로드
+              <input
+                type='file'
+                accept={IMAGE_ACCEPT}
+                className='absolute inset-0 cursor-pointer opacity-0'
+                onChange={async (e) => {
+                  const file = e.target.files?.[0]
+                  e.target.value = ''
+                  const fileName = file && (await uploadImage(file))
+                  if (fileName) setField('thumbnail', fileName)
+                }}
+              />
+            </span>
+          </div>
         </label>
       </div>
 
-      <div className='flex gap-2 lg:hidden'>
+      <div className='flex flex-wrap items-center gap-2'>
+        <label className={cn(buttonClass, 'cursor-pointer')}>
+          이미지 넣기
+          <input
+            type='file'
+            accept={IMAGE_ACCEPT}
+            multiple
+            className='hidden'
+            onChange={(e) => {
+              const files = Array.from(e.target.files ?? [])
+              e.target.value = ''
+              insertImages(files)
+            }}
+          />
+        </label>
+        <span className={cn('text-xs', uploadNotice && !uploading ? 'text-emerald-600' : 'text-muted-foreground')}>
+          {uploading > 0
+            ? `이미지 ${uploading}개 올리는 중…`
+            : uploadNotice || '본문에 끌어다 놓거나 붙여넣어도 됩니다'}
+        </span>
+        <div className='ml-auto flex gap-2 lg:hidden'>
         {(['write', 'preview'] as const).map((key) => (
           <button
             key={key}
@@ -341,6 +461,7 @@ export function Editor({
             {key === 'write' ? '작성' : '미리보기'}
           </button>
         ))}
+        </div>
       </div>
 
       <div className='grid gap-4 lg:grid-cols-2'>
@@ -348,7 +469,10 @@ export function Editor({
           <CodeMirror
             value={body}
             onChange={(value) => update({ body: value })}
-            extensions={EXTENSIONS}
+            extensions={extensions}
+            onCreateEditor={(view) => {
+              viewRef.current = view
+            }}
             theme={mounted && resolvedTheme === 'dark' ? 'dark' : 'light'}
             basicSetup={{ lineNumbers: false, foldGutter: false, highlightActiveLine: false }}
             minHeight='70vh'
