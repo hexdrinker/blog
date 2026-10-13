@@ -8,6 +8,7 @@ import CodeMirror, { EditorView } from '@uiw/react-codemirror'
 import { markdown } from '@codemirror/lang-markdown'
 import { BLOG_CATEGORIES } from '@/lib/categories'
 import { cn } from '@/lib/utils'
+import { AlertModal } from '../../AlertModal'
 import { previewPost, savePost } from '../../actions'
 
 type Frontmatter = Record<string, unknown>
@@ -70,6 +71,7 @@ export function Editor({
   const [preview, setPreview] = useState<ReactNode>(null)
   const [previewError, setPreviewError] = useState('')
   const [isSaving, startSaving] = useTransition()
+  const [alertMessage, setAlertMessage] = useState('')
   // 테마는 브라우저에서만 알 수 있어서 마운트 뒤에 편집기 테마를 정한다 (hydration 불일치 방지)
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
@@ -124,7 +126,7 @@ export function Editor({
       const nextFrontmatter = { ...frontmatter, tags: toTags(draft.tagsText), draft: draftValue }
       const result = await savePost({ path, frontmatter: nextFrontmatter, body, sha })
       if (!result.ok) {
-        setMessage(result.error)
+        setAlertMessage(result.error)
         return
       }
       try {
@@ -160,6 +162,7 @@ export function Editor({
 
   return (
     <div className='mx-auto max-w-[1400px] space-y-4'>
+      <AlertModal message={alertMessage} onClose={() => setAlertMessage('')} />
       <div className='sticky top-0 z-10 -mx-4 flex flex-wrap items-center gap-3 border-b bg-background/90 px-4 py-3 backdrop-blur'>
         <Link href={base || '/'} className='text-sm text-muted-foreground hover:underline'>
           ← 목록
