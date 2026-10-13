@@ -569,3 +569,8 @@
 [data-sky='gl'] .sky-placeholder {
   display: block;
 }
+
+/* 어드민(app/admin/layout.tsx)에서는 블로그 헤더를 숨긴다 */
+body:has([data-admin]) > header {
+  display: none;
+}
