@@ -6,12 +6,13 @@ import Link from 'next/link'
 import { savePost } from '../../actions'
 
 interface Props {
+  base: string
   initialPath?: string
   initialText: string
   initialSha?: string
 }
 
-export function Editor({ initialPath, initialText, initialSha }: Props) {
+export function Editor({ base, initialPath, initialText, initialSha }: Props) {
   const router = useRouter()
   const isNew = !initialPath
   const storageKey = `admin-draft:${initialPath ?? 'new'}`
@@ -51,7 +52,7 @@ export function Editor({ initialPath, initialText, initialSha }: Props) {
       setSha(result.sha)
       setMessage('커밋했습니다. 배포까지 1~3분 걸립니다.')
       if (isNew) {
-        router.replace(`/edit/${path.replace(/^content\//, '').replace(/\.mdx$/, '')}`)
+        router.replace(`${base}/edit/${path.replace(/^content\//, '').replace(/\.mdx$/, '')}`)
       }
     })
   }
@@ -59,7 +60,7 @@ export function Editor({ initialPath, initialText, initialSha }: Props) {
   return (
     <div className='space-y-4'>
       <div className='flex items-center justify-between gap-3'>
-        <Link href='/' className='text-sm text-muted-foreground hover:underline'>
+        <Link href={base || '/'} className='text-sm text-muted-foreground hover:underline'>
           ← 목록
         </Link>
         <button

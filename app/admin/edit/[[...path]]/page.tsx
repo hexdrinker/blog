@@ -17,16 +17,16 @@ function newPostTemplate() {
 }
 
 export default async function EditPage({ params }: Props) {
-  await requireAdmin()
+  const { base } = await requireAdmin()
   const { path: segments } = await params
 
   if (!segments) {
-    return <Editor initialText={newPostTemplate()} />
+    return <Editor base={base} initialText={newPostTemplate()} />
   }
 
   const path = `content/${segments.join('/')}.mdx`
   if (!POST_PATH_PATTERN.test(path)) notFound()
 
   const { text, sha } = await getPostFile(path)
-  return <Editor initialPath={path} initialText={text} initialSha={sha} />
+  return <Editor base={base} initialPath={path} initialText={text} initialSha={sha} />
 }
