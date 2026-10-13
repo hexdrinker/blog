@@ -46,7 +46,7 @@ export default async function AdminPage({ searchParams }: Props) {
   )
 
   return (
-    <>
+    <div className='max-w-4xl mx-auto'>
       <div className='flex items-center justify-between mb-6'>
         <h1 className='text-2xl font-bold'>글 관리</h1>
         <Link
@@ -117,6 +117,6 @@ export default async function AdminPage({ searchParams }: Props) {
       {visible.length === 0 && (
         <p className='py-12 text-center text-sm text-muted-foreground'>글이 없습니다.</p>
       )}
-    </>
+    </div>
   )
 }
