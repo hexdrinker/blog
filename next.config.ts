@@ -8,7 +8,27 @@ const nextConfig: NextConfig = {
     return [
       { source: '/book', destination: '/bookshelf', permanent: true },
       { source: '/book/:slug', destination: '/bookshelf/:slug', permanent: true },
+      // 어드민은 admin.hexdrinker.dev에서만 연다
+      {
+        source: '/admin/:path*',
+        has: [{ type: 'host', value: '(www\\.)?hexdrinker\\.dev' }],
+        destination: 'https://admin.hexdrinker.dev/:path*',
+        permanent: false,
+      },
     ]
+  },
+  async rewrites() {
+    return {
+      // admin.* 호스트의 페이지 요청을 /admin 아래로 보낸다 (api, _next, 정적 파일은 그대로)
+      // 로컬에서는 admin.localhost:3000으로 연다
+      beforeFiles: [
+        {
+          source: '/:path((?!api/|_next/)[^.]*)',
+          has: [{ type: 'host', value: 'admin\\..+' }],
+          destination: '/admin/:path',
+        },
+      ],
+    }
   },
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
   images: {

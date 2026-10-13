@@ -1,5 +1,6 @@
 import { defineCollection, defineConfig } from '@content-collections/core'
 import { z } from 'zod'
+import { postSchema } from './src/lib/post-schema'
 
 const IMAGE_BASE_URL = 'https://images.hexdrinker.dev'
 
@@ -41,17 +42,7 @@ const posts = defineCollection({
   directory: 'content',
   include: '**/*.mdx',
   exclude: ['**/series/**/index.mdx'],
-  schema: z.object({
-    title: z.string(),
-    description: z.string().optional(),
-    category: z.string().optional(),
-    date: z.string(),
-    tags: z.array(z.coerce.string()).default([]),
-    draft: z.boolean().default(false),
-    thumbnail: z.string().optional(),
-    series: z.string().optional(),
-    seriesOrder: z.number().optional(),
-  }),
+  schema: postSchema,
   transform: (document) => {
     // 파일 경로에서 category와 slug 추출
     // _meta.path는 "tech/shadow-dom" 또는 "series/clean-architecture/01-intro" 형식
