@@ -4,11 +4,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { format } from 'date-fns'
 import { enUS } from 'date-fns/locale'
-import { MDXRemote } from 'next-mdx-remote/rsc'
-import remarkGfm from 'remark-gfm'
-import rehypeSlug from 'rehype-slug'
-import rehypePrettyCode from 'rehype-pretty-code'
-import type { Options } from 'rehype-pretty-code'
 import {
   getSeriesPostBySlug,
   getPostsBySeries,
@@ -16,23 +11,9 @@ import {
 } from '@/lib/posts'
 import { getSeriesBySlug } from '@/lib/series'
 import { BLOG_AUTHOR } from '@/lib/authors'
-import {
-  mdxComponents,
-  createImg,
-  createImageList,
-  createMarkdownImg,
-} from '@/components/mdx'
+import { PostBody } from '@/components/mdx/post-body'
 import { MobileTableOfContents } from '@/components/blog/TableOfContents'
 import { ViewCounter } from '@/components/blog'
-import remarkCjkAdjacentStrong from 'remark-cjk-adjacent-strong'
-
-const prettyCodeOptions: Options = {
-  theme: {
-    dark: 'github-dark',
-    light: 'github-light',
-  },
-  keepBackground: false,
-}
 
 interface Props {
   params: Promise<{ slug: string; postSlug: string }>
@@ -115,12 +96,6 @@ export default async function SeriesPostPage({ params }: Props) {
 
   // 문서 폴더 구조를 기준으로 이미지 경로 자동 조합
   const imagePath = post.meta.imageBasePath || `series/${slug}/${postSlug}`
-  const components = {
-    ...mdxComponents,
-    Img: createImg(imagePath),
-    ImageList: createImageList(imagePath),
-    img: createMarkdownImg(imagePath),
-  }
 
   return (
     <div className='max-w-3xl mx-auto px-4 py-12'>
@@ -183,21 +158,7 @@ export default async function SeriesPostPage({ params }: Props) {
             )}
           </figure>
         )}
-        <div className='prose dark:prose-invert max-w-none'>
-          <MDXRemote
-            source={contentWithoutMetaComments}
-            components={components}
-            options={{
-              mdxOptions: {
-                remarkPlugins: [remarkGfm, remarkCjkAdjacentStrong],
-                rehypePlugins: [
-                  rehypeSlug,
-                  [rehypePrettyCode, prettyCodeOptions],
-                ],
-              },
-            }}
-          />
-        </div>
+        <PostBody source={contentWithoutMetaComments} imagePath={imagePath} />
 
         <hr className='border-border my-12' />
 
